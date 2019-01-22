@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Stencil Component Starter</title>
+  <script src="/build/caiacc.js"></script>
+
+</head>
+<body>
+
+  <combo-native label="Select a state "></combo-native>
+
+  <script type="text/javascript">
+    // TODO: load data async
+    const states = [ { name: 'Massachusetts', value: 'MA' }, { name: 'Texas', value: 'TX' }, { name: 'Washington', value: 'WA' } ];
+    const comboEl = document.querySelector('combo-native');
+    comboEl.options = states;
+    comboEl.addEventListener('select', (option) => {
+      console.log('selected state:', option.detail.value);
+    });
+  </script>
+
+</body>
+</html>
