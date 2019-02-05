@@ -1,8 +1,6 @@
 import { Component, Event, EventEmitter, Prop } from '@stencil/core';
-import { SelectOption } from '../../utils/interfaces';
-// import { format } from '../../utils/utils';
-
-let idIndex = 0;
+import { SelectOption } from '../../shared/interfaces';
+import { uniqueId } from '../../shared/utils';
 
 @Component({
   tag: 'combo-native',
@@ -30,7 +28,7 @@ export class ComboNative {
   /**
    * Unique ID that should really use a UUID library instead
    */
-  private htmlId = `combo-native-${++idIndex}`;
+  private htmlId = uniqueId();
 
   private selectHandler(value: string) {
     const selectedOption = this.options.filter((option) => option.value === value);
