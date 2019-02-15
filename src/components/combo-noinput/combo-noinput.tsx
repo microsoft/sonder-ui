@@ -3,11 +3,11 @@ import { SelectOption } from '../../shared/interfaces';
 import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
 
 @Component({
-  tag: 'combo-focus',
+  tag: 'combo-noinput',
   styleUrl: '../../shared/combo-base.css',
   shadow: false
 })
-export class ComboFocus {
+export class ComboNoInput {
   /**
    * Array of name/value options
    */
@@ -17,11 +17,6 @@ export class ComboFocus {
    * String label
    */
   @Prop() label: string;
-
-  /*
-   * Boolean to move aria-activedescendant to listbox; For testing purposes only.
-  */
-  @Prop() useListboxPattern: boolean = false;
 
   /**
    * Emit a custom select event on value change
@@ -39,25 +34,11 @@ export class ComboFocus {
   // input value
   @State() value = '';
 
-  // flag to call focus after next render
-  private callFocus = false;
-
   // Unique ID that should really use a UUID library instead
   private htmlId = uniqueId();
 
   // save reference to input element
-  private inputRef: HTMLInputElement;
-
-  // save reference to menu element
-  private menuRef: HTMLElement;
-
-  componentDidUpdate() {
-    if (this.callFocus) {
-      this.callFocus = false;
-      const focusEl = this.open ? this.menuRef : this.inputRef;
-      focusEl.focus();
-    }
-  }
+  private inputRef: HTMLElement;
 
   render() {
     const {
@@ -66,7 +47,6 @@ export class ComboFocus {
       label = '',
       open = false,
       options = [],
-      useListboxPattern,
       value
     } = this;
 
@@ -74,35 +54,32 @@ export class ComboFocus {
 
     return ([
       <label id={htmlId} class="combo-label">{label}</label>,
-      <div role="combobox" aria-haspopup="listbox" aria-expanded={`${open}`} class={{ combo: true, open }}>
-        <input
-          aria-activedescendant={useListboxPattern ? false : activeId}
-          aria-labelledby={htmlId}
-          class="combo-input"
-          readonly
-          ref={(el) => this.inputRef = el}
-          type="text"
-          value={value}
-          onClick={() => this.updateMenuState(true)}
-          onKeyDown={this.onInputKeyDown.bind(this)}
-        />
+      <div
+        role="combobox"
+        aria-activedescendant={activeId}
+        aria-haspopup="listbox"
+        aria-expanded={`${open}`}
+        aria-labelledby={`${htmlId} ${htmlId}-value`}
+        class={{ combo: true, open }}
+        ref={(el) => this.inputRef = el}
+        tabindex="0"
+        onBlur={this.onComboBlur.bind(this)}
+        onClick={() => this.updateMenuState(true)}
+        onKeyDown={this.onInputKeyDown.bind(this)}
+      >
+        <div id={`${htmlId}-value`} class="combo-input">{value}</div>
 
-        <div
-          aria-activedescendant={useListboxPattern ? activeId : false}
-          class="combo-menu"
-          ref={(el) => this.menuRef = el}
-          role="listbox"
-          tabindex="-1"
-          onBlur={this.onMenuBlur.bind(this)}
-          onKeyDown={this.onMenuKeyDown.bind(this)}
-        >
+        <div class="combo-menu" role="listbox">
           {options.map((option, i) => {
             return (
               <div
                 class="combo-option"
                 id={`${this.htmlId}-${i}`} aria-selected={this.activeIndex === i ? 'true' : false}
                 role="option"
-                onClick={() => { this.onOptionClick(i); }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  this.onOptionClick(i);
+                }}
               >{option.name}</div>
             );
           })}
@@ -111,28 +88,11 @@ export class ComboFocus {
     ]);
   }
 
-  private onMenuBlur() {
-    this.updateMenuState(false, false);
-  }
-
   private onInputKeyDown(event: KeyboardEvent) {
-    const { key } = event;
-    const action = getActionFromKey(key, this.open);
-
-    switch(action) {
-      case MenuActions.Close:
-        return this.updateMenuState(false);
-      case MenuActions.Type:
-      case MenuActions.Open:
-        return this.updateMenuState(true);
-    }
-  }
-
-  private onMenuKeyDown(event: KeyboardEvent) {
     const { key } = event;
     const max = this.options.length - 1;
 
-    const action = getActionFromKey(key, true);
+    const action = getActionFromKey(key, this.open);
 
     switch(action) {
       case MenuActions.Next:
@@ -145,7 +105,14 @@ export class ComboFocus {
         this.selectOption(this.activeIndex);
       case MenuActions.Close:
         return this.updateMenuState(false);
+      case MenuActions.Type:
+      case MenuActions.Open:
+        return this.updateMenuState(true);
     }
+  }
+
+  private onComboBlur() {
+    this.updateMenuState(false, false);
   }
 
   private onOptionChange(index: number) {
@@ -166,6 +133,6 @@ export class ComboFocus {
 
   private updateMenuState(open: boolean, callFocus = true) {
     this.open = open;
-    this.callFocus = callFocus;
+    callFocus && this.inputRef.focus();
   }
 }

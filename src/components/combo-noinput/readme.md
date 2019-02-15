@@ -1,6 +1,6 @@
-# Combobox with tree menu
+# Readonly Combobox
 
-A test of a native `<select>` alternative that uses `role="combobox"` and `role="tree"` on the options menu. Basic functionality only, no autocomplete or filtering.
+A test of a native `<select>` alternative that uses `role="combobox"` with a `<input readonly>` child. Basic functionality only, no autocomplete or filtering.
 
 
 

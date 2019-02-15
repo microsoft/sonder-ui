@@ -1,3 +1,5 @@
+import { SelectOption } from './interfaces';
+
 export enum Keys {
   Backspace = 'Backspace',
   Clear = 'Clear',
@@ -25,6 +27,12 @@ export enum MenuActions {
   Previous,
   Select,
   Type
+}
+
+// filter an array of options against an input string
+// returns an array of options that begin with the filter string, case-independent
+export function filterOptions(options: SelectOption[], filter: string) {
+  return options.filter((option) => option.name.toLowerCase().indexOf(filter.trim().toLowerCase()) === 0);
 }
 
 // return combobox action from key press

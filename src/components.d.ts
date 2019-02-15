@@ -15,7 +15,7 @@ import {
 
 export namespace Components {
 
-  interface ComboFocus {
+  interface ComboFilter {
     /**
     * String label
     */
@@ -24,9 +24,8 @@ export namespace Components {
     * Array of name/value options
     */
     'options': SelectOption[];
-    'useListboxPattern': boolean;
   }
-  interface ComboFocusAttributes extends StencilHTMLAttributes {
+  interface ComboFilterAttributes extends StencilHTMLAttributes {
     /**
     * String label
     */
@@ -39,7 +38,6 @@ export namespace Components {
     * Array of name/value options
     */
     'options'?: SelectOption[];
-    'useListboxPattern'?: boolean;
   }
 
   interface ComboNative {
@@ -53,6 +51,31 @@ export namespace Components {
     'options': SelectOption[];
   }
   interface ComboNativeAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
+  interface ComboNoinput {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface ComboNoinputAttributes extends StencilHTMLAttributes {
     /**
     * String label
     */
@@ -92,7 +115,7 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
-  interface ComboTree {
+  interface ListboxButton {
     /**
     * String label
     */
@@ -102,7 +125,7 @@ export namespace Components {
     */
     'options': SelectOption[];
   }
-  interface ComboTreeAttributes extends StencilHTMLAttributes {
+  interface ListboxButtonAttributes extends StencilHTMLAttributes {
     /**
     * String label
     */
@@ -120,24 +143,26 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
-    'ComboFocus': Components.ComboFocus;
+    'ComboFilter': Components.ComboFilter;
     'ComboNative': Components.ComboNative;
+    'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
-    'ComboTree': Components.ComboTree;
+    'ListboxButton': Components.ListboxButton;
   }
 
   interface StencilIntrinsicElements {
-    'combo-focus': Components.ComboFocusAttributes;
+    'combo-filter': Components.ComboFilterAttributes;
     'combo-native': Components.ComboNativeAttributes;
+    'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
-    'combo-tree': Components.ComboTreeAttributes;
+    'listbox-button': Components.ListboxButtonAttributes;
   }
 
 
-  interface HTMLComboFocusElement extends Components.ComboFocus, HTMLStencilElement {}
-  var HTMLComboFocusElement: {
-    prototype: HTMLComboFocusElement;
-    new (): HTMLComboFocusElement;
+  interface HTMLComboFilterElement extends Components.ComboFilter, HTMLStencilElement {}
+  var HTMLComboFilterElement: {
+    prototype: HTMLComboFilterElement;
+    new (): HTMLComboFilterElement;
   };
 
   interface HTMLComboNativeElement extends Components.ComboNative, HTMLStencilElement {}
@@ -146,30 +171,38 @@ declare global {
     new (): HTMLComboNativeElement;
   };
 
+  interface HTMLComboNoinputElement extends Components.ComboNoinput, HTMLStencilElement {}
+  var HTMLComboNoinputElement: {
+    prototype: HTMLComboNoinputElement;
+    new (): HTMLComboNoinputElement;
+  };
+
   interface HTMLComboReadonlyElement extends Components.ComboReadonly, HTMLStencilElement {}
   var HTMLComboReadonlyElement: {
     prototype: HTMLComboReadonlyElement;
     new (): HTMLComboReadonlyElement;
   };
 
-  interface HTMLComboTreeElement extends Components.ComboTree, HTMLStencilElement {}
-  var HTMLComboTreeElement: {
-    prototype: HTMLComboTreeElement;
-    new (): HTMLComboTreeElement;
+  interface HTMLListboxButtonElement extends Components.ListboxButton, HTMLStencilElement {}
+  var HTMLListboxButtonElement: {
+    prototype: HTMLListboxButtonElement;
+    new (): HTMLListboxButtonElement;
   };
 
   interface HTMLElementTagNameMap {
-    'combo-focus': HTMLComboFocusElement
+    'combo-filter': HTMLComboFilterElement
     'combo-native': HTMLComboNativeElement
+    'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
-    'combo-tree': HTMLComboTreeElement
+    'listbox-button': HTMLListboxButtonElement
   }
 
   interface ElementTagNameMap {
-    'combo-focus': HTMLComboFocusElement;
+    'combo-filter': HTMLComboFilterElement;
     'combo-native': HTMLComboNativeElement;
+    'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
-    'combo-tree': HTMLComboTreeElement;
+    'listbox-button': HTMLListboxButtonElement;
   }
 
 

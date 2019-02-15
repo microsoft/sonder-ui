@@ -4,7 +4,7 @@ import { uniqueId } from '../../shared/utils';
 
 @Component({
   tag: 'combo-native',
-  styleUrl: 'combo-native.css',
+  styleUrl: '../../shared/combo-base.css',
   shadow: false
 })
 export class ComboNative {
@@ -43,8 +43,8 @@ export class ComboNative {
     } = this;
 
     return ([
-      <label htmlFor={htmlId}>{label}</label>,
-      <select id={htmlId} onChange={(event: Event) => this.selectHandler((event.target as HTMLSelectElement).value)}>
+      <label htmlFor={htmlId} class="combo-label">{label}</label>,
+      <select id={htmlId} class="combo combo-input" onChange={(event: Event) => this.selectHandler((event.target as HTMLSelectElement).value)}>
         {options.map((option) => <option value={option.value}>{option.name}</option>)}
       </select>
     ]);

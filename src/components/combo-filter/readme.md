@@ -1,6 +1,8 @@
-# Combobox with menu focus
+# Readonly Combobox
 
-A test of a native `<select>` alternative that uses `role="combobox"` with a `<input readonly>` child. When opened, focus moves into the `role="listbox"` menu. The `aria-activedescendant` attribute remains on the input, not the listbox to follow the currently implemented pattern in Ibiza. Basic functionality only, no autocomplete or filtering.
+A test of a native `<select>` alternative that uses `role="combobox"` with a `<input readonly>` child. Basic functionality only, no autocomplete or filtering.
+
+
 
 <!-- Auto Generated Below -->
 

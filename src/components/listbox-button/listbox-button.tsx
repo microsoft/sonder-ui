@@ -3,11 +3,11 @@ import { SelectOption } from '../../shared/interfaces';
 import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
 
 @Component({
-  tag: 'combo-tree',
+  tag: 'listbox-button',
   styleUrl: '../../shared/combo-base.css',
   shadow: false
 })
-export class ComboTree {
+export class ListboxButton {
   /**
    * Array of name/value options
    */
@@ -40,8 +40,11 @@ export class ComboTree {
   // Prevent menu closing before click completed
   private ignoreBlur = false;
 
-  // save reference to input element
-  private inputRef: HTMLInputElement;
+  // save reference to button element
+  private buttonRef: HTMLButtonElement;
+
+  // save reference to button element
+  private listboxRef: HTMLElement;
 
   render() {
     const {
@@ -57,27 +60,34 @@ export class ComboTree {
 
     return ([
       <label id={htmlId} class="combo-label">{label}</label>,
-      <div role="combobox" aria-haspopup="tree" aria-expanded={`${open}`} class={{ combo: true, open }}>
-        <input
-          aria-activedescendant={activeId}
-          aria-labelledby={htmlId}
+      <div class={{ combo: true, open }}>
+        <button
+          aria-expanded={`${open}`}
+          aria-haspopup="listbox"
+          aria-labelledby={`${htmlId} ${htmlId}-button`}
           class="combo-input"
-          readonly
-          ref={(el) => this.inputRef = el}
-          type="text"
-          value={value}
-          onBlur={this.onInputBlur.bind(this)}
+          id={`${htmlId}-button`}
+          ref={(el) => this.buttonRef = el}
+          onBlur={this.onComboBlur.bind(this)}
           onClick={() => this.updateMenuState(true)}
-          onKeyDown={this.onInputKeyDown.bind(this)}
-        />
+          onKeyDown={this.onButtonKeyDown.bind(this)}
+        >{value}</button>
 
-        <div class="combo-menu" role="tree">
+        <div
+          aria-activedescendant={activeId}
+          class="combo-menu"
+          ref={(el) => this.listboxRef = el}
+          role="listbox"
+          tabindex="-1"
+          onBlur={this.onComboBlur.bind(this)}
+          onKeyDown={this.onListboxKeyDown.bind(this)}
+        >
           {options.map((option, i) => {
             return (
               <div
                 class="combo-option"
                 id={`${this.htmlId}-${i}`} aria-selected={this.activeIndex === i ? 'true' : false}
-                role="treeitem"
+                role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}
               >{option.name}</div>
@@ -88,10 +98,31 @@ export class ComboTree {
     ]);
   }
 
-  private onInputKeyDown(event: KeyboardEvent) {
+  private onButtonKeyDown(event: KeyboardEvent) {
+    const { key } = event;
+    const action = getActionFromKey(key, this.open);
+
+    switch(action) {
+      case MenuActions.Close:
+        return this.updateMenuState(false);
+      case MenuActions.Type:
+      case MenuActions.Open:
+        return this.updateMenuState(true);
+    }
+  }
+
+  private onComboBlur() {
+    if (this.ignoreBlur) {
+      this.ignoreBlur = false;
+      return;
+    }
+
+    this.updateMenuState(false, false);
+  }
+
+  private onListboxKeyDown(event: KeyboardEvent) {
     const { key } = event;
     const max = this.options.length - 1;
-
     const action = getActionFromKey(key, this.open);
 
     switch(action) {
@@ -105,19 +136,7 @@ export class ComboTree {
         this.selectOption(this.activeIndex);
       case MenuActions.Close:
         return this.updateMenuState(false);
-      case MenuActions.Type:
-      case MenuActions.Open:
-        return this.updateMenuState(true);
     }
-  }
-
-  private onInputBlur() {
-    if (this.ignoreBlur) {
-      this.ignoreBlur = false;
-      return;
-    }
-
-    this.updateMenuState(false, false);
   }
 
   private onOptionChange(index: number) {
@@ -142,6 +161,12 @@ export class ComboTree {
 
   private updateMenuState(open: boolean, callFocus = true) {
     this.open = open;
-    callFocus && this.inputRef.focus();
+    if (callFocus) {
+      const focusEl = open ? this.listboxRef : this.buttonRef;
+      setTimeout(() => {
+        this.ignoreBlur = true;
+        focusEl.focus();
+      }, 20);
+    }
   }
 }

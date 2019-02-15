@@ -13,17 +13,33 @@
   </style>
 </head>
 <body>
+  <h1>Readonly Single-Selects</h1>
 
-  <combo-native label="Select a state (native)" class="state-select"></combo-native>
+  <combo-native label="Select a state (native)" class="fruit-select"></combo-native>
 
-  <combo-readonly label="Select a state (readonly)" class="state-select"></combo-readonly>
+  <combo-readonly label="Select a state (readonly)" class="fruit-select"></combo-readonly>
 
-  <combo-tree label="Select a state (tree)" class="state-select"></combo-tree>
+  <combo-noinput label="Select a state (no input)" class="fruit-select"></combo-noinput>
 
-  <script type="text/javascript">
-    const states = [{ name: 'California', value: 'CA' }, { name: 'Massachusetts', value: 'MA' }, { name: 'Texas', value: 'TX' }, { name: 'Washington', value: 'WA' }];
-    const comboEls = document.querySelectorAll('.state-select');
-    comboEls.forEach((combo) => {
+  <listbox-button label="Select a state (button listbox)" class="fruit-select"></listbox-button>
+
+  <h1>Editable Single-Selects</h1>
+  <combo-filter label="Select a state (filterable)" class="state-select"></combo-filter>
+
+  <script type="module">
+    import { states } from './assets/stateData.js';
+
+    const fruits = [{ name: 'Apple', value: 'apple' }, { name: 'Banana', value: 'banana' }, { name: 'Clementine', value: 'clementine' }, { name: 'Durian', value: 'durian' }];
+    const fruitCombos = document.querySelectorAll('.fruit-select');
+    fruitCombos.forEach((combo) => {
+      combo.options = fruits;
+      combo.addEventListener('select', (option) => {
+        console.log('selected fruit:', option.value);
+      });
+    });
+    
+    const stateCombos = document.querySelectorAll('.state-select');
+    stateCombos.forEach((combo) => {
       combo.options = states;
       combo.addEventListener('select', (option) => {
         console.log('selected state:', option.value);
