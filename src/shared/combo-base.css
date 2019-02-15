@@ -1,7 +1,13 @@
-*, *::before, *::after {
-  box-sizing: border-box;
+body {
   font-family: "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
+  line-height: 1.4em;
+  margin: 0;
+  padding: 2em;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 .combo {
@@ -28,6 +34,7 @@
   border: 1px solid rgba(0,0,0,.42);
   border-radius: 4px;
   display: block;
+  min-height: calc(1.4em + 26px);
   padding: 12px 16px 14px;
   text-align: left;
   width: 100%;
