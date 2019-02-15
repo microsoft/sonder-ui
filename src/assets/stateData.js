@@ -1,4 +1,4 @@
-export default states = [
+export const states = [
   {
     name: "Alabama",
     value: "AL"

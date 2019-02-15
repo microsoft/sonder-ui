@@ -32,8 +32,10 @@
 
     const fruits = [{ name: 'Apple', value: 'apple' }, { name: 'Banana', value: 'banana' }, { name: 'Clementine', value: 'clementine' }, { name: 'Durian', value: 'durian' }];
     const fruitCombos = document.querySelectorAll('.fruit-select');
+    console.log('fruit combos:', fruitCombos);
     fruitCombos.forEach((combo) => {
       combo.options = fruits;
+      console.log('setting', combo, 'options to', fruits);
       combo.addEventListener('select', (option) => {
         console.log('selected fruit:', option.value);
       });
