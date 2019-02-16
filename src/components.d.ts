@@ -65,6 +65,31 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
+  interface ComboNofilter {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface ComboNofilterAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
   interface ComboNoinput {
     /**
     * String label
@@ -145,6 +170,7 @@ declare global {
   interface StencilElementInterfaces {
     'ComboFilter': Components.ComboFilter;
     'ComboNative': Components.ComboNative;
+    'ComboNofilter': Components.ComboNofilter;
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
     'ListboxButton': Components.ListboxButton;
@@ -153,6 +179,7 @@ declare global {
   interface StencilIntrinsicElements {
     'combo-filter': Components.ComboFilterAttributes;
     'combo-native': Components.ComboNativeAttributes;
+    'combo-nofilter': Components.ComboNofilterAttributes;
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
@@ -169,6 +196,12 @@ declare global {
   var HTMLComboNativeElement: {
     prototype: HTMLComboNativeElement;
     new (): HTMLComboNativeElement;
+  };
+
+  interface HTMLComboNofilterElement extends Components.ComboNofilter, HTMLStencilElement {}
+  var HTMLComboNofilterElement: {
+    prototype: HTMLComboNofilterElement;
+    new (): HTMLComboNofilterElement;
   };
 
   interface HTMLComboNoinputElement extends Components.ComboNoinput, HTMLStencilElement {}
@@ -192,6 +225,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'combo-filter': HTMLComboFilterElement
     'combo-native': HTMLComboNativeElement
+    'combo-nofilter': HTMLComboNofilterElement
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
     'listbox-button': HTMLListboxButtonElement
@@ -200,6 +234,7 @@ declare global {
   interface ElementTagNameMap {
     'combo-filter': HTMLComboFilterElement;
     'combo-native': HTMLComboNativeElement;
+    'combo-nofilter': HTMLComboNofilterElement;
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
     'listbox-button': HTMLListboxButtonElement;
