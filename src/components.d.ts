@@ -15,6 +15,31 @@ import {
 
 export namespace Components {
 
+  interface ComboAutoselect {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface ComboAutoselectAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
   interface ComboFilter {
     /**
     * String label
@@ -168,6 +193,7 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
+    'ComboAutoselect': Components.ComboAutoselect;
     'ComboFilter': Components.ComboFilter;
     'ComboNative': Components.ComboNative;
     'ComboNofilter': Components.ComboNofilter;
@@ -177,6 +203,7 @@ declare global {
   }
 
   interface StencilIntrinsicElements {
+    'combo-autoselect': Components.ComboAutoselectAttributes;
     'combo-filter': Components.ComboFilterAttributes;
     'combo-native': Components.ComboNativeAttributes;
     'combo-nofilter': Components.ComboNofilterAttributes;
@@ -185,6 +212,12 @@ declare global {
     'listbox-button': Components.ListboxButtonAttributes;
   }
 
+
+  interface HTMLComboAutoselectElement extends Components.ComboAutoselect, HTMLStencilElement {}
+  var HTMLComboAutoselectElement: {
+    prototype: HTMLComboAutoselectElement;
+    new (): HTMLComboAutoselectElement;
+  };
 
   interface HTMLComboFilterElement extends Components.ComboFilter, HTMLStencilElement {}
   var HTMLComboFilterElement: {
@@ -223,6 +256,7 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'combo-autoselect': HTMLComboAutoselectElement
     'combo-filter': HTMLComboFilterElement
     'combo-native': HTMLComboNativeElement
     'combo-nofilter': HTMLComboNofilterElement
@@ -232,6 +266,7 @@ declare global {
   }
 
   interface ElementTagNameMap {
+    'combo-autoselect': HTMLComboAutoselectElement;
     'combo-filter': HTMLComboFilterElement;
     'combo-native': HTMLComboNativeElement;
     'combo-nofilter': HTMLComboNofilterElement;

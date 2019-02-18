@@ -31,6 +31,9 @@ export class ComboNoFilter {
   // Menu state
   @State() open = false;
 
+  // Selected option index
+  @State() selectedIndex: number;
+
   // input value
   @State() value = '';
 
@@ -60,6 +63,7 @@ export class ComboNoFilter {
       <div role="combobox" aria-haspopup="listbox" aria-expanded={`${open}`} class={{ combo: true, open }}>
         <input
           aria-activedescendant={activeId}
+          aria-autocomplete="none"
           aria-labelledby={htmlId}
           class="combo-input"
           ref={(el) => this.inputRef = el}
@@ -75,8 +79,9 @@ export class ComboNoFilter {
           {options.map((option, i) => {
             return (
               <div
-                class="combo-option"
-                id={`${this.htmlId}-${i}`} aria-selected={this.activeIndex === i ? 'true' : false}
+                class={{ 'option-selected': this.activeIndex === i, 'combo-option': true }}
+                id={`${this.htmlId}-${i}`}
+                aria-selected={this.selectedIndex === i ? 'true' : false}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}
@@ -98,6 +103,7 @@ export class ComboNoFilter {
     }
 
     this.value = curValue;
+    this.selectedIndex = null;
     this.updateMenuState(true, false);
   }
 
@@ -149,6 +155,7 @@ export class ComboNoFilter {
   private selectOption(index: number) {
     const selected = this.options[index];
     this.value = selected.name;
+    this.selectedIndex = index;
     this.options = filterOptions(this.options, this.value);
     this.selectEvent.emit(selected);
   }

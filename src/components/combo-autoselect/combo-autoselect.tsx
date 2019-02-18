@@ -1,13 +1,13 @@
-import { Component, Event, EventEmitter, Prop, State } from '@stencil/core';
+import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
+import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
 
 @Component({
-  tag: 'listbox-button',
+  tag: 'combo-autoselect',
   styleUrl: '../../shared/combo-base.css',
   shadow: false
 })
-export class ListboxButton {
+export class ComboAutoselect {
   /**
    * Array of name/value options
    */
@@ -28,11 +28,11 @@ export class ListboxButton {
   // Active option index
   @State() activeIndex = 0;
 
+  // Filtered options
+  @State() filteredOptions: SelectOption[];
+
   // Menu state
   @State() open = false;
-
-  // Selected option index
-  @State() selectedIndex: number;
 
   // input value
   @State() value = '';
@@ -43,11 +43,13 @@ export class ListboxButton {
   // Prevent menu closing before click completed
   private ignoreBlur = false;
 
-  // save reference to button element
-  private buttonRef: HTMLButtonElement;
+  // save reference to input element
+  private inputRef: HTMLInputElement;
 
-  // save reference to button element
-  private listboxRef: HTMLElement;
+  @Watch('options')
+  watchOptions(newValue: SelectOption[]) {
+    this.filteredOptions = filterOptions(newValue, this.value);
+  }
 
   render() {
     const {
@@ -55,7 +57,7 @@ export class ListboxButton {
       htmlId,
       label = '',
       open = false,
-      options = [],
+      filteredOptions = [],
       value
     } = this;
 
@@ -63,34 +65,28 @@ export class ListboxButton {
 
     return ([
       <label id={htmlId} class="combo-label">{label}</label>,
-      <div class={{ combo: true, open }}>
-        <button
-          aria-expanded={`${open}`}
-          aria-haspopup="listbox"
-          aria-labelledby={`${htmlId} ${htmlId}-button`}
-          class="combo-input"
-          id={`${htmlId}-button`}
-          ref={(el) => this.buttonRef = el}
-          onBlur={this.onComboBlur.bind(this)}
-          onClick={() => this.updateMenuState(true)}
-          onKeyDown={this.onButtonKeyDown.bind(this)}
-        >{value}</button>
-
-        <div
+      <div role="combobox" aria-haspopup="listbox" aria-expanded={`${open}`} class={{ combo: true, open }}>
+        <input
           aria-activedescendant={activeId}
-          class="combo-menu"
-          ref={(el) => this.listboxRef = el}
-          role="listbox"
-          tabindex="-1"
-          onBlur={this.onComboBlur.bind(this)}
-          onKeyDown={this.onListboxKeyDown.bind(this)}
-        >
-          {options.map((option, i) => {
+          aria-autocomplete="list"
+          aria-labelledby={htmlId}
+          class="combo-input"
+          ref={(el) => this.inputRef = el}
+          type="text"
+          value={value}
+          onBlur={this.onInputBlur.bind(this)}
+          onClick={() => this.updateMenuState(true)}
+          onInput={this.onInput.bind(this)}
+          onKeyDown={this.onInputKeyDown.bind(this)}
+        />
+
+        <div class="combo-menu" role="listbox">
+          {filteredOptions.map((option, i) => {
             return (
               <div
                 class={{ 'option-selected': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
-                aria-selected={this.selectedIndex === i ? 'true' : false}
+                aria-selected={this.activeIndex === i ? 'true' : false}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}
@@ -102,31 +98,25 @@ export class ListboxButton {
     ]);
   }
 
-  private onButtonKeyDown(event: KeyboardEvent) {
-    const { key } = event;
-    const action = getActionFromKey(key, this.open);
+  private onInput() {
+    const curValue = this.inputRef.value;
+    this.filteredOptions = [...filterOptions(this.options, curValue)];
 
-    switch(action) {
-      case MenuActions.Close:
-        return this.updateMenuState(false);
-      case MenuActions.Type:
-      case MenuActions.Open:
-        return this.updateMenuState(true);
+    if (this.value !== curValue) {
+      this.value = curValue;
+      this.activeIndex = 0;
+    }
+
+    const menuState = this.filteredOptions.length > 0;
+    if (this.open !== menuState) {
+      this.updateMenuState(menuState, false);
     }
   }
 
-  private onComboBlur() {
-    if (this.ignoreBlur) {
-      this.ignoreBlur = false;
-      return;
-    }
-
-    this.updateMenuState(false, false);
-  }
-
-  private onListboxKeyDown(event: KeyboardEvent) {
+  private onInputKeyDown(event: KeyboardEvent) {
     const { key } = event;
-    const max = this.options.length - 1;
+    const max = this.filteredOptions.length - 1;
+
     const action = getActionFromKey(key, this.open);
 
     switch(action) {
@@ -138,8 +128,25 @@ export class ListboxButton {
         return this.onOptionChange(getUpdatedIndex(this.activeIndex, max, action));
       case MenuActions.CloseSelect:
         this.selectOption(this.activeIndex);
-      case MenuActions.Close:
         return this.updateMenuState(false);
+      case MenuActions.Close:
+        this.activeIndex = 0;
+        this.value = '';
+        return this.updateMenuState(false);
+      case MenuActions.Open:
+        return this.updateMenuState(true);
+    }
+  }
+
+  private onInputBlur() {
+    if (this.ignoreBlur) {
+      this.ignoreBlur = false;
+      return;
+    }
+
+    if (this.open) {
+      this.selectOption(this.activeIndex);
+      this.updateMenuState(false, false);
     }
   }
 
@@ -158,20 +165,15 @@ export class ListboxButton {
   }
 
   private selectOption(index: number) {
-    const selected = this.options[index];
+    const selected = this.filteredOptions[index];
     this.value = selected.name;
-    this.selectedIndex = index;
+    this.filteredOptions = filterOptions(this.options, this.value);
+    this.activeIndex = 0;
     this.selectEvent.emit(selected);
   }
 
   private updateMenuState(open: boolean, callFocus = true) {
     this.open = open;
-    if (callFocus) {
-      const focusEl = open ? this.listboxRef : this.buttonRef;
-      setTimeout(() => {
-        this.ignoreBlur = true;
-        focusEl.focus();
-      }, 20);
-    }
+    callFocus && this.inputRef.focus();
   }
 }
