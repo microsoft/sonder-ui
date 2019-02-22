@@ -15,6 +15,31 @@ import {
 
 export namespace Components {
 
+  interface ComboAutocomplete {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface ComboAutocompleteAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
   interface ComboAutoselect {
     /**
     * String label
@@ -189,10 +214,36 @@ export namespace Components {
     */
     'options'?: SelectOption[];
   }
+
+  interface MultiselectCsv {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface MultiselectCsvAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
 }
 
 declare global {
   interface StencilElementInterfaces {
+    'ComboAutocomplete': Components.ComboAutocomplete;
     'ComboAutoselect': Components.ComboAutoselect;
     'ComboFilter': Components.ComboFilter;
     'ComboNative': Components.ComboNative;
@@ -200,9 +251,11 @@ declare global {
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
     'ListboxButton': Components.ListboxButton;
+    'MultiselectCsv': Components.MultiselectCsv;
   }
 
   interface StencilIntrinsicElements {
+    'combo-autocomplete': Components.ComboAutocompleteAttributes;
     'combo-autoselect': Components.ComboAutoselectAttributes;
     'combo-filter': Components.ComboFilterAttributes;
     'combo-native': Components.ComboNativeAttributes;
@@ -210,8 +263,15 @@ declare global {
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
+    'multiselect-csv': Components.MultiselectCsvAttributes;
   }
 
+
+  interface HTMLComboAutocompleteElement extends Components.ComboAutocomplete, HTMLStencilElement {}
+  var HTMLComboAutocompleteElement: {
+    prototype: HTMLComboAutocompleteElement;
+    new (): HTMLComboAutocompleteElement;
+  };
 
   interface HTMLComboAutoselectElement extends Components.ComboAutoselect, HTMLStencilElement {}
   var HTMLComboAutoselectElement: {
@@ -255,7 +315,14 @@ declare global {
     new (): HTMLListboxButtonElement;
   };
 
+  interface HTMLMultiselectCsvElement extends Components.MultiselectCsv, HTMLStencilElement {}
+  var HTMLMultiselectCsvElement: {
+    prototype: HTMLMultiselectCsvElement;
+    new (): HTMLMultiselectCsvElement;
+  };
+
   interface HTMLElementTagNameMap {
+    'combo-autocomplete': HTMLComboAutocompleteElement
     'combo-autoselect': HTMLComboAutoselectElement
     'combo-filter': HTMLComboFilterElement
     'combo-native': HTMLComboNativeElement
@@ -263,9 +330,11 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
     'listbox-button': HTMLListboxButtonElement
+    'multiselect-csv': HTMLMultiselectCsvElement
   }
 
   interface ElementTagNameMap {
+    'combo-autocomplete': HTMLComboAutocompleteElement;
     'combo-autoselect': HTMLComboAutoselectElement;
     'combo-filter': HTMLComboFilterElement;
     'combo-native': HTMLComboNativeElement;
@@ -273,6 +342,7 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
     'listbox-button': HTMLListboxButtonElement;
+    'multiselect-csv': HTMLMultiselectCsvElement;
   }
 
 

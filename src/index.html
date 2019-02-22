@@ -31,23 +31,24 @@
 
   <combo-autoselect label="Select a state (autoselect active option)" class="state-select"></combo-autoselect>
 
-  <p>TODO: autocomplete</p>
+  <combo-autocomplete label="Select a state (inline autocomplete)" class="state-select"></combo-autocomplete>
 
   <h1>Multiselect</h1>
 
+  <multiselect-csv label="State Multiselect (comma separated value)" class="state-select"></multiselect-csv>
+
   <p>TODO: multiselect with pill buttons</p>
 
-  <p>TODO: multiselect with comma-separated input value</p>
+  <p>TODO: menu button/checkboxes</p>
 
   <script type="module">
     import { states } from './assets/stateData.js';
+    import { countries } from './assets/countryData.js';
 
     const fruits = [{ name: 'Apple', value: 'apple' }, { name: 'Banana', value: 'banana' }, { name: 'Clementine', value: 'clementine' }, { name: 'Durian', value: 'durian' }];
     const fruitCombos = document.querySelectorAll('.fruit-select');
-    console.log('fruit combos:', fruitCombos);
     fruitCombos.forEach((combo) => {
       combo.options = fruits;
-      console.log('setting', combo, 'options to', fruits);
       combo.addEventListener('select', (option) => {
         console.log('selected fruit:', option.value);
       });
@@ -58,6 +59,14 @@
       combo.options = states;
       combo.addEventListener('select', (option) => {
         console.log('selected state:', option.value);
+      });
+    });
+
+    const multiselectCombos = document.querySelectorAll('.multi-select');
+    multiselectCombos.forEach((combo) => {
+      combo.options = countries;
+      combo.addEventListener('select', (option) => {
+        console.log('selected country:', option.value);
       });
     });
   </script>

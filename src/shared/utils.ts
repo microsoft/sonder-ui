@@ -31,8 +31,22 @@ export enum MenuActions {
 
 // filter an array of options against an input string
 // returns an array of options that begin with the filter string, case-independent
-export function filterOptions(options: SelectOption[], filter: string) {
-  return options.filter((option) => option.name.toLowerCase().indexOf(filter.trim().toLowerCase()) === 0);
+export function filterOptions(options: SelectOption[], filter: string, exclude: SelectOption[] = []): SelectOption[] {
+  return options.filter((option) => {
+    const matches = option.name.toLowerCase().indexOf(filter.toLowerCase()) === 0;
+    return matches && exclude.indexOf(option) < 0;
+  });
+}
+
+// return an array of exact option name matches from a comma-separated string
+export function findMatches(options: SelectOption[], search: string): SelectOption[] {
+  const names = search.split(',');
+  return options
+    .map((option) => {
+      const match = names.filter((name) => name.trim().toLowerCase() === option.name.toLowerCase());
+      return match.length > 0 ? option : null;
+    })
+    .filter((option) => option !== null);
 }
 
 // return combobox action from key press

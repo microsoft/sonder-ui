@@ -3,11 +3,11 @@ import { SelectOption } from '../../shared/interfaces';
 import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
 
 @Component({
-  tag: 'combo-autoselect',
+  tag: 'combo-autocomplete',
   styleUrl: '../../shared/combo-base.css',
   shadow: false
 })
-export class ComboAutoselect {
+export class ComboAutocomplete {
   /**
    * Array of name/value options
    */
@@ -46,9 +46,23 @@ export class ComboAutoselect {
   // save reference to input element
   private inputRef: HTMLInputElement;
 
+  // allow triggering text selection after render
+  private shouldSelect: false | [number, number] = false;
+
+  // keep track of typed vs. autocompleted value
+  private typedValue = '';
+
   @Watch('options')
   watchOptions(newValue: SelectOption[]) {
     this.filteredOptions = filterOptions(newValue, this.value);
+  }
+
+  componentDidUpdate() {
+    if (this.shouldSelect !== false) {
+      const [ start, end ] = this.shouldSelect;
+      this.shouldSelect = false;
+      this.inputRef.setSelectionRange(start, end);
+    }
   }
 
   render() {
@@ -68,7 +82,7 @@ export class ComboAutoselect {
       <div role="combobox" aria-haspopup="listbox" aria-expanded={`${open}`} class={{ combo: true, open }}>
         <input
           aria-activedescendant={activeId}
-          aria-autocomplete="list"
+          aria-autocomplete="both"
           aria-labelledby={htmlId}
           class="combo-input"
           ref={(el) => this.inputRef = el}
@@ -101,13 +115,18 @@ export class ComboAutoselect {
   private onInput() {
     const curValue = this.inputRef.value;
     this.filteredOptions = [...filterOptions(this.options, curValue)];
+    this.value = curValue;
+    const isDeleting = this.typedValue.toLowerCase().indexOf(curValue.toLowerCase()) === 0;
 
-    if (this.value !== curValue) {
-      this.value = curValue;
-      this.activeIndex = 0;
+    if (this.filteredOptions.length > 0 && !isDeleting && curValue.trim() !== '') {
+      const activeName = this.filteredOptions[0].name;
+      this.value = activeName;
+      this.shouldSelect = [curValue.length, activeName.length];
     }
 
     const menuState = this.filteredOptions.length > 0;
+    this.activeIndex = 0;
+    this.typedValue = curValue;
     if (this.open !== menuState) {
       this.updateMenuState(menuState, false);
     }
@@ -145,6 +164,7 @@ export class ComboAutoselect {
       return;
     }
 
+    this.typedValue = '';
     if (this.open) {
       this.selectOption(this.activeIndex);
       this.updateMenuState(false, false);
@@ -153,6 +173,7 @@ export class ComboAutoselect {
 
   private onOptionChange(index: number) {
     this.activeIndex = index;
+    this.value = this.filteredOptions[index].name;
   }
 
   private onOptionClick(index: number) {
@@ -170,6 +191,7 @@ export class ComboAutoselect {
     this.value = selected.name;
     this.filteredOptions = filterOptions(this.options, this.value);
     this.activeIndex = 0;
+    this.typedValue = '';
     this.selectEvent.emit(selected);
   }
 

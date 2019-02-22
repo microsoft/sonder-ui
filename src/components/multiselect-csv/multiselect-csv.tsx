@@ -1,13 +1,13 @@
 import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
+import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions, findMatches } from '../../shared/utils';
 
 @Component({
-  tag: 'combo-autoselect',
+  tag: 'multiselect-csv',
   styleUrl: '../../shared/combo-base.css',
   shadow: false
 })
-export class ComboAutoselect {
+export class MultiselectCSV {
   /**
    * Array of name/value options
    */
@@ -31,8 +31,11 @@ export class ComboAutoselect {
   // Filtered options
   @State() filteredOptions: SelectOption[];
 
-  // Menu state
+  // Menu state 
   @State() open = false;
+
+  // Selected option index
+  @State() selectedOptions: SelectOption[];
 
   // input value
   @State() value = '';
@@ -45,6 +48,9 @@ export class ComboAutoselect {
 
   // save reference to input element
   private inputRef: HTMLInputElement;
+
+  // save current string of selected options
+  private optionString: string;
 
   @Watch('options')
   watchOptions(newValue: SelectOption[]) {
@@ -80,13 +86,13 @@ export class ComboAutoselect {
           onKeyDown={this.onInputKeyDown.bind(this)}
         />
 
-        <div class="combo-menu" role="listbox">
+        <div class="combo-menu" role="listbox" aria-multiselectable="true">
           {filteredOptions.map((option, i) => {
             return (
               <div
                 class={{ 'option-selected': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
-                aria-selected={this.activeIndex === i ? 'true' : false}
+                aria-selected={this.selectedOptions.indexOf(option) > -1 ? 'true' : false}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}
@@ -98,13 +104,27 @@ export class ComboAutoselect {
     ]);
   }
 
-  private onInput() {
-    const curValue = this.inputRef.value;
-    this.filteredOptions = [...filterOptions(this.options, curValue)];
+  private updateSelectedOptions(options: SelectOption[], searchString?: string) {
+    this.selectedOptions = options;
+    const optionNames = this.selectedOptions.map((option) => option.name);
+    this.optionString = optionNames.join(', ');
+    this.value = searchString ? [...optionNames, searchString].join(', ') : this.optionString;
+  }
 
-    if (this.value !== curValue) {
-      this.value = curValue;
-      this.activeIndex = 0;
+  private onInput() {
+    const inputValue = this.inputRef.value;
+    const optionValues = inputValue.split(',');
+    const currentSearch = optionValues.pop().replace(/^\s+/, '');
+    const optionString = optionValues.map((name) => name.trim()).join(', ');
+
+    this.filteredOptions = [...filterOptions(this.options, currentSearch.trim(), this.selectedOptions)];
+    this.activeIndex = 0;
+
+    if (optionString !== this.optionString) {
+      this.updateSelectedOptions(findMatches(this.options, optionString), currentSearch);
+    }
+    else {
+      this.value = inputValue;
     }
 
     const menuState = this.filteredOptions.length > 0;
@@ -127,12 +147,8 @@ export class ComboAutoselect {
         event.preventDefault();
         return this.onOptionChange(getUpdatedIndex(this.activeIndex, max, action));
       case MenuActions.CloseSelect:
-        this.selectOption(this.activeIndex);
-        return this.updateMenuState(false);
+        return this.updateOption(this.activeIndex);
       case MenuActions.Close:
-        this.activeIndex = 0;
-        this.value = '';
-        this.filteredOptions = this.options;
         return this.updateMenuState(false);
       case MenuActions.Open:
         return this.updateMenuState(true);
@@ -145,10 +161,7 @@ export class ComboAutoselect {
       return;
     }
 
-    if (this.open) {
-      this.selectOption(this.activeIndex);
-      this.updateMenuState(false, false);
-    }
+    this.updateMenuState(false, false);
   }
 
   private onOptionChange(index: number) {
@@ -157,7 +170,7 @@ export class ComboAutoselect {
 
   private onOptionClick(index: number) {
     this.onOptionChange(index);
-    this.selectOption(index);
+    this.updateOption(index);
     this.updateMenuState(false);
   }
 
@@ -165,12 +178,21 @@ export class ComboAutoselect {
     this.ignoreBlur = true;
   }
 
-  private selectOption(index: number) {
-    const selected = this.filteredOptions[index];
-    this.value = selected.name;
-    this.filteredOptions = filterOptions(this.options, this.value);
-    this.activeIndex = 0;
-    this.selectEvent.emit(selected);
+  private updateOption(index: number) {
+    const option = this.filteredOptions[index];
+    const optionIndex = this.selectedOptions.indexOf(option);
+    const isSelected = optionIndex > -1;
+
+    if (isSelected) {
+      this.updateSelectedOptions(this.selectedOptions.splice(optionIndex, 1));
+    }
+
+    else {
+      this.updateSelectedOptions([...this.selectedOptions, option]);
+      this.filteredOptions = this.options;
+      this.activeIndex = 0;
+      this.selectEvent.emit(option);
+    }
   }
 
   private updateMenuState(open: boolean, callFocus = true) {
