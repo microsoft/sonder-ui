@@ -77,7 +77,7 @@ export class ComboNoInput {
           {options.map((option, i) => {
             return (
               <div
-                class={{ 'option-selected': this.activeIndex === i, 'combo-option': true }}
+                class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={this.selectedIndex === i ? 'true' : false}
                 role="option"

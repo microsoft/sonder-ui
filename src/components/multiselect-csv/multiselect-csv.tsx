@@ -40,6 +40,9 @@ export class MultiselectCSV {
   // input value
   @State() value = '';
 
+  // Flag to set focus on next render completion
+  private callFocus = false;
+
   // Unique ID that should really use a UUID library instead
   private htmlId = uniqueId();
 
@@ -49,12 +52,16 @@ export class MultiselectCSV {
   // save reference to input element
   private inputRef: HTMLInputElement;
 
-  // save current string of selected options
-  private optionString: string;
-
   @Watch('options')
   watchOptions(newValue: SelectOption[]) {
     this.filteredOptions = filterOptions(newValue, this.value);
+  }
+
+  componentDidUpdate() {
+    if (this.callFocus === true) {
+      this.inputRef.focus();
+      this.callFocus = false;
+    }
   }
 
   render() {
@@ -90,7 +97,11 @@ export class MultiselectCSV {
           {filteredOptions.map((option, i) => {
             return (
               <div
-                class={{ 'option-selected': this.activeIndex === i, 'combo-option': true }}
+                class={{
+                  'option-current': this.activeIndex === i,
+                  'option-selected': this.selectedOptions.indexOf(option) > -1,
+                  'combo-option': true
+                }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={this.selectedOptions.indexOf(option) > -1 ? 'true' : false}
                 role="option"
@@ -104,28 +115,14 @@ export class MultiselectCSV {
     ]);
   }
 
-  private updateSelectedOptions(options: SelectOption[], searchString?: string) {
-    this.selectedOptions = options;
-    const optionNames = this.selectedOptions.map((option) => option.name);
-    this.optionString = optionNames.join(', ');
-    this.value = searchString ? [...optionNames, searchString].join(', ') : this.optionString;
-  }
-
   private onInput() {
     const inputValue = this.inputRef.value;
-    const optionValues = inputValue.split(',');
-    const currentSearch = optionValues.pop().replace(/^\s+/, '');
-    const optionString = optionValues.map((name) => name.trim()).join(', ');
+    const currentSearch = inputValue.split(',').pop().replace(/^\s+/, '');
 
-    this.filteredOptions = [...filterOptions(this.options, currentSearch.trim(), this.selectedOptions)];
+    this.selectedOptions = findMatches(this.options, inputValue);
+    this.filteredOptions = [...filterOptions(this.options, currentSearch, this.selectedOptions)];
     this.activeIndex = 0;
-
-    if (optionString !== this.optionString) {
-      this.updateSelectedOptions(findMatches(this.options, optionString), currentSearch);
-    }
-    else {
-      this.value = inputValue;
-    }
+    this.value = inputValue;
 
     const menuState = this.filteredOptions.length > 0;
     if (this.open !== menuState) {
@@ -161,6 +158,7 @@ export class MultiselectCSV {
       return;
     }
 
+    this.processInputString(this.inputRef.value);
     this.updateMenuState(false, false);
   }
 
@@ -171,11 +169,16 @@ export class MultiselectCSV {
   private onOptionClick(index: number) {
     this.onOptionChange(index);
     this.updateOption(index);
-    this.updateMenuState(false);
   }
 
   private onOptionMouseDown() {
     this.ignoreBlur = true;
+    this.callFocus = true;
+  }
+
+  private processInputString(inputString: string) {
+    const options = findMatches(this.options, inputString);
+    this.updateSelectedOptions(options);
   }
 
   private updateOption(index: number) {
@@ -190,13 +193,19 @@ export class MultiselectCSV {
     else {
       this.updateSelectedOptions([...this.selectedOptions, option]);
       this.filteredOptions = this.options;
-      this.activeIndex = 0;
+      this.activeIndex = this.filteredOptions.indexOf(option);
       this.selectEvent.emit(option);
     }
   }
 
   private updateMenuState(open: boolean, callFocus = true) {
     this.open = open;
-    callFocus && this.inputRef.focus();
+    this.callFocus = callFocus;
+  }
+
+  private updateSelectedOptions(options: SelectOption[]) {
+    this.selectedOptions = options;
+    this.value = this.selectedOptions.map((option) => option.name).join(', ');
+    this.filteredOptions = this.options;
   }
 }

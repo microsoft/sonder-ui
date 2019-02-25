@@ -3,11 +3,11 @@ import { SelectOption } from '../../shared/interfaces';
 import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
 
 @Component({
-  tag: 'combo-filter',
+  tag: 'multiselect-buttons',
   styleUrl: '../../shared/combo-base.css',
   shadow: false
 })
-export class ComboFilter {
+export class MultiselectButtons {
   /**
    * Array of name/value options
    */
@@ -31,11 +31,11 @@ export class ComboFilter {
   // Filtered options
   @State() filteredOptions: SelectOption[];
 
-  // Menu state
+  // Menu state 
   @State() open = false;
 
   // Selected option index
-  @State() selectedIndex: number;
+  @State() selectedOptions: SelectOption[];
 
   // input value
   @State() value = '';
@@ -79,17 +79,16 @@ export class ComboFilter {
           value={value}
           onBlur={this.onInputBlur.bind(this)}
           onClick={() => this.updateMenuState(true)}
-          onInput={this.onInput.bind(this)}
           onKeyDown={this.onInputKeyDown.bind(this)}
         />
 
-        <div class="combo-menu" role="listbox">
+        <div class="combo-menu" role="listbox" aria-multiselectable="true">
           {filteredOptions.map((option, i) => {
             return (
               <div
                 class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
-                aria-selected={this.selectedIndex === i ? 'true' : false}
+                aria-selected={this.selectedOptions.indexOf(option) > -1 ? 'true' : false}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}
@@ -99,22 +98,6 @@ export class ComboFilter {
         </div>
       </div>
     ]);
-  }
-
-  private onInput() {
-    const curValue = this.inputRef.value;
-    this.filteredOptions = [...filterOptions(this.options, curValue)];
-
-    if (this.value !== curValue) {
-      this.value = curValue;
-      this.activeIndex = 0;
-      this.selectedIndex = null;
-    }
-
-    const menuState = this.filteredOptions.length > 0;
-    if (this.open !== menuState) {
-      this.updateMenuState(menuState, false);
-    }
   }
 
   private onInputKeyDown(event: KeyboardEvent) {
@@ -131,9 +114,11 @@ export class ComboFilter {
         event.preventDefault();
         return this.onOptionChange(getUpdatedIndex(this.activeIndex, max, action));
       case MenuActions.CloseSelect:
-        this.selectOption(this.activeIndex);
+        return this.selectOption(this.activeIndex);
       case MenuActions.Close:
         return this.updateMenuState(false);
+      case MenuActions.Type:
+        this.value = this.inputRef.value;
       case MenuActions.Open:
         return this.updateMenuState(true);
     }
@@ -163,11 +148,9 @@ export class ComboFilter {
   }
 
   private selectOption(index: number) {
-    const selected = this.filteredOptions[index];
-    this.value = selected.name;
-    this.filteredOptions = filterOptions(this.options, this.value);
-    this.activeIndex = 0;
-    this.selectedIndex = 0;
+    const selected = this.options[index];
+    this.value = '';
+    this.selectedOptions = [ ...this.selectedOptions, selected];
     this.selectEvent.emit(selected);
   }
 

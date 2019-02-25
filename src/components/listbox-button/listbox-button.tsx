@@ -37,6 +37,9 @@ export class ListboxButton {
   // input value
   @State() value = '';
 
+  // Flag to set focus on next render completion
+  private callFocus = false;
+
   // Unique ID that should really use a UUID library instead
   private htmlId = uniqueId();
 
@@ -48,6 +51,14 @@ export class ListboxButton {
 
   // save reference to button element
   private listboxRef: HTMLElement;
+
+  componentDidUpdate() {
+    if (this.callFocus === true) {
+      const focusEl = this.open ? this.listboxRef : this.buttonRef;
+      focusEl.focus();
+      this.callFocus = false;
+    }
+  }
 
   render() {
     const {
@@ -88,7 +99,7 @@ export class ListboxButton {
           {options.map((option, i) => {
             return (
               <div
-                class={{ 'option-selected': this.activeIndex === i, 'combo-option': true }}
+                class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={this.selectedIndex === i ? 'true' : false}
                 role="option"
@@ -166,12 +177,7 @@ export class ListboxButton {
 
   private updateMenuState(open: boolean, callFocus = true) {
     this.open = open;
-    if (callFocus) {
-      const focusEl = open ? this.listboxRef : this.buttonRef;
-      setTimeout(() => {
-        this.ignoreBlur = true;
-        focusEl.focus();
-      }, 20);
-    }
+    this.callFocus = callFocus;
+    this.ignoreBlur = callFocus;
   }
 }

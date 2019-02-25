@@ -98,7 +98,7 @@ export class ComboAutocomplete {
           {filteredOptions.map((option, i) => {
             return (
               <div
-                class={{ 'option-selected': this.activeIndex === i, 'combo-option': true }}
+                class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={this.activeIndex === i ? 'true' : false}
                 role="option"

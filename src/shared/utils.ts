@@ -41,12 +41,11 @@ export function filterOptions(options: SelectOption[], filter: string, exclude: 
 // return an array of exact option name matches from a comma-separated string
 export function findMatches(options: SelectOption[], search: string): SelectOption[] {
   const names = search.split(',');
-  return options
-    .map((option) => {
-      const match = names.filter((name) => name.trim().toLowerCase() === option.name.toLowerCase());
-      return match.length > 0 ? option : null;
-    })
-    .filter((option) => option !== null);
+  return names.map((name) => {
+    const match = options.filter((option) => name.trim().toLowerCase() === option.name.toLowerCase());
+    return match.length > 0 ? match[0] : null;
+  })
+  .filter((option) => option !== null);
 }
 
 // return combobox action from key press

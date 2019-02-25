@@ -215,6 +215,31 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
+  interface MultiselectButtons {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface MultiselectButtonsAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
   interface MultiselectCsv {
     /**
     * String label
@@ -251,6 +276,7 @@ declare global {
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
     'ListboxButton': Components.ListboxButton;
+    'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
   }
 
@@ -263,6 +289,7 @@ declare global {
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
+    'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
   }
 
@@ -315,6 +342,12 @@ declare global {
     new (): HTMLListboxButtonElement;
   };
 
+  interface HTMLMultiselectButtonsElement extends Components.MultiselectButtons, HTMLStencilElement {}
+  var HTMLMultiselectButtonsElement: {
+    prototype: HTMLMultiselectButtonsElement;
+    new (): HTMLMultiselectButtonsElement;
+  };
+
   interface HTMLMultiselectCsvElement extends Components.MultiselectCsv, HTMLStencilElement {}
   var HTMLMultiselectCsvElement: {
     prototype: HTMLMultiselectCsvElement;
@@ -330,6 +363,7 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
     'listbox-button': HTMLListboxButtonElement
+    'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
   }
 
@@ -342,6 +376,7 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
     'listbox-button': HTMLListboxButtonElement;
+    'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;
   }
 
