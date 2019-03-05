@@ -51,6 +51,10 @@ export class ComboAutoselect {
     this.filteredOptions = filterOptions(newValue, this.value);
   }
 
+  componentDidLoad() {
+    this.filteredOptions = filterOptions(this.options, this.value);
+  }
+
   render() {
     const {
       activeIndex,

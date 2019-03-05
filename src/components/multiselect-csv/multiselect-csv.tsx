@@ -57,6 +57,10 @@ export class MultiselectCSV {
     this.filteredOptions = filterOptions(newValue, this.value);
   }
 
+  componentDidLoad() {
+    this.filteredOptions = filterOptions(this.options, this.value);
+  }
+
   componentDidUpdate() {
     if (this.callFocus === true) {
       this.inputRef.focus();
@@ -187,7 +191,8 @@ export class MultiselectCSV {
     const isSelected = optionIndex > -1;
 
     if (isSelected) {
-      this.updateSelectedOptions(this.selectedOptions.splice(optionIndex, 1));
+      this.selectedOptions.splice(optionIndex, 1);
+      this.updateSelectedOptions(this.selectedOptions);
     }
 
     else {

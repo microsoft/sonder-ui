@@ -11,12 +11,14 @@ export class MultiselectButtons {
   /**
    * Array of name/value options
    */
-  @Prop() options: SelectOption[];
+  @Prop() options: SelectOption[] = [];
 
   /**
    * String label
    */
   @Prop() label: string;
+
+  @Prop() test: boolean;
 
   /**
    * Emit a custom select event on value change
@@ -35,10 +37,13 @@ export class MultiselectButtons {
   @State() open = false;
 
   // Selected option index
-  @State() selectedOptions: SelectOption[];
+  @State() selectedOptions: SelectOption[] = [];
 
   // input value
   @State() value = '';
+
+  // Flag to set focus on next render completion
+  private callFocus = false;
 
   // Unique ID that should really use a UUID library instead
   private htmlId = uniqueId();
@@ -54,6 +59,17 @@ export class MultiselectButtons {
     this.filteredOptions = filterOptions(newValue, this.value);
   }
 
+  componentDidLoad() {
+    this.filteredOptions = filterOptions(this.options, this.value);
+  }
+
+  componentDidUpdate() {
+    if (this.callFocus === true) {
+      this.inputRef.focus();
+      this.callFocus = false;
+    }
+  }
+
   render() {
     const {
       activeIndex,
@@ -61,6 +77,7 @@ export class MultiselectButtons {
       label = '',
       open = false,
       filteredOptions = [],
+      selectedOptions = [],
       value
     } = this;
 
@@ -72,13 +89,14 @@ export class MultiselectButtons {
         <input
           aria-activedescendant={activeId}
           aria-autocomplete="list"
-          aria-labelledby={htmlId}
+          aria-labelledby={`${htmlId} ${this.htmlId}-selected`}
           class="combo-input"
           ref={(el) => this.inputRef = el}
           type="text"
           value={value}
           onBlur={this.onInputBlur.bind(this)}
           onClick={() => this.updateMenuState(true)}
+          onInput={this.onInput.bind(this)}
           onKeyDown={this.onInputKeyDown.bind(this)}
         />
 
@@ -86,9 +104,13 @@ export class MultiselectButtons {
           {filteredOptions.map((option, i) => {
             return (
               <div
-                class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
+                class={{
+                  'option-current': this.activeIndex === i,
+                  'option-selected': this.selectedOptions.indexOf(option) > -1,
+                  'combo-option': true
+                }}
                 id={`${this.htmlId}-${i}`}
-                aria-selected={this.selectedOptions.indexOf(option) > -1 ? 'true' : false}
+                aria-selected={selectedOptions.indexOf(option) > -1 ? 'true' : false}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}
@@ -96,8 +118,32 @@ export class MultiselectButtons {
             );
           })}
         </div>
-      </div>
+      </div>,
+      <ul class="selected-options" id={`${this.htmlId}-selected`}>
+        {selectedOptions.map((option, i) => {
+          return (
+            <li>
+              <button class="remove-option" onClick={() => { this.removeOption(i); }}>{option.name}</button>
+            </li>
+          )
+        })}
+      </ul>
     ]);
+  }
+
+  private onInput() {
+    const curValue = this.inputRef.value;
+    this.filteredOptions = [...filterOptions(this.options, curValue)];
+
+    if (this.value !== curValue) {
+      this.value = curValue;
+      this.activeIndex = 0;
+    }
+
+    const menuState = this.filteredOptions.length > 0;
+    if (this.open !== menuState) {
+      this.updateMenuState(menuState, false);
+    }
   }
 
   private onInputKeyDown(event: KeyboardEvent) {
@@ -114,11 +160,9 @@ export class MultiselectButtons {
         event.preventDefault();
         return this.onOptionChange(getUpdatedIndex(this.activeIndex, max, action));
       case MenuActions.CloseSelect:
-        return this.selectOption(this.activeIndex);
+        return this.updateOption(this.activeIndex);
       case MenuActions.Close:
         return this.updateMenuState(false);
-      case MenuActions.Type:
-        this.value = this.inputRef.value;
       case MenuActions.Open:
         return this.updateMenuState(true);
     }
@@ -139,23 +183,40 @@ export class MultiselectButtons {
 
   private onOptionClick(index: number) {
     this.onOptionChange(index);
-    this.selectOption(index);
-    this.updateMenuState(false);
+    this.updateOption(index);
   }
 
   private onOptionMouseDown() {
     this.ignoreBlur = true;
+    this.callFocus = true;
   }
 
-  private selectOption(index: number) {
-    const selected = this.options[index];
-    this.value = '';
-    this.selectedOptions = [ ...this.selectedOptions, selected];
-    this.selectEvent.emit(selected);
+  private removeOption(index: number) {
+    this.selectedOptions.splice(index, 1);
+    this.selectedOptions = [...this.selectedOptions];
+  }
+
+  private updateOption(index: number) {
+    const option = this.filteredOptions[index];
+    const optionIndex = this.selectedOptions.indexOf(option);
+    const isSelected = optionIndex > -1;
+
+    if (isSelected) {
+      this.removeOption(optionIndex);
+      this.value = '';
+    }
+
+    else {
+      this.selectedOptions = [...this.selectedOptions, option];
+      this.filteredOptions = this.options;
+      this.value = '';
+      this.activeIndex = this.filteredOptions.indexOf(option);
+      this.selectEvent.emit(option);
+    }
   }
 
   private updateMenuState(open: boolean, callFocus = true) {
     this.open = open;
-    callFocus && this.inputRef.focus();
+    this.callFocus = callFocus;
   }
 }

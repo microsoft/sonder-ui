@@ -57,6 +57,10 @@ export class ComboAutocomplete {
     this.filteredOptions = filterOptions(newValue, this.value);
   }
 
+  componentDidLoad() {
+    this.filteredOptions = filterOptions(this.options, this.value);
+  }
+
   componentDidUpdate() {
     if (this.shouldSelect !== false) {
       const [ start, end ] = this.shouldSelect;
