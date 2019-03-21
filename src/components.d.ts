@@ -224,7 +224,6 @@ export namespace Components {
     * Array of name/value options
     */
     'options': SelectOption[];
-    'test': boolean;
   }
   interface MultiselectButtonsAttributes extends StencilHTMLAttributes {
     /**
@@ -239,7 +238,6 @@ export namespace Components {
     * Array of name/value options
     */
     'options'?: SelectOption[];
-    'test'?: boolean;
   }
 
   interface MultiselectCsv {

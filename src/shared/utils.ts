@@ -14,7 +14,7 @@ export enum Keys {
   Right = 'ArrowRight',
   Space = ' ',
   Tab = 'Tab',
-  Up = 'ArrowLeft'
+  Up = 'ArrowUp'
 }
 
 export enum MenuActions {
@@ -56,16 +56,16 @@ export function getActionFromKey(key: string, menuOpen: boolean): MenuActions {
   }
 
   // handle keys when open
-  if (key === 'ArrowDown') {
+  if (key === Keys.Down) {
     return MenuActions.Next;
   }
-  else if (key === 'ArrowUp') {
+  else if (key === Keys.Up) {
     return MenuActions.Previous;
   }
-  else if (key === 'Home') {
+  else if (key === Keys.Home) {
     return MenuActions.First;
   }
-  else if (key === 'End') {
+  else if (key === Keys.End) {
     return MenuActions.Last;
   }
   else if (key === Keys.Escape) {

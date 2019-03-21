@@ -35,7 +35,7 @@ export class ComboAutoselect {
   @State() open = false;
 
   // input value
-  @State() value = '';
+  @State() value: string;
 
   // Unique ID that should really use a UUID library instead
   private htmlId = uniqueId();
@@ -46,13 +46,21 @@ export class ComboAutoselect {
   // save reference to input element
   private inputRef: HTMLInputElement;
 
+  // save the last selected value
+  private selectedValue = '';
+
   @Watch('options')
   watchOptions(newValue: SelectOption[]) {
     this.filteredOptions = filterOptions(newValue, this.value);
   }
 
   componentDidLoad() {
-    this.filteredOptions = filterOptions(this.options, this.value);
+    const {
+      options = [],
+      value = ''
+    } = this;
+    this.filteredOptions = filterOptions(options, value);
+    this.value = typeof this.value === 'string' ? value : this.filteredOptions.length > 0 ? this.filteredOptions[0].name : '';
   }
 
   render() {
@@ -135,7 +143,7 @@ export class ComboAutoselect {
         return this.updateMenuState(false);
       case MenuActions.Close:
         this.activeIndex = 0;
-        this.value = '';
+        this.value = this.selectedValue;
         this.filteredOptions = this.options;
         return this.updateMenuState(false);
       case MenuActions.Open:
@@ -172,6 +180,7 @@ export class ComboAutoselect {
   private selectOption(index: number) {
     const selected = this.filteredOptions[index];
     this.value = selected.name;
+    this.selectedValue = selected.name;
     this.filteredOptions = filterOptions(this.options, this.value);
     this.activeIndex = 0;
     this.selectEvent.emit(selected);

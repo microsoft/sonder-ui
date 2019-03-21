@@ -112,12 +112,17 @@ body {
 
 .remove-option {
   background-color: #6200ee;
-  border: 0;
+  border: 1px solid #6200ee;
   border-radius: 3px;
   color: #fff;
   font-weight: bold;
   margin-right: 6px;
   padding: 4px 8px;
+}
+
+.remove-option:focus {
+  border-color: #baa1dd;
+  box-shadow: 0 0 3px 1px #6200ee;
 }
 
 .remove-option::after {

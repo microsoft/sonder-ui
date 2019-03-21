@@ -18,8 +18,6 @@ export class MultiselectButtons {
    */
   @Prop() label: string;
 
-  @Prop() test: boolean;
-
   /**
    * Emit a custom select event on value change
    */

@@ -151,11 +151,7 @@ export class ComboAutocomplete {
         return this.onOptionChange(getUpdatedIndex(this.activeIndex, max, action));
       case MenuActions.CloseSelect:
         this.selectOption(this.activeIndex);
-        return this.updateMenuState(false);
       case MenuActions.Close:
-        this.activeIndex = 0;
-        this.value = '';
-        this.filteredOptions = this.options;
         return this.updateMenuState(false);
       case MenuActions.Open:
         return this.updateMenuState(true);
@@ -170,7 +166,7 @@ export class ComboAutocomplete {
 
     this.typedValue = '';
     if (this.open) {
-      this.selectOption(this.activeIndex);
+      this.value !== '' && this.selectOption(this.activeIndex);
       this.updateMenuState(false, false);
     }
   }

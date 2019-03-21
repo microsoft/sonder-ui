@@ -29,13 +29,13 @@ export class MultiselectCSV {
   @State() activeIndex = 0;
 
   // Filtered options
-  @State() filteredOptions: SelectOption[];
+  @State() filteredOptions: SelectOption[] = [];
 
   // Menu state 
   @State() open = false;
 
   // Selected option index
-  @State() selectedOptions: SelectOption[];
+  @State() selectedOptions: SelectOption[] = [];
 
   // input value
   @State() value = '';
@@ -74,7 +74,8 @@ export class MultiselectCSV {
       htmlId,
       label = '',
       open = false,
-      filteredOptions = [],
+      filteredOptions,
+      selectedOptions,
       value
     } = this;
 
@@ -103,11 +104,11 @@ export class MultiselectCSV {
               <div
                 class={{
                   'option-current': this.activeIndex === i,
-                  'option-selected': this.selectedOptions.indexOf(option) > -1,
+                  'option-selected': selectedOptions.indexOf(option) > -1,
                   'combo-option': true
                 }}
                 id={`${this.htmlId}-${i}`}
-                aria-selected={this.selectedOptions.indexOf(option) > -1 ? 'true' : false}
+                aria-selected={selectedOptions.indexOf(option) > -1 ? 'true' : false}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}
