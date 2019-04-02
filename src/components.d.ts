@@ -99,6 +99,10 @@ export namespace Components {
     * Array of name/value options
     */
     'options': SelectOption[];
+    /**
+    * boolean required
+    */
+    'required': boolean;
   }
   interface ComboNativeAttributes extends StencilHTMLAttributes {
     /**
@@ -113,6 +117,10 @@ export namespace Components {
     * Array of name/value options
     */
     'options'?: SelectOption[];
+    /**
+    * boolean required
+    */
+    'required'?: boolean;
   }
 
   interface ComboNofilter {

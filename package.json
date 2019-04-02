@@ -11,10 +11,11 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build --docs && cp -r src/assets/ www/",
-    "start": "stencil build --dev --watch --serve && cp -r assets/ www/",
+    "build": "stencil build --docs && copy-assets",
+    "start": "stencil build --dev --watch --serve && copy-assets",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll"
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "copy-assets": "cp -r assets/ www/ && cp src/style.css www/ && cp src/*.html www/"
   },
   "dependencies": {},
   "devDependencies": {

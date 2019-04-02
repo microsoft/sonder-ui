@@ -19,6 +19,11 @@ export class ComboNative {
   @Prop() label: string;
 
   /**
+   * boolean required
+   */
+  @Prop() required: boolean;
+
+  /**
    * Emit a custom select event on value change
    */
   @Event({
@@ -39,12 +44,18 @@ export class ComboNative {
     const {
       htmlId,
       label = '',
-      options = []
+      options = [],
+      required
     } = this;
 
     return ([
       <label htmlFor={htmlId} class="combo-label">{label}</label>,
-      <select id={htmlId} class="combo combo-input" onChange={(event: Event) => this.selectHandler((event.target as HTMLSelectElement).value)}>
+      <select
+        id={htmlId}
+        class="combo combo-input"
+        required={required ? true: null }
+        onChange={(event: Event) => this.selectHandler((event.target as HTMLSelectElement).value)}
+      >
         {options.map((option) => <option value={option.value}>{option.name}</option>)}
       </select>
     ]);

@@ -1,0 +1,40 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.4em;
+  margin: 0;
+  padding: 0;
+}
+
+.example-form {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 460px;
+  margin: 100px auto;
+  padding: 30px;
+}
+
+.example-form h1 {
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+input[type=text] {
+  background-color: #f5f5f5;
+  border: 1px solid rgba(0,0,0,.42);
+  border-radius: 4px;
+  display: block;
+  min-height: calc(1.4em + 26px);
+  padding: 12px 16px 14px;
+  text-align: left;
+  width: 100%;
+}
+
+.form-input {
+  display: block;
+  margin-bottom: 1.5em;
+}
