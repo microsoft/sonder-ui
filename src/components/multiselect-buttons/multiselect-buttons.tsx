@@ -84,10 +84,14 @@ export class MultiselectButtons {
     return ([
       <label id={htmlId} class="combo-label">{label}</label>,
       <ul class="selected-options" id={`${this.htmlId}-selected`}>
+        <span id={`${htmlId}-remove`} style={{ display: 'none' }}>remove</span>
         {selectedOptions.map((option, i) => {
           return (
             <li>
-              <button class="remove-option" onClick={() => { this.removeOption(i); }}>{option.name}</button>
+              <button class="remove-option" aria-describedby={`${htmlId}-remove`} onClick={() => { this.removeOption(i); }}>
+                {option.name}
+                <span class="remove-icon" aria-hidden="true">x</span>
+              </button>
             </li>
           )
         })}

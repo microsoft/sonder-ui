@@ -130,8 +130,7 @@ body {
   box-shadow: 0 0 3px 1px #6200ee;
 }
 
-.remove-option::after {
-  content: "x";
+.remove-icon {
   display: inline-block;
   padding-left: 6px;
   text-transform: none;

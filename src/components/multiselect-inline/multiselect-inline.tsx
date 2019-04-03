@@ -92,10 +92,14 @@ export class MultiselectInline {
           aria-owns={`${htmlId}-listbox`}
         >
           <ul class="selected-options" aria-live="assertive" aria-atomic="false" aria-relevant="additions removals" id={`${this.htmlId}-selected`}>
+            <span id={`${htmlId}-remove`} style={{ display: 'none' }}>remove</span>
             {selectedOptions.map((option, i) => {
               return (
                 <li>
-                  <button class="remove-option" onClick={() => { this.removeOption(i); }}>{option.name}</button>
+                  <button class="remove-option" aria-describedby={`${htmlId}-remove`} onClick={() => { this.removeOption(i); }}>
+                    {option.name}
+                    <span class="remove-icon" aria-hidden="true">x</span>
+                  </button>
                 </li>
               )
             })}
