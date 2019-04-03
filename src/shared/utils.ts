@@ -79,6 +79,12 @@ export function getActionFromKey(key: string, menuOpen: boolean): MenuActions {
   }
 }
 
+// get index of option that matches a string
+export function getIndexByLetter(options: SelectOption[], filter: string): number {
+  const firstMatch = filterOptions(options, filter)[0];
+  return firstMatch ? options.indexOf(firstMatch) : -1;
+}
+
 // get updated option index
 export function getUpdatedIndex(current: number, max: number, action: MenuActions): number {
   switch(action) {

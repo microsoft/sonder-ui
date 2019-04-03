@@ -72,7 +72,7 @@ body {
   z-index: 100;
 }
 
-.combo.open .combo-menu {
+.open .combo-menu {
   display: block;
 }
 
