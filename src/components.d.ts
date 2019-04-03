@@ -272,6 +272,64 @@ export namespace Components {
     */
     'options'?: SelectOption[];
   }
+
+  interface MultiselectInline {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface MultiselectInlineAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
+  interface MultiselectNative {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+    /**
+    * boolean required
+    */
+    'required': boolean;
+  }
+  interface MultiselectNativeAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+    /**
+    * boolean required
+    */
+    'required'?: boolean;
+  }
 }
 
 declare global {
@@ -286,6 +344,8 @@ declare global {
     'ListboxButton': Components.ListboxButton;
     'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
+    'MultiselectInline': Components.MultiselectInline;
+    'MultiselectNative': Components.MultiselectNative;
   }
 
   interface StencilIntrinsicElements {
@@ -299,6 +359,8 @@ declare global {
     'listbox-button': Components.ListboxButtonAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
+    'multiselect-inline': Components.MultiselectInlineAttributes;
+    'multiselect-native': Components.MultiselectNativeAttributes;
   }
 
 
@@ -362,6 +424,18 @@ declare global {
     new (): HTMLMultiselectCsvElement;
   };
 
+  interface HTMLMultiselectInlineElement extends Components.MultiselectInline, HTMLStencilElement {}
+  var HTMLMultiselectInlineElement: {
+    prototype: HTMLMultiselectInlineElement;
+    new (): HTMLMultiselectInlineElement;
+  };
+
+  interface HTMLMultiselectNativeElement extends Components.MultiselectNative, HTMLStencilElement {}
+  var HTMLMultiselectNativeElement: {
+    prototype: HTMLMultiselectNativeElement;
+    new (): HTMLMultiselectNativeElement;
+  };
+
   interface HTMLElementTagNameMap {
     'combo-autocomplete': HTMLComboAutocompleteElement
     'combo-autoselect': HTMLComboAutoselectElement
@@ -373,6 +447,8 @@ declare global {
     'listbox-button': HTMLListboxButtonElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
+    'multiselect-inline': HTMLMultiselectInlineElement
+    'multiselect-native': HTMLMultiselectNativeElement
   }
 
   interface ElementTagNameMap {
@@ -386,6 +462,8 @@ declare global {
     'listbox-button': HTMLListboxButtonElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;
+    'multiselect-inline': HTMLMultiselectInlineElement;
+    'multiselect-native': HTMLMultiselectNativeElement;
   }
 
 

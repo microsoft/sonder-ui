@@ -1,13 +1,13 @@
 import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
+import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions, Keys } from '../../shared/utils';
 
 @Component({
-  tag: 'multiselect-buttons',
+  tag: 'multiselect-inline',
   styleUrl: '../../shared/combo-base.css',
   shadow: false
 })
-export class MultiselectButtons {
+export class MultiselectInline {
   /**
    * Array of name/value options
    */
@@ -83,16 +83,21 @@ export class MultiselectButtons {
 
     return ([
       <label id={htmlId} class="combo-label">{label}</label>,
-      <ul class="selected-options" id={`${this.htmlId}-selected`}>
-        {selectedOptions.map((option, i) => {
-          return (
-            <li>
-              <button class="remove-option" onClick={() => { this.removeOption(i); }}>{option.name}</button>
-            </li>
-          )
-        })}
-      </ul>,
-      <div role="combobox" aria-haspopup="listbox" aria-expanded={`${open}`} class={{ combo: true, open }}>
+      <div
+        role="combobox"
+        aria-haspopup="listbox"
+        aria-expanded={`${open}`}
+        class={{ combo: true, 'multiselect-inline': true, open }}
+      >
+        <ul class="selected-options" aria-live="assertive" aria-atomic="false" aria-relevant="additions removals" id={`${this.htmlId}-selected`}>
+          {selectedOptions.map((option, i) => {
+            return (
+              <li>
+                <button class="remove-option" onClick={() => { this.removeOption(i); }}>{option.name}</button>
+              </li>
+            )
+          })}
+        </ul>
         <input
           aria-activedescendant={activeId}
           aria-autocomplete="list"
@@ -163,6 +168,16 @@ export class MultiselectButtons {
         return this.updateMenuState(false);
       case MenuActions.Open:
         return this.updateMenuState(true);
+      case MenuActions.Type:
+        key === Keys.Backspace && this.onInputBackspace();
+        break;
+    }
+  }
+
+  private onInputBackspace() {
+    // remove last selected option on backspace
+    if (this.value === '') {
+      this.removeOption(this.selectedOptions.length - 1);
     }
   }
 
