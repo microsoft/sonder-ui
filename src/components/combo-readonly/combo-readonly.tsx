@@ -61,7 +61,7 @@ export class ComboReadonly {
     return ([
       <label id={htmlId} class="combo-label">{label}</label>,
       <div class={{ combo: true, open }}>
-        <div role="combobox" aria-haspopup="listbox" aria-owns={`${htmlId}-listbox`} aria-expanded={`${open}`} class="input-wrapper">
+        <div role="combobox" aria-haspopup="listbox" aria-expanded={`${open}`} aria-owns={`${htmlId}-listbox`} class="input-wrapper">
           <input
             aria-activedescendant={activeId}
             aria-autocomplete="none"

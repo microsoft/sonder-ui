@@ -46,9 +46,10 @@ body {
 }
 
 .combo-input:focus,
-.combo-menu:focus {
+.combo-menu:focus,
+.input-wrapper:focus {
   border-color: #0067b8;
-  box-shadow: 0 0 3px 1px #0067b8;
+  box-shadow: 0 0 4px 2px #0067b8;
 }
 
 .combo-label {

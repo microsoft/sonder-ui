@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
+import { getActionFromKey, getIndexByLetter, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
 
 @Component({
   tag: 'combo-noinput',
@@ -57,23 +57,25 @@ export class ComboNoInput {
 
     return ([
       <label id={htmlId} class="combo-label">{label}</label>,
-      <div
-        role="combobox"
-        aria-activedescendant={activeId}
-        aria-autocomplete="none"
-        aria-haspopup="listbox"
-        aria-expanded={`${open}`}
-        aria-labelledby={`${htmlId} ${htmlId}-value`}
-        class={{ combo: true, open }}
-        ref={(el) => this.inputRef = el}
-        tabindex="0"
-        onBlur={this.onComboBlur.bind(this)}
-        onClick={() => this.updateMenuState(true)}
-        onKeyDown={this.onInputKeyDown.bind(this)}
-      >
-        <div id={`${htmlId}-value`} class="combo-input">{value}</div>
-
-        <div class="combo-menu" role="listbox">
+      <div class={{ combo: true, open }}>
+        <div
+          role="combobox"
+          aria-activedescendant={activeId}
+          aria-autocomplete="none"
+          aria-haspopup="listbox"
+          aria-expanded={`${open}`}
+          aria-labelledby={`${htmlId} ${htmlId}-value`}
+          aria-owns={`${htmlId}-listbox`}
+          class="input-wrapper"
+          ref={(el) => this.inputRef = el}
+          tabindex="0"
+          onBlur={this.onComboBlur.bind(this)}
+          onClick={() => this.updateMenuState(true)}
+          onKeyDown={this.onInputKeyDown.bind(this)}
+        >
+          <div id={`${htmlId}-value`} class="combo-input">{value}</div>
+        </div>
+        <div class="combo-menu" role="listbox" id={`${htmlId}-listbox`}>
           {options.map((option, i) => {
             return (
               <div
@@ -111,6 +113,7 @@ export class ComboNoInput {
       case MenuActions.Close:
         return this.updateMenuState(false);
       case MenuActions.Type:
+      this.activeIndex = Math.max(0, getIndexByLetter(this.options, key));
       case MenuActions.Open:
         return this.updateMenuState(true);
     }

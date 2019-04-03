@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
+import { getActionFromKey, getIndexByLetter, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
 
 @Component({
   tag: 'listbox-button',
@@ -121,6 +121,7 @@ export class ListboxButton {
       case MenuActions.Close:
         return this.updateMenuState(false);
       case MenuActions.Type:
+        this.activeIndex = Math.max(0, getIndexByLetter(this.options, key));
       case MenuActions.Open:
         return this.updateMenuState(true);
     }
@@ -151,6 +152,9 @@ export class ListboxButton {
         this.selectOption(this.activeIndex);
       case MenuActions.Close:
         return this.updateMenuState(false);
+      case MenuActions.Type:
+        this.activeIndex = Math.max(0, getIndexByLetter(this.options, key));
+        break;
     }
   }
 

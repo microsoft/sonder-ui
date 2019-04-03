@@ -92,22 +92,24 @@ export class MultiselectButtons {
           )
         })}
       </ul>,
-      <div role="combobox" aria-haspopup="listbox" aria-expanded={`${open}`} class={{ combo: true, open }}>
-        <input
-          aria-activedescendant={activeId}
-          aria-autocomplete="list"
-          aria-labelledby={`${htmlId} ${this.htmlId}-selected`}
-          class="combo-input"
-          ref={(el) => this.inputRef = el}
-          type="text"
-          value={value}
-          onBlur={this.onInputBlur.bind(this)}
-          onClick={() => this.updateMenuState(true)}
-          onInput={this.onInput.bind(this)}
-          onKeyDown={this.onInputKeyDown.bind(this)}
-        />
+      <div class={{ combo: true, open }}>
+        <div role="combobox" aria-haspopup="listbox" aria-expanded={`${open}`} aria-owns={`${htmlId}-listbox`} class="input-wrapper">
+          <input
+            aria-activedescendant={activeId}
+            aria-autocomplete="list"
+            aria-labelledby={`${htmlId} ${this.htmlId}-selected`}
+            class="combo-input"
+            ref={(el) => this.inputRef = el}
+            type="text"
+            value={value}
+            onBlur={this.onInputBlur.bind(this)}
+            onClick={() => this.updateMenuState(true)}
+            onInput={this.onInput.bind(this)}
+            onKeyDown={this.onInputKeyDown.bind(this)}
+          />
+        </div>
 
-        <div class="combo-menu" role="listbox" aria-multiselectable="true">
+        <div class="combo-menu" role="listbox" aria-multiselectable="true"  id={`${htmlId}-listbox`}>
           {filteredOptions.map((option, i) => {
             return (
               <div

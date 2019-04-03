@@ -83,36 +83,39 @@ export class MultiselectInline {
 
     return ([
       <label id={htmlId} class="combo-label">{label}</label>,
-      <div
-        role="combobox"
-        aria-haspopup="listbox"
-        aria-expanded={`${open}`}
-        class={{ combo: true, 'multiselect-inline': true, open }}
-      >
-        <ul class="selected-options" aria-live="assertive" aria-atomic="false" aria-relevant="additions removals" id={`${this.htmlId}-selected`}>
-          {selectedOptions.map((option, i) => {
-            return (
-              <li>
-                <button class="remove-option" onClick={() => { this.removeOption(i); }}>{option.name}</button>
-              </li>
-            )
-          })}
-        </ul>
-        <input
-          aria-activedescendant={activeId}
-          aria-autocomplete="list"
-          aria-labelledby={`${htmlId} ${this.htmlId}-selected`}
-          class="combo-input"
-          ref={(el) => this.inputRef = el}
-          type="text"
-          value={value}
-          onBlur={this.onInputBlur.bind(this)}
-          onClick={() => this.updateMenuState(true)}
-          onInput={this.onInput.bind(this)}
-          onKeyDown={this.onInputKeyDown.bind(this)}
-        />
+      <div class={{ combo: true, open }}>
+        <div
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-expanded={`${open}`}
+          class={{ "input-wrapper": true, 'multiselect-inline': true, open }}
+          aria-owns={`${htmlId}-listbox`}
+        >
+          <ul class="selected-options" aria-live="assertive" aria-atomic="false" aria-relevant="additions removals" id={`${this.htmlId}-selected`}>
+            {selectedOptions.map((option, i) => {
+              return (
+                <li>
+                  <button class="remove-option" onClick={() => { this.removeOption(i); }}>{option.name}</button>
+                </li>
+              )
+            })}
+          </ul>
+          <input
+            aria-activedescendant={activeId}
+            aria-autocomplete="list"
+            aria-labelledby={`${htmlId} ${this.htmlId}-selected`}
+            class="combo-input"
+            ref={(el) => this.inputRef = el}
+            type="text"
+            value={value}
+            onBlur={this.onInputBlur.bind(this)}
+            onClick={() => this.updateMenuState(true)}
+            onInput={this.onInput.bind(this)}
+            onKeyDown={this.onInputKeyDown.bind(this)}
+          />
+        </div>
 
-        <div class="combo-menu" role="listbox" aria-multiselectable="true">
+        <div class="combo-menu" role="listbox" aria-multiselectable="true" id={`${htmlId}-listbox`}>
           {filteredOptions.map((option, i) => {
             return (
               <div
