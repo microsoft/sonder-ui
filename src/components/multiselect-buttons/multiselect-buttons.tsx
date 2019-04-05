@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
+import { getActionFromKey, getUpdatedIndex, isScrollable, maintainScrollVisibility, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
 
 @Component({
   tag: 'multiselect-buttons',
@@ -52,6 +52,12 @@ export class MultiselectButtons {
   // save reference to input element
   private inputRef: HTMLInputElement;
 
+  // save reference to listbox
+  private listboxRef: HTMLElement;
+
+  // save reference to active option
+  private activeOptionRef: HTMLElement;
+
   @Watch('options')
   watchOptions(newValue: SelectOption[]) {
     this.filteredOptions = filterOptions(newValue, this.value);
@@ -65,6 +71,10 @@ export class MultiselectButtons {
     if (this.callFocus === true) {
       this.inputRef.focus();
       this.callFocus = false;
+    }
+
+    if (this.open && isScrollable(this.listboxRef)) {
+      maintainScrollVisibility(this.activeOptionRef, this.listboxRef);
     }
   }
 
@@ -113,7 +123,7 @@ export class MultiselectButtons {
           />
         </div>
 
-        <div class="combo-menu" role="listbox" aria-multiselectable="true"  id={`${htmlId}-listbox`}>
+        <div class="combo-menu" role="listbox" ref={(el) => this.listboxRef = el} aria-multiselectable="true"  id={`${htmlId}-listbox`}>
           {filteredOptions.map((option, i) => {
             return (
               <div
@@ -124,6 +134,7 @@ export class MultiselectButtons {
                 }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={selectedOptions.indexOf(option) > -1 ? 'true' : false}
+                ref={(el) => {if (this.activeIndex === i) this.activeOptionRef = el; }}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}

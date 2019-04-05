@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
+import { getActionFromKey, getUpdatedIndex, isScrollable, maintainScrollVisibility, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
 
 @Component({
   tag: 'combo-autoselect',
@@ -37,6 +37,9 @@ export class ComboAutoselect {
   // input value
   @State() value: string;
 
+  // save reference to active option
+  private activeOptionRef: HTMLElement;
+
   // Unique ID that should really use a UUID library instead
   private htmlId = uniqueId();
 
@@ -45,6 +48,9 @@ export class ComboAutoselect {
 
   // save reference to input element
   private inputRef: HTMLInputElement;
+
+  // save reference to listbox
+  private listboxRef: HTMLElement;
 
   // save the last selected value
   private selectedValue = '';
@@ -61,6 +67,12 @@ export class ComboAutoselect {
     } = this;
     this.filteredOptions = filterOptions(options, value);
     this.value = typeof this.value === 'string' ? value : this.filteredOptions.length > 0 ? this.filteredOptions[0].name : '';
+  }
+
+  componentDidUpdate() {
+    if (this.open && isScrollable(this.listboxRef)) {
+      maintainScrollVisibility(this.activeOptionRef, this.listboxRef);
+    }
   }
 
   render() {
@@ -94,13 +106,14 @@ export class ComboAutoselect {
           />
         </div>
 
-        <div class="combo-menu" role="listbox" id={`${htmlId}-listbox`}>
+        <div class="combo-menu" role="listbox" ref={(el) => this.listboxRef = el} id={`${htmlId}-listbox`}>
           {filteredOptions.map((option, i) => {
             return (
               <div
                 class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={this.activeIndex === i ? 'true' : false}
+                ref={(el) => {if (this.activeIndex === i) this.activeOptionRef = el; }}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}

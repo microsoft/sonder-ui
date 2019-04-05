@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
+import { getActionFromKey, getUpdatedIndex, isScrollable, maintainScrollVisibility, MenuActions, uniqueId, filterOptions } from '../../shared/utils';
 
 @Component({
   tag: 'combo-filter',
@@ -49,6 +49,12 @@ export class ComboFilter {
   // save reference to input element
   private inputRef: HTMLInputElement;
 
+  // save reference to listbox
+  private listboxRef: HTMLElement;
+
+  // save reference to active option
+  private activeOptionRef: HTMLElement;
+
   @Watch('options')
   watchOptions(newValue: SelectOption[]) {
     this.filteredOptions = filterOptions(newValue, this.value);
@@ -56,6 +62,12 @@ export class ComboFilter {
 
   componentDidLoad() {
     this.filteredOptions = filterOptions(this.options, this.value);
+  }
+
+  componentDidUpdate() {
+    if (this.open && isScrollable(this.listboxRef)) {
+      maintainScrollVisibility(this.activeOptionRef, this.listboxRef);
+    }
   }
 
   render() {
@@ -88,13 +100,14 @@ export class ComboFilter {
             onKeyDown={this.onInputKeyDown.bind(this)}
           />
         </div>
-        <div class="combo-menu" role="listbox" id={`${htmlId}-listbox`}>
+        <div class="combo-menu" ref={(el) => this.listboxRef = el} role="listbox" id={`${htmlId}-listbox`}>
           {filteredOptions.map((option, i) => {
             return (
               <div
                 class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={this.selectedIndex === i ? 'true' : false}
+                ref={(el) => {if (this.activeIndex === i) this.activeOptionRef = el; }}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}

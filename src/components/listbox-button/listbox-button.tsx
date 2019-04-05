@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getIndexByLetter, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
+import { getActionFromKey, getIndexByLetter, getUpdatedIndex, isScrollable, maintainScrollVisibility, MenuActions, uniqueId } from '../../shared/utils';
 
 @Component({
   tag: 'listbox-button',
@@ -46,10 +46,13 @@ export class ListboxButton {
   // Prevent menu closing before click completed
   private ignoreBlur = false;
 
+  // save reference to active option
+  private activeOptionRef: HTMLElement;
+
   // save reference to button element
   private buttonRef: HTMLButtonElement;
 
-  // save reference to button element
+  // save reference to listbox element
   private listboxRef: HTMLElement;
 
   componentDidUpdate() {
@@ -57,6 +60,10 @@ export class ListboxButton {
       const focusEl = this.open ? this.listboxRef : this.buttonRef;
       focusEl.focus();
       this.callFocus = false;
+    }
+
+    if (this.open && isScrollable(this.listboxRef)) {
+      maintainScrollVisibility(this.activeOptionRef, this.listboxRef);
     }
   }
 
@@ -102,6 +109,7 @@ export class ListboxButton {
                 class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={this.selectedIndex === i ? 'true' : false}
+                ref={(el) => {if (this.activeIndex === i) this.activeOptionRef = el; }}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}

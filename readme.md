@@ -1,4 +1,4 @@
-# Sonder UI
+# Sonder UI (Work in progress)
 > a collection of tested, accessible components and component pattern documentation.
 
 ## Contributing

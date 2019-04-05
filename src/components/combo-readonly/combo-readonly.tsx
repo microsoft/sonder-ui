@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
-import { getActionFromKey, getUpdatedIndex, getIndexByLetter, MenuActions, uniqueId } from '../../shared/utils';
+import { getActionFromKey, getUpdatedIndex, getIndexByLetter, isScrollable, maintainScrollVisibility, MenuActions, uniqueId } from '../../shared/utils';
 
 @Component({
   tag: 'combo-readonly',
@@ -46,6 +46,18 @@ export class ComboReadonly {
   // save reference to input element
   private inputRef: HTMLInputElement;
 
+  // save reference to listbox
+  private listboxRef: HTMLElement;
+
+  // save reference to active option
+  private activeOptionRef: HTMLElement;
+
+  componentDidUpdate() {
+    if (this.open && isScrollable(this.listboxRef)) {
+      maintainScrollVisibility(this.activeOptionRef, this.listboxRef);
+    }
+  }
+
   render() {
     const {
       activeIndex,
@@ -76,13 +88,14 @@ export class ComboReadonly {
             onKeyDown={this.onInputKeyDown.bind(this)}
           />
         </div>
-        <div class="combo-menu" role="listbox" id={`${htmlId}-listbox`}>
+        <div class="combo-menu" ref={(el) => this.listboxRef = el} role="listbox" id={`${htmlId}-listbox`}>
           {options.map((option, i) => {
             return (
               <div
                 class={{ 'option-current': this.activeIndex === i, 'combo-option': true }}
                 id={`${this.htmlId}-${i}`}
                 aria-selected={this.selectedIndex === i ? 'true' : false}
+                ref={(el) => {if (this.activeIndex === i) this.activeOptionRef = el; }}
                 role="option"
                 onClick={() => { this.onOptionClick(i); }}
                 onMouseDown={this.onOptionMouseDown.bind(this)}
