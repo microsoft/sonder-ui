@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+*  Copyright (c) Microsoft Corporation. All rights reserved.
+*  Licensed under the MIT license. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
+
 import { Component, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { SelectOption } from '../../shared/interfaces';
 import { getActionFromKey, getIndexByLetter, getUpdatedIndex, MenuActions, uniqueId } from '../../shared/utils';
