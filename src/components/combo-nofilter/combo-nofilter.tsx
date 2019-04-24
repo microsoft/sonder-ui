@@ -143,6 +143,7 @@ export class ComboNoFilter {
       case MenuActions.CloseSelect:
         this.selectOption(this.activeIndex);
       case MenuActions.Close:
+        event.preventDefault();
         return this.updateMenuState(false);
       case MenuActions.Open:
         return this.updateMenuState(true);

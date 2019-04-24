@@ -22,8 +22,8 @@ body {
 }
 
 .combo::after {
-  border-bottom: 1px solid rgba(0,0,0,.42);
-  border-right: 1px solid rgba(0,0,0,.42);
+  border-bottom: 2px solid rgba(0,0,0,.5);
+  border-right: 2px solid rgba(0,0,0,.5);
   content: '';
   display: block;
   height: 12px;
@@ -37,13 +37,19 @@ body {
 
 .combo-input {
   background-color: #f5f5f5;
-  border: 1px solid rgba(0,0,0,.42);
+  border: 2px solid rgba(0,0,0,.5);
   border-radius: 4px;
   display: block;
   min-height: calc(1.4em + 26px);
   padding: 12px 16px 14px;
   text-align: left;
   width: 100%;
+}
+
+select.combo-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .open .combo-input {

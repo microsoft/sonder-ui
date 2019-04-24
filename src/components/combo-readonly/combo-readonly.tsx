@@ -128,6 +128,7 @@ export class ComboReadonly {
       case MenuActions.CloseSelect:
         this.selectOption(this.activeIndex);
       case MenuActions.Close:
+        event.preventDefault();
         return this.updateMenuState(false);
       case MenuActions.Type:
         this.activeIndex = Math.max(0, getIndexByLetter(this.options, key));
