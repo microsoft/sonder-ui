@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Shoe Store</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <script src="/build/caiacc.js"></script>
+</head>
+<body>
+  <div class="example-form" role="main">
+    <h1 id="page-title">Pick your Shoes</h1>
+
+    <form aria-labelledby="page-title" novalidate>
+  
+      <combo-noinput label="Shoe Style" class="style-select"></combo-noinput>
+  
+      <combo-autoselect label="Color" class="color-select"></combo-autoselect>
+
+      <multiselect-inline label="Features" class="feature-select"></multiselect-inline>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script type="text/javascript">
+    const styles = ["Sandals", "Sneakers & Athletic", "Boots", "Loafers", "Oxfords"];
+    const colors = ["Black", "Brown", "Cordovan", "Tan", "White"];
+    const features = ["Waterproof", "Non-marking sole", "Orthotic friendly", "Wide toe box", "Sustainable", "Quick dry", "Leather outsole", "Antimicrobial", "Lightweight", "Slip resistant"];
+
+    function formatOptions(stringArray) {
+      return stringArray.map((option) => ({name: option, value: option}));
+    }
+
+    const styleCombo = document.querySelector('.style-select');
+    styleCombo.options = formatOptions(styles);
+
+    const colorCombo = document.querySelector('.color-select');
+    colorCombo.options = formatOptions(colors);
+
+    const featureCombo = document.querySelector('.feature-select');
+    featureCombo.options = formatOptions(features);
+  </script>
+
+</body>
+</html>
