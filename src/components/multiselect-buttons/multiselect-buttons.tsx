@@ -180,8 +180,10 @@ export class MultiselectButtons {
         event.preventDefault();
         return this.onOptionChange(getUpdatedIndex(this.activeIndex, max, action));
       case MenuActions.CloseSelect:
+        event.preventDefault();
         return this.updateOption(this.activeIndex);
       case MenuActions.Close:
+        event.preventDefault();
         return this.updateMenuState(false);
       case MenuActions.Open:
         return this.updateMenuState(true);

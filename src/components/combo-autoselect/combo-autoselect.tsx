@@ -159,9 +159,11 @@ export class ComboAutoselect {
         event.preventDefault();
         return this.onOptionChange(getUpdatedIndex(this.activeIndex, max, action));
       case MenuActions.CloseSelect:
+        event.preventDefault();
         this.selectOption(this.activeIndex);
         return this.updateMenuState(false);
       case MenuActions.Close:
+        event.preventDefault();
         this.activeIndex = 0;
         this.value = this.selectedValue;
         this.filteredOptions = this.options;

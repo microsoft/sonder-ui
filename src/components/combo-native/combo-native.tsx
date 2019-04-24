@@ -55,14 +55,16 @@ export class ComboNative {
 
     return ([
       <label htmlFor={htmlId} class="combo-label">{label}</label>,
-      <select
-        id={htmlId}
-        class="combo combo-input"
-        required={required ? true: null }
-        onChange={(event: Event) => this.selectHandler((event.target as HTMLSelectElement).value)}
-      >
-        {options.map((option) => <option value={option.value}>{option.name}</option>)}
-      </select>
+      <div class="combo">
+        <select
+          id={htmlId}
+          class="combo-input"
+          required={required ? true: null }
+          onChange={(event: Event) => this.selectHandler((event.target as HTMLSelectElement).value)}
+        >
+          {options.map((option) => <option value={option.value}>{option.name}</option>)}
+        </select>
+      </div>
     ]);
   }
 }
