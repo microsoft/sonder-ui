@@ -94,6 +94,7 @@ export class ListboxButton {
           class="combo-input"
           id={`${htmlId}-button`}
           ref={(el) => this.buttonRef = el}
+          type="button"
           onBlur={this.onComboBlur.bind(this)}
           onClick={() => this.updateMenuState(true)}
           onKeyDown={this.onButtonKeyDown.bind(this)}
@@ -132,6 +133,7 @@ export class ListboxButton {
 
     switch(action) {
       case MenuActions.Close:
+        event.preventDefault();
         return this.updateMenuState(false);
       case MenuActions.Type:
         this.activeIndex = Math.max(0, getIndexByLetter(this.options, key));
