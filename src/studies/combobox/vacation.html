@@ -21,6 +21,8 @@
 
       <button type="submit">Submit</button>
     </form>
+
+    <a href="shoes.html" style="display:none" id="next-link">Next Scenario</a>
   </div>
 
   <script type="text/javascript">
@@ -40,6 +42,10 @@
 
     const featureCombo = document.querySelector('.feature-select');
     featureCombo.options = formatOptions(features);
+
+    document.querySelector('form').addEventListener('submit', () => {
+      document.getElementById('next-link').click();
+    });
   </script>
 
 </body>
