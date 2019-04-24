@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Vacation Service</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <script src="/build/caiacc.js"></script>
+</head>
+<body>
+  <div class="example-form" role="main">
+    <h1 id="page-title">Build a Vacation</h1>
+
+    <form aria-labelledby="page-title" novalidate>
+  
+      <combo-readonly label="Vacation Type" class="type-select"></combo-readonly>
+  
+      <combo-nofilter label="Resort Location" class="location-select"></combo-nofilter>
+
+      <multiselect-buttons label="Resort Features" class="feature-select"></multiselect-buttons>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script type="text/javascript">
+    const types = ["Active", "Social", "Laid Back", "Cultural", "Golf", "Tennis"];
+    const locations = ["Barbados", "Jamaica", "Antigua", "St. Lucia", "Grenada"];
+    const features = ["Private beach", "Active nightlife", "Golf course", "Less than 2 hours from airport", "Casino nearby", "Restaurants nearby", "Private Pools", "Secluded location", "Outdoor bar", "Butler service"];
+
+    function formatOptions(stringArray) {
+      return stringArray.map((option) => ({name: option, value: option}));
+    }
+
+    const typeCombo = document.querySelector('.type-select');
+    typeCombo.options = formatOptions(types);
+
+    const locationCombo = document.querySelector('.location-select');
+    locationCombo.options = formatOptions(locations);
+
+    const featureCombo = document.querySelector('.feature-select');
+    featureCombo.options = formatOptions(features);
+  </script>
+
+</body>
+</html>

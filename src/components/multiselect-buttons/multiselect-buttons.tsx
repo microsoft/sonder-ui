@@ -103,7 +103,7 @@ export class MultiselectButtons {
         {selectedOptions.map((option, i) => {
           return (
             <li>
-              <button class="remove-option" aria-describedby={`${htmlId}-remove`} onClick={() => { this.removeOption(i); }}>
+              <button class="remove-option" type="button" aria-describedby={`${htmlId}-remove`} onClick={() => { this.removeOption(i); }}>
                 {option.name}
                 <span class="remove-icon" aria-hidden="true">x</span>
               </button>

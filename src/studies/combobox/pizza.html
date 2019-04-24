@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Order Pizza</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <script src="/build/caiacc.js"></script>
+</head>
+<body>
+  <div class="example-form" role="main">
+    <h1 id="page-title">Create Your Pizza</h1>
+
+    <form aria-labelledby="page-title" novalidate>
+  
+      <combo-native label="Size" class="size-select"></combo-native>
+  
+      <combo-filter label="Crust" class="crust-select"></combo-filter>
+
+      <multiselect-csv label="Toppings" class="toppings-select"></multiselect-csv>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script type="text/javascript">
+    const pizzaSizes = ["Personal", "Small", "Medium", "Large", "Extra-Large"];
+    const pizzaCrusts = ["hand tossed", "handmade pan", "crunchy thin crust", "Brooklyn style", "gluten-free crust"];
+    const pizzaToppings = ["pepperoni", "mushrooms", "onions", "sausage", "bacon", "extra cheese", "green peppers", "black olives", "pineapple", "spinach"];
+
+    function formatOptions(stringArray) {
+      return stringArray.map((option) => ({name: option, value: option}));
+    }
+
+    const sizeCombo = document.querySelector('.size-select');
+    sizeCombo.options = formatOptions(pizzaSizes);
+
+    const crustCombo = document.querySelector('.crust-select');
+    crustCombo.options = formatOptions(pizzaCrusts);
+
+    const toppingCombo = document.querySelector('.toppings-select');
+    toppingCombo.options = formatOptions(pizzaToppings);
+  </script>
+
+</body>
+</html>
