@@ -55,6 +55,7 @@ body {
 .input-wrapper:focus {
   border-color: #0067b8;
   box-shadow: 0 0 4px 2px #0067b8;
+  outline: 5px solid transparent;
 }
 
 .combo-label {
@@ -133,6 +134,7 @@ body {
 .remove-option:focus {
   border-color: #baa1dd;
   box-shadow: 0 0 3px 1px #6200ee;
+  outline: 3px solid transparent;
 }
 
 .remove-icon {
@@ -168,8 +170,10 @@ body {
 
 .multiselect-inline .combo-input:focus {
   box-shadow: none;
+  outline: none;
 }
 
 .multiselect-inline:focus-within {
   box-shadow: 0 0 3px 2px #0067b8;
+  outline: 5px solid transparent;
 }
