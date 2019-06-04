@@ -41,12 +41,12 @@ All the usual requirements for form fields apply: label, visible focus state, pe
 
 This component can exist in two basic states: open and closed. There are slightly different keyboard commands available in each.
 
-#### Closed
+#### Closed:
 
 - `Down Arrow` opens the options menu and highlights the first option
 - `Type Character` opens the options menu and highlights the first option starting with the character
 
-#### Open
+#### Open:
 
 - `Down Arrow` highlights the next option, stopping at the last option
 - `Up Arrow` highlights the previous option, stopping at the first option
