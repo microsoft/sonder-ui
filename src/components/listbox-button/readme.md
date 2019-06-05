@@ -1,6 +1,6 @@
 # Listbox button
 
-A test of a multiselect alternative to `<select>` that uses `role="combobox"` with a `<input>` child. Supports filtering.
+A test of a single-select alternative to `<select>` that uses a button which controls a `role="listbox"` element.
 
 ## Purpose
 
