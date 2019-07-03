@@ -1,0 +1,112 @@
+/*---------------------------------------------------------------------------------------------
+*  Copyright (c) Microsoft Corporation. All rights reserved.
+*  Licensed under the MIT license. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
+
+.grid {
+  border: 1px solid #c2c2c2;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  overflow: hidden;
+}
+
+.grid-header {
+  border-bottom: 1px solid #c2c2c2;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.15);
+  flex: 0 0 auto;
+  overflow-y: scroll;
+}
+
+.grid-body {
+  flex: 1 1 100%;
+  overflow-y: scroll;
+}
+
+.row {
+  border-bottom: 1px solid #c2c2c2;
+  display: flex;
+}
+
+.grid-header .row {
+  border-bottom: none;
+}
+
+.row:nth-child(even) {
+  background-color: #f4f6f7;
+}
+
+.cell {
+  border-left: 1px solid #c2c2c2;
+  display: flex;
+  flex: 1 100%;
+  min-width: 100px;
+  overflow: hidden;
+  padding: 0;
+  text-overflow: ellipsis;
+}
+
+.cell:focus {
+  background-color: #0067b8;
+  color: #fff;
+}
+
+.cell:first-child,
+.col:first-child {
+  border-left: 0;
+}
+
+.cell.editing {
+  align-items: stretch;
+  padding: 0;
+}
+
+.cell-content,
+.cell-edit {
+  padding: 0.5em 1em;
+  width: 100%;
+}
+
+.heading-cell {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+}
+
+.filter-input {
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  margin-top: 0.5em;
+  padding: 0.5em;
+}
+
+.filter-button {
+  background-color: #e6e9ea;
+  border: 1px solid #c2c2c2;
+  border-radius: 3px;
+  padding: 0.1em 0.25em;
+}
+
+.filter-button.ascending,
+.filter-button.descending {
+  background-color: #b5daf6;
+  border-color: #0067b8;
+}
+
+.filter-button img {
+  display: block;
+}
+
+.visuallyHidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}

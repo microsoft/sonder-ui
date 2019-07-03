@@ -11,6 +11,9 @@ import '@stencil/core';
 import {
   SelectOption,
 } from './shared/interfaces';
+import {
+  Column,
+} from './components/grid/grid-helpers';
 
 
 export namespace Components {
@@ -226,6 +229,70 @@ export namespace Components {
     */
     'popupLabel'?: string;
   }
+  interface SuiGrid {
+    /**
+    * Grid data
+    */
+    'cells': string[][];
+    /**
+    * Column definitions
+    */
+    'columns': Column[];
+    /**
+    * Caption/description for the grid
+    */
+    'description': string;
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'editOnFocus': boolean;
+    /**
+    * Whether rows can be selected
+    */
+    'isSelectable': boolean;
+    /**
+    * String ID of labelling element
+    */
+    'labelledBy': string;
+    /**
+    * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
+    */
+    'pageLength': number;
+  }
+  interface SuiGridAttributes extends StencilHTMLAttributes {
+    /**
+    * Grid data
+    */
+    'cells'?: string[][];
+    /**
+    * Column definitions
+    */
+    'columns'?: Column[];
+    /**
+    * Caption/description for the grid
+    */
+    'description'?: string;
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'editOnFocus'?: boolean;
+    /**
+    * Whether rows can be selected
+    */
+    'isSelectable'?: boolean;
+    /**
+    * String ID of labelling element
+    */
+    'labelledBy'?: string;
+    /**
+    * Emit a custom filter event
+    */
+    'onFilter'?: (event: CustomEvent) => void;
+    /**
+    * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
+    */
+    'pageLength'?: number;
+  }
 
   interface ListboxButton {
     /**
@@ -371,6 +438,7 @@ declare global {
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
     'SuiDisclosure': Components.SuiDisclosure;
+    'SuiGrid': Components.SuiGrid;
     'ListboxButton': Components.ListboxButton;
     'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
@@ -387,6 +455,7 @@ declare global {
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
     'sui-disclosure': Components.SuiDisclosureAttributes;
+    'sui-grid': Components.SuiGridAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
@@ -443,6 +512,12 @@ declare global {
     new (): HTMLSuiDisclosureElement;
   };
 
+  interface HTMLSuiGridElement extends Components.SuiGrid, HTMLStencilElement {}
+  var HTMLSuiGridElement: {
+    prototype: HTMLSuiGridElement;
+    new (): HTMLSuiGridElement;
+  };
+
   interface HTMLListboxButtonElement extends Components.ListboxButton, HTMLStencilElement {}
   var HTMLListboxButtonElement: {
     prototype: HTMLListboxButtonElement;
@@ -482,6 +557,7 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
     'sui-disclosure': HTMLSuiDisclosureElement
+    'sui-grid': HTMLSuiGridElement
     'listbox-button': HTMLListboxButtonElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
@@ -498,6 +574,7 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
     'sui-disclosure': HTMLSuiDisclosureElement;
+    'sui-grid': HTMLSuiGridElement;
     'listbox-button': HTMLListboxButtonElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;
