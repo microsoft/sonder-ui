@@ -234,6 +234,10 @@ export namespace Components {
   }
   interface SuiGrid {
     /**
+    * Properties for Usability test case behaviors: *
+    */
+    'actionsColumn': boolean;
+    /**
     * Grid data
     */
     'cells': string[][];
@@ -245,10 +249,12 @@ export namespace Components {
     * Caption/description for the grid
     */
     'description': string;
-    /**
-    * Properties for Usability test case behaviors: *
-    */
     'editOnClick': boolean;
+    'editable': boolean;
+    /**
+    * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
+    */
+    'gridType': 'grid' | 'table';
     /**
     * String ID of labelling element
     */
@@ -257,9 +263,17 @@ export namespace Components {
     * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
     */
     'pageLength': number;
+    /**
+    * Custom function to control the render of cell content
+    */
+    'renderCustomCell': (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
     'rowSelection': RowSelectionPattern;
   }
   interface SuiGridAttributes extends StencilHTMLAttributes {
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'actionsColumn'?: boolean;
     /**
     * Grid data
     */
@@ -272,10 +286,12 @@ export namespace Components {
     * Caption/description for the grid
     */
     'description'?: string;
-    /**
-    * Properties for Usability test case behaviors: *
-    */
     'editOnClick'?: boolean;
+    'editable'?: boolean;
+    /**
+    * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
+    */
+    'gridType'?: 'grid' | 'table';
     /**
     * String ID of labelling element
     */
@@ -292,6 +308,10 @@ export namespace Components {
     * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
     */
     'pageLength'?: number;
+    /**
+    * Custom function to control the render of cell content
+    */
+    'renderCustomCell'?: (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
     'rowSelection'?: RowSelectionPattern;
   }
 

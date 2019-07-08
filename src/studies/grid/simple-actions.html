@@ -28,18 +28,23 @@
       const gridData = await data.json();
       const gridEl = document.querySelector('.grid');
       let cellData = gridData.map((row) => {
-        return Object.keys(row).map((key) => row[key]);
+        const rowData = Object.keys(row).map((key) => row[key]);
+        rowData.push('actions');
+        return rowData;
       });
       gridEl.cells = cellData;
       gridEl.pageLength = 30;
       gridEl.rowSelection = 'none';
-      gridEl.gridType = 'grid';
+      gridEl.editable = false;
+      gridEl.gridType = 'table';
+      gridEl.actionsColumn = true;
       gridEl.columns = [
         {name: 'First', filterable: true},
         {name: 'Last', sortable: true},
         {name: 'Email'},
         {name: 'Company'},
-        {name: 'Location', sortable: true, filterable: true}
+        {name: 'Location', sortable: true, filterable: true},
+        {name: 'Actions'}
       ];
 
       gridEl.addEventListener('filter', function(event) {

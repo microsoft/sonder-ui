@@ -34,6 +34,11 @@ export class SuiGrid {
   @Prop() description: string;
 
   /**
+   * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
+   */
+  @Prop() gridType: 'grid' | 'table';
+
+  /**
    * String ID of labelling element
    */
   @Prop() labelledBy: string;
@@ -43,7 +48,14 @@ export class SuiGrid {
    */
   @Prop() pageLength: number;
 
+  /**
+   * Custom function to control the render of cell content
+   */
+  @Prop() renderCustomCell: (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
+
   /** Properties for Usability test case behaviors: **/
+  @Prop() actionsColumn: boolean;
+  @Prop() editable: boolean = true;
   @Prop() editOnClick: boolean;
   @Prop() rowSelection: RowSelectionPattern;
 
@@ -142,6 +154,7 @@ export class SuiGrid {
     const {
       columns = [],
       description,
+      gridType = 'table',
       rowSelection,
       selectedRows,
       sortedCells = [],
@@ -150,7 +163,7 @@ export class SuiGrid {
     } = this;
     const rowSelectionState = this.getSelectionState();
 
-    return <table role="grid" class="grid" aria-labelledby={this.labelledBy}>
+    return <table role={gridType} class="grid" aria-labelledby={this.labelledBy}>
       {description ? <caption>{description}</caption> : null}
       <thead role="rowgroup" class="grid-header">
         <tr role="row" class="row">
@@ -391,20 +404,40 @@ export class SuiGrid {
 
   private renderCell(rowIndex: number, cellIndex: number, content: string) {
     const activeCellId = this.activeCell.join('-');
-    const isActiveCell = activeCellId === `${cellIndex}-${rowIndex}`;
+    const isActiveCell = activeCellId === `${cellIndex}-${rowIndex}` && !(this.actionsColumn && content === 'actions');
+    const isGrid = this.gridType === 'grid';
     return <td
-      role="gridcell"
+      role={isGrid ? 'gridcell' : 'cell'}
       class={{'cell': true, 'editing': this.isEditing && isActiveCell }}
-      tabIndex={isActiveCell ? 0 : -1}
+      tabIndex={isGrid ? isActiveCell ? 0 : -1 : null}
       ref={isActiveCell && !this.isEditing && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
       onClick={() => { this.onCellClick(rowIndex, cellIndex); }}
       onDblClick={this.onCellDoubleClick.bind(this)}
     >
       {this.isEditing && isActiveCell
         ? <input value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} ref={(el) => this.focusRef = el} />
-        : <span class="cell-content">{content}</span>
+        : <span class="cell-content">{this.renderCellContent(content, cellIndex, rowIndex)}</span>
       }
     </td>;
+  }
+
+  private renderCellContent(content: string, colIndex: number, rowIndex: number) {
+    const { actionsColumn = false, gridType, renderCustomCell = (content) => content } = this;
+    if (actionsColumn && content === 'actions') {
+      const isActiveCell = this.activeCell.join('-') === `${colIndex}-${rowIndex}`;
+      // spoof an action button
+      return <button
+        class="test-actions"
+        tabIndex={gridType === 'grid' ? isActiveCell ? 0 : -1 : null}
+        ref={isActiveCell && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
+        onClick={(() => alert('This is just a test, there is no more content'))}
+        >
+          View
+        </button>;
+    }
+    else {
+      return renderCustomCell(content, colIndex, rowIndex);
+    }
   }
 
   private updateActiveCell(colIndex, rowIndex): boolean {
@@ -418,6 +451,10 @@ export class SuiGrid {
   }
 
   private updateEditing(editing: boolean, callFocus: boolean) {
+    if (!this.editable) {
+      return
+    };
+
     this.isEditing = editing;
     this.callFocus = callFocus;
     this.callInputSelection = editing && callFocus;

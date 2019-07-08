@@ -9,7 +9,8 @@
 </head>
 <body>
   <div role="main">
-    <h1>Grid demo</h1>
+    <h1>Grid row selection demo</h1>
+    <p>Rows receive focus and select on enter/space</p>
     <sui-grid class="grid" labelledBy="grid-heading"></sui-grid>
   </div>
 
@@ -32,7 +33,8 @@
       });
       gridEl.cells = cellData;
       gridEl.pageLength = 30;
-      gridEl.rowSelection = 'none';
+      gridEl.rowSelection = 'aria';
+      grid.editable = false;
       gridEl.gridType = 'grid';
       gridEl.columns = [
         {name: 'First', filterable: true},
