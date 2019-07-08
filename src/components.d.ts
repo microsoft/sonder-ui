@@ -14,6 +14,9 @@ import {
 import {
   Column,
 } from './components/grid/grid-helpers';
+import {
+  RowSelectionPattern,
+} from './components/grid/row';
 
 
 export namespace Components {
@@ -247,10 +250,6 @@ export namespace Components {
     */
     'editOnFocus': boolean;
     /**
-    * Whether rows can be selected
-    */
-    'isSelectable': boolean;
-    /**
     * String ID of labelling element
     */
     'labelledBy': string;
@@ -258,6 +257,7 @@ export namespace Components {
     * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
     */
     'pageLength': number;
+    'rowSelection': RowSelectionPattern;
   }
   interface SuiGridAttributes extends StencilHTMLAttributes {
     /**
@@ -277,10 +277,6 @@ export namespace Components {
     */
     'editOnFocus'?: boolean;
     /**
-    * Whether rows can be selected
-    */
-    'isSelectable'?: boolean;
-    /**
     * String ID of labelling element
     */
     'labelledBy'?: string;
@@ -289,9 +285,14 @@ export namespace Components {
     */
     'onFilter'?: (event: CustomEvent) => void;
     /**
+    * Emit a custom row selection event
+    */
+    'onRowSelect'?: (event: CustomEvent) => void;
+    /**
     * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
     */
     'pageLength'?: number;
+    'rowSelection'?: RowSelectionPattern;
   }
 
   interface ListboxButton {

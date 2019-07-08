@@ -24,6 +24,7 @@
 }
 
 .row {
+  background-color: #fff;
   border-bottom: 1px solid #c2c2c2;
   display: flex;
 }
@@ -34,6 +35,40 @@
 
 .row:nth-child(even) {
   background-color: #f4f6f7;
+}
+
+.row.selected-row {
+  background-color: #b5daf6;
+}
+
+.row:focus {
+  background-color: #0067b8;
+  color: #fff;
+}
+
+.selection-indicator {
+  display: block;
+  height: 1.6em;
+  position: relative;
+  width: 1.6em;
+}
+
+.checkbox-cell .selection-indicator {
+  background: #fff;
+  border: 1px solid #333;
+}
+
+input:checked ~ .selection-indicator::after,
+.selected-row .selection-indicator::after {
+  content: "";
+  border-bottom: 2px solid #333;
+  border-right: 2px solid #333;
+  height: 1em;
+  left: 0.5em;
+  position: absolute;
+  top: 0.1em;
+  transform: rotate(45deg);
+  width: 0.5em;
 }
 
 .cell {
@@ -73,6 +108,30 @@
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 0.5em 1em;
+}
+
+.aria-selection-cell + td {
+  border-left: 0;
+}
+
+.checkbox-cell,
+.aria-selection-cell {
+  align-items: center;
+  display: flex;
+  flex: 0 0 2em;
+  justify-content: center;
+  position: relative;
+}
+
+.checkbox-cell input[type=checkbox] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 100%;
+  opacity: .00001;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
 }
 
 .filter-input {

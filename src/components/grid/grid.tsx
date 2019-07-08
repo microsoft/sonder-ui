@@ -5,6 +5,7 @@
 
 import { Component, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
 import { Column } from './grid-helpers';
+import { renderRow, RowOptions, RowSelectionPattern } from './row';
 
 enum Sort {
   Ascending = 'ascending',
@@ -33,11 +34,6 @@ export class SuiGrid {
   @Prop() description: string;
 
   /**
-   * Whether rows can be selected
-   */
-  @Prop() isSelectable: boolean;
-
-  /**
    * String ID of labelling element
    */
   @Prop() labelledBy: string;
@@ -49,6 +45,7 @@ export class SuiGrid {
 
   /** Properties for Usability test case behaviors: **/
   @Prop() editOnFocus: boolean;
+  @Prop() rowSelection: RowSelectionPattern;
 
   /**
    * Emit a custom filter event
@@ -58,12 +55,25 @@ export class SuiGrid {
   }) filterEvent: EventEmitter;
 
   /**
+   * Emit a custom row selection event
+   */
+  @Event({
+    eventName: 'rowSelect'
+  }) rowSelectionEvent: EventEmitter;
+
+  /**
+   * Save number of selected rows
+   */
+  @State() selectedRowCount = 0;
+
+  /**
    * Save column sort state
    */
   @State() sortedColumn: number;
   @State() sortState: Sort;
 
   // save cell focus and edit states
+  // active cell refers to the [column, row] indices of the cell
   @State() activeCell: [number, number] = [0, 0];
   @State() isEditing = false;
 
@@ -73,14 +83,20 @@ export class SuiGrid {
   private filters: WeakMap<Column, string> = new WeakMap();
 
   /**
+   * Save selection state by row
+   */
+  private selectedRows: WeakMap<string[], boolean> = new WeakMap();
+
+  /**
    * Save current sorted cell array
    * Will likely need to be moved out of component to allow on-demand and paged grids
    */
   private sortedCells: string[][];
 
   /*
-   * Save a reference to whatever element should receive focus
+   * DOM Refs:
    */
+  // Save a reference to whatever element should receive focus
   private focusRef: HTMLElement;
 
   /*
@@ -91,8 +107,14 @@ export class SuiGrid {
 
   @Watch('cells')
   watchOptions(newValue: string[][]) {
-    console.log('cells updated');
     this.sortedCells = this.getSortedCells(newValue);
+
+    // reset selectedRowCount
+    let selectedRowCount = 0;
+    newValue.forEach((row: string[]) => {
+      this.selectedRows.has(row) && selectedRowCount++;
+    });
+    this.selectedRowCount = selectedRowCount;
   }
 
   componentWillLoad() {
@@ -120,19 +142,24 @@ export class SuiGrid {
     const {
       columns = [],
       description,
-      isEditing,
+      rowSelection,
+      selectedRows,
       sortedCells = [],
       sortedColumn,
       sortState
     } = this;
 
-    const activeCellId = this.activeCell.join('-');
-    let isActiveCell: boolean;
-
     return <table role="grid" class="grid" aria-labelledby={this.labelledBy}>
       {description ? <caption>{description}</caption> : null}
       <thead role="rowgroup" class="grid-header">
         <tr role="row" class="row">
+          {rowSelection !== RowSelectionPattern.None ?
+            <td role="gridcell" class="checkbox-cell">
+              <span class="visuallyHidden">select rows</span>
+              <input type="checkbox" />
+              <span class="selection-indicator"></span>
+            </td>
+          : null}
           {columns.map((column, index) => (
             <th role="columnheader" class="cell heading-cell" aria-sort={column.sortable ? sortedColumn === index ? sortState : 'none' : null}>
               <span class="column-title">{column.name}</span>
@@ -155,22 +182,28 @@ export class SuiGrid {
         </tr>
       </thead>
       <tbody role="rowgroup" class="grid-body" onKeyDown={this.onCellKeydown.bind(this)}>
-        {sortedCells.map((row = [], rowIndex) => (
-          <tr role="row" class="row">
-            {row.map((cell, cellIndex) => {
-              isActiveCell = activeCellId === `${cellIndex}-${rowIndex}`;
-              return <td
-                role="gridcell"
-                class={{'cell': true, 'editing': isEditing && isActiveCell }}
-                tabIndex={isActiveCell ? 0 : -1}
-                ref={isActiveCell && !isEditing ? (el) => { this.focusRef = el; } : null}
-                onClick={() => { this.onCellClick(rowIndex, cellIndex); }}
-              >
-                {this.renderEditCell(cell, isEditing && isActiveCell)}
-              </td>;
-            })}
-          </tr>
-        ))}
+        {sortedCells.map((cells = [], index) => {
+          const isSelected = !!selectedRows.get(cells);
+          let rowOptions: RowOptions = {
+            cells,
+            index,
+            isSelected,
+            selection: rowSelection,
+            renderCell: this.renderCell.bind(this),
+            onSelectionChange: this.onRowSelect.bind(this)
+          };
+
+          if (this.rowSelection === RowSelectionPattern.Aria) {
+            const isActiveRow = this.activeCell[1] === index;
+            rowOptions = {
+              ...rowOptions,
+              isActiveRow,
+              setFocusRef: (el) => this.focusRef = el,
+              onRowKeyDown: this.onRowKeyDown.bind(this)
+            }
+          }
+          return renderRow(rowOptions);
+        })}
       </tbody>
     </table>;
   }
@@ -284,6 +317,35 @@ export class SuiGrid {
     }
   }
 
+  private onRowKeyDown(event: KeyboardEvent) {
+    const { pageLength = 0 } = this;
+    let [colIndex, rowIndex] = this.activeCell;
+    switch(event.key) {
+      case 'ArrowUp':
+        rowIndex = Math.max(0, rowIndex - 1);
+        break;
+      case 'ArrowDown':
+        rowIndex = Math.min(this.cells.length - 1, rowIndex + 1);
+        break;
+      case 'PageUp':
+        rowIndex = Math.max(0, rowIndex - pageLength);
+        break;
+      case 'PageDown':
+        rowIndex = Math.min(this.cells.length - 1, rowIndex + pageLength);
+        break;
+    }
+
+    if (this.updateActiveCell(colIndex, rowIndex)) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+  private onRowSelect(row: string[], selected: boolean) {
+    this.selectedRows.set(row, selected);
+    this.selectedRowCount = selected ? this.selectedRowCount++ : this.selectedRowCount--;
+  }
+
   private onSortColumn(columnIndex: number) {
     if (columnIndex === this.sortedColumn) {
       this.sortState = this.sortState === Sort.Descending ? Sort.Ascending : Sort.Descending;
@@ -296,16 +358,28 @@ export class SuiGrid {
     this.sortedCells = this.getSortedCells(this.cells);
   }
 
-  private renderEditCell(value: string, editMode: boolean) {
-    return editMode ?
-      <input value={value} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} ref={(el) => this.focusRef = el} /> :
-      <span class="cell-content">{value}</span>
+  private renderCell(rowIndex: number, cellIndex: number, content: string) {
+    const activeCellId = this.activeCell.join('-');
+    const isActiveCell = activeCellId === `${cellIndex}-${rowIndex}`;
+    return <td
+      role="gridcell"
+      class={{'cell': true, 'editing': this.isEditing && isActiveCell }}
+      tabIndex={isActiveCell ? 0 : -1}
+      ref={isActiveCell && !this.isEditing && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
+      onClick={() => { this.onCellClick(rowIndex, cellIndex); }}
+    >
+      {this.isEditing && isActiveCell
+        ? <input value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} ref={(el) => this.focusRef = el} />
+        : <span class="cell-content">{content}</span>
+      }
+    </td>;
   }
 
   private updateActiveCell(colIndex, rowIndex): boolean {
     if (colIndex !== this.activeCell[0] || rowIndex !== this.activeCell[1]) {
       this.callFocus = true;
       this.activeCell = [colIndex, rowIndex];
+      console.log('new active cell:', this.activeCell);
       return true;
     }
 
