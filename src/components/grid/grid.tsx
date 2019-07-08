@@ -149,14 +149,25 @@ export class SuiGrid {
       sortState
     } = this;
 
+    const rowSelectionState = this.getSelectionState();
+    console.log('row selection state:', rowSelectionState, 'selected count', this.selectedRowCount);
+
     return <table role="grid" class="grid" aria-labelledby={this.labelledBy}>
       {description ? <caption>{description}</caption> : null}
       <thead role="rowgroup" class="grid-header">
         <tr role="row" class="row">
           {rowSelection !== RowSelectionPattern.None ?
-            <td role="gridcell" class="checkbox-cell">
+            <td role="gridcell" class={{'checkbox-cell': true, 'indeterminate': rowSelectionState === 'indeterminate'}}>
               <span class="visuallyHidden">select rows</span>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={!!rowSelectionState}
+                ref={(el) => {
+                  if (rowSelectionState === 'indeterminate') {
+                    el.indeterminate = true;
+                  }
+                }}
+                onChange={(event) => this.onSelectAll((event.target as HTMLInputElement).checked)} />
               <span class="selection-indicator"></span>
             </td>
           : null}
@@ -206,6 +217,10 @@ export class SuiGrid {
         })}
       </tbody>
     </table>;
+  }
+
+  private getSelectionState(): boolean | 'indeterminate' {
+    return this.selectedRowCount === 0 ? false : this.selectedRowCount === this.cells.length ? true : 'indeterminate';
   }
 
   private getSortedCells(cells: string[][]) {
@@ -343,7 +358,15 @@ export class SuiGrid {
 
   private onRowSelect(row: string[], selected: boolean) {
     this.selectedRows.set(row, selected);
-    this.selectedRowCount = selected ? this.selectedRowCount++ : this.selectedRowCount--;
+    this.selectedRowCount = this.selectedRowCount + (selected ? 1 : -1);
+    console.log('selected row, new count:', this.selectedRowCount);
+  }
+
+  private onSelectAll(selected: boolean) {
+    this.cells.forEach((row) => {
+      this.selectedRows.set(row, selected);
+    });
+    this.selectedRowCount = selected ? this.cells.length : 0;
   }
 
   private onSortColumn(columnIndex: number) {

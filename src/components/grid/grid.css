@@ -71,6 +71,12 @@ input:checked ~ .selection-indicator::after,
   width: 0.5em;
 }
 
+.indeterminate input:checked ~ .selection-indicator::after {
+  border-right: 0;
+  height: 0.75em;
+  transform: none;
+}
+
 .cell {
   border-left: 1px solid #c2c2c2;
   display: flex;
