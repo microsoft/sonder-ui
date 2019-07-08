@@ -188,7 +188,7 @@ export class SuiGrid {
               <span class="column-title">{column.name}</span>
               {column.sortable
                 ? <button
-                    class={{ 'filter-button': true, [sortState]: sortedColumn === index }}
+                    class={{ 'filter-button': true, 'grid-button': true, [sortState]: sortedColumn === index }}
                     onClick={() => this.onSortColumn(index)}
                   >
                     <span class="visuallyHidden">{sortedColumn === index ? sortState : 'sort'}</span>
@@ -427,7 +427,7 @@ export class SuiGrid {
       const isActiveCell = this.activeCell.join('-') === `${colIndex}-${rowIndex}`;
       // spoof an action button
       return <button
-        class="test-actions"
+        class="test-actions grid-button"
         tabIndex={gridType === 'grid' ? isActiveCell ? 0 : -1 : null}
         ref={isActiveCell && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
         onClick={(() => alert('This is just a test, there is no more content'))}
