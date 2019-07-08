@@ -44,7 +44,7 @@ export class SuiGrid {
   @Prop() pageLength: number;
 
   /** Properties for Usability test case behaviors: **/
-  @Prop() editOnFocus: boolean;
+  @Prop() editOnClick: boolean;
   @Prop() rowSelection: RowSelectionPattern;
 
   /**
@@ -148,19 +148,18 @@ export class SuiGrid {
       sortedColumn,
       sortState
     } = this;
-
     const rowSelectionState = this.getSelectionState();
-    console.log('row selection state:', rowSelectionState, 'selected count', this.selectedRowCount);
 
     return <table role="grid" class="grid" aria-labelledby={this.labelledBy}>
       {description ? <caption>{description}</caption> : null}
       <thead role="rowgroup" class="grid-header">
         <tr role="row" class="row">
           {rowSelection !== RowSelectionPattern.None ?
-            <td role="gridcell" class={{'checkbox-cell': true, 'indeterminate': rowSelectionState === 'indeterminate'}}>
-              <span class="visuallyHidden">select rows</span>
+            <td role="columnheader" class={{'checkbox-cell': true, 'indeterminate': rowSelectionState === 'indeterminate'}}>
+              <span class="visuallyHidden">select row</span>
               <input
                 type="checkbox"
+                aria-label={rowSelectionState ? 'deselect all rows' : 'select all rows'}
                 checked={!!rowSelectionState}
                 ref={(el) => {
                   if (rowSelectionState === 'indeterminate') {
@@ -248,8 +247,18 @@ export class SuiGrid {
   }
 
   private onCellClick(row, column) {
+    // always edit on click if clicking the active cell
+    if (this.editOnClick || (this.activeCell[0] === column && this.activeCell[1] === row)) {
+      this.updateEditing(true, true);
+    }
     this.activeCell = [column, row];
-    this.updateEditing(true, true);
+  }
+
+  private onCellDoubleClick(event) {
+    if (!this.editOnClick) {
+      this.updateEditing(true, true);
+      event.preventDefault();
+    }
   }
 
   private onCellKeydown(event: KeyboardEvent) {
@@ -359,7 +368,6 @@ export class SuiGrid {
   private onRowSelect(row: string[], selected: boolean) {
     this.selectedRows.set(row, selected);
     this.selectedRowCount = this.selectedRowCount + (selected ? 1 : -1);
-    console.log('selected row, new count:', this.selectedRowCount);
   }
 
   private onSelectAll(selected: boolean) {
@@ -390,6 +398,7 @@ export class SuiGrid {
       tabIndex={isActiveCell ? 0 : -1}
       ref={isActiveCell && !this.isEditing && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
       onClick={() => { this.onCellClick(rowIndex, cellIndex); }}
+      onDblClick={this.onCellDoubleClick.bind(this)}
     >
       {this.isEditing && isActiveCell
         ? <input value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} ref={(el) => this.focusRef = el} />
@@ -402,7 +411,6 @@ export class SuiGrid {
     if (colIndex !== this.activeCell[0] || rowIndex !== this.activeCell[1]) {
       this.callFocus = true;
       this.activeCell = [colIndex, rowIndex];
-      console.log('new active cell:', this.activeCell);
       return true;
     }
 

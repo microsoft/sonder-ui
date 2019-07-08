@@ -248,7 +248,7 @@ export namespace Components {
     /**
     * Properties for Usability test case behaviors: *
     */
-    'editOnFocus': boolean;
+    'editOnClick': boolean;
     /**
     * String ID of labelling element
     */
@@ -275,7 +275,7 @@ export namespace Components {
     /**
     * Properties for Usability test case behaviors: *
     */
-    'editOnFocus'?: boolean;
+    'editOnClick'?: boolean;
     /**
     * String ID of labelling element
     */
