@@ -198,6 +198,35 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
+  interface SuiDisclosure {
+    /**
+    * Optional override to the button's accessible name (using aria-label)
+    */
+    'buttonLabel': string;
+    /**
+    * Optionally set the popup region's accessible name using aria-label (recommended)
+    */
+    'popupLabel': string;
+  }
+  interface SuiDisclosureAttributes extends StencilHTMLAttributes {
+    /**
+    * Optional override to the button's accessible name (using aria-label)
+    */
+    'buttonLabel'?: string;
+    /**
+    * Emit a custom close event when the popup closes
+    */
+    'onClose'?: (event: CustomEvent) => void;
+    /**
+    * Emit a custom open event when the popup opens
+    */
+    'onOpen'?: (event: CustomEvent) => void;
+    /**
+    * Optionally set the popup region's accessible name using aria-label (recommended)
+    */
+    'popupLabel'?: string;
+  }
+
   interface ListboxButton {
     /**
     * String label
@@ -341,6 +370,7 @@ declare global {
     'ComboNofilter': Components.ComboNofilter;
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
+    'SuiDisclosure': Components.SuiDisclosure;
     'ListboxButton': Components.ListboxButton;
     'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
@@ -356,6 +386,7 @@ declare global {
     'combo-nofilter': Components.ComboNofilterAttributes;
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
+    'sui-disclosure': Components.SuiDisclosureAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
@@ -406,6 +437,12 @@ declare global {
     new (): HTMLComboReadonlyElement;
   };
 
+  interface HTMLSuiDisclosureElement extends Components.SuiDisclosure, HTMLStencilElement {}
+  var HTMLSuiDisclosureElement: {
+    prototype: HTMLSuiDisclosureElement;
+    new (): HTMLSuiDisclosureElement;
+  };
+
   interface HTMLListboxButtonElement extends Components.ListboxButton, HTMLStencilElement {}
   var HTMLListboxButtonElement: {
     prototype: HTMLListboxButtonElement;
@@ -444,6 +481,7 @@ declare global {
     'combo-nofilter': HTMLComboNofilterElement
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
+    'sui-disclosure': HTMLSuiDisclosureElement
     'listbox-button': HTMLListboxButtonElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
@@ -459,6 +497,7 @@ declare global {
     'combo-nofilter': HTMLComboNofilterElement;
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
+    'sui-disclosure': HTMLSuiDisclosureElement;
     'listbox-button': HTMLListboxButtonElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;

@@ -1,0 +1,62 @@
+.wrapper {
+  position: relative;
+}
+
+.trigger {
+  background-color: #f5f5f5;
+  border: 1px solid rgba(0,0,0,.42);
+  border-radius: 4px;
+  padding: 0.5em 1em;
+}
+
+.open .trigger {
+  background-color: #0067b8;
+  border-color: #0067b8;
+  color: #fff;
+}
+
+.popup {
+  background-color: #f5f5f5;
+  border: 1px solid rgba(0,0,0,.42);
+  border-radius: 4px;
+  display: none;
+  padding: 1.5em 1em 1em;
+  position: absolute;
+}
+
+.open .popup {
+  display:  block;
+}
+
+.close {
+  background: transparent;
+  border: transparent;
+  height: 1.5em;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1.5em;
+}
+
+.close::before,
+.close::after {
+  content: "";
+  border-top: 1px solid #000;
+  left: 0.25em;
+  position: absolute;
+  width: 1em;
+  transform: rotate(45deg);
+}
+
+.close::after {
+  transform: rotate(-45deg);
+}
+
+.visuallyHidden {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}

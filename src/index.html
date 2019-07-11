@@ -45,6 +45,17 @@
 
   <multiselect-native label="Native Multiselect" class="fruit-select"></multiselect-native>
 
+  <h1>Disclosure</h1>
+
+  <sui-disclosure>
+    <span slot="button">Options</span>
+    <div slot="popup">
+      <label for="test-input">Filter:</label>
+      <input id="test-input" type="text">
+      <button type="button">Sort</button>
+    </div>
+  </sui-disclosure>
+
 
   <script type="module">
     import { states } from './assets/stateData.js';
