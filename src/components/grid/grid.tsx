@@ -6,12 +6,7 @@
 import { Component, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
 import { Column } from './grid-helpers';
 import { renderRow, RowOptions, RowSelectionPattern } from './row';
-
-enum Sort {
-  Ascending = 'ascending',
-  Descending = 'descending',
-  None = 'none'
-}
+import { renderHeaderCell, Sort } from './header-cell';
 
 @Component({
   tag: 'sui-grid',
@@ -168,7 +163,7 @@ export class SuiGrid {
       <thead role="rowgroup" class="grid-header">
         <tr role="row" class="row">
           {rowSelection !== RowSelectionPattern.None ?
-            <td role="columnheader" class={{'checkbox-cell': true, 'indeterminate': rowSelectionState === 'indeterminate'}}>
+            <th role="columnheader" class={{'checkbox-cell': true, 'indeterminate': rowSelectionState === 'indeterminate'}}>
               <span class="visuallyHidden">select row</span>
               <input
                 type="checkbox"
@@ -181,27 +176,35 @@ export class SuiGrid {
                 }}
                 onChange={(event) => this.onSelectAll((event.target as HTMLInputElement).checked)} />
               <span class="selection-indicator"></span>
-            </td>
-          : null}
-          {columns.map((column, index) => (
-            <th role="columnheader" class="cell heading-cell" aria-sort={column.sortable ? sortedColumn === index ? sortState : 'none' : null}>
-              <span class="column-title">{column.name}</span>
-              {column.sortable
-                ? <button
-                    class={{ 'filter-button': true, 'grid-button': true, [sortState]: sortedColumn === index }}
-                    onClick={() => this.onSortColumn(index)}
-                  >
-                    <span class="visuallyHidden">{sortedColumn === index ? sortState : 'sort'}</span>
-                    <img alt="" role="img" src={`/assets/sort-${sortedColumn === index ? sortState : 'none'}.svg`} />
-                  </button>
-                : null
-              }
-              {column.filterable
-                ? <input type="text" class="filter-input" onInput={(event) => this.onFilterInput(event, column)} />
-                : null
-              }
             </th>
-          ))}
+          : null}
+          {columns.map((column, index) => {
+            return renderHeaderCell({
+              column,
+              colIndex: index,
+              isSortedColumn: sortedColumn === index,
+              sortDirection: sortState,
+              onSort: this.onSortColumn.bind(this),
+              onFilter: this.onFilterInput.bind(this)
+            });
+            // <th role="columnheader" class="cell heading-cell" aria-sort={column.sortable ? sortedColumn === index ? sortState : 'none' : null}>
+            //   <span class="column-title">{column.name}</span>
+            //   {column.sortable
+            //     ? <button
+            //         class={{ 'filter-button': true, 'grid-button': true, [sortState]: sortedColumn === index }}
+            //         onClick={() => this.onSortColumn(index)}
+            //       >
+            //         <span class="visuallyHidden">{sortedColumn === index ? sortState : 'sort'}</span>
+            //         <img alt="" role="img" src={`/assets/sort-${sortedColumn === index ? sortState : 'none'}.svg`} />
+            //       </button>
+            //     : null
+            //   }
+            //   {column.filterable
+            //     ? <input type="text" class="filter-input" onInput={(event) => this.onFilterInput(event, column)} />
+            //     : null
+            //   }
+            // </th>
+          })}
         </tr>
       </thead>
       <tbody role="rowgroup" class="grid-body" onKeyDown={this.onCellKeydown.bind(this)}>
@@ -314,8 +317,8 @@ export class SuiGrid {
     }
   }
 
-  private onFilterInput(event: Event, column: Column) {
-    this.filters.set(column, (event.target as HTMLInputElement).value);
+  private onFilterInput(value: string, column: Column) {
+    this.filters.set(column, value);
 
     const filters = {};
     this.columns.forEach((column, index) => {
