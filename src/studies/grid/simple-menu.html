@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Grid Usability Study</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <script src="/build/caiacc.js"></script>
+</head>
+<body>
+  <div role="main">
+    <h1>Grid demo</h1>
+    <sui-grid class="grid" labelledBy="grid-heading"></sui-grid>
+  </div>
+
+  <script type="text/javascript" async>
+    function filterByColumn(filters, data) {
+      return data.filter((row) => {
+        return Object.keys(filters).every((columnIndex) => {
+          const filterCell = row[columnIndex];
+          return filterCell.toLowerCase().indexOf(filters[columnIndex].trim().toLowerCase()) > -1;
+        });
+      });
+    }
+
+    (async () => {
+      const data = await fetch('/assets/gridData.json');
+      const gridData = await data.json();
+      const gridEl = document.querySelector('.grid');
+      let cellData = gridData.map((row) => {
+        return Object.keys(row).map((key) => row[key]);
+      });
+      gridEl.cells = cellData;
+      gridEl.pageLength = 30;
+      gridEl.rowSelection = 'none';
+      gridEl.editable = false;
+      gridEl.headerActionsMenu = true;
+      gridEl.columns = [
+        {name: 'First', filterable: true},
+        {name: 'Last', sortable: true},
+        {name: 'Email'},
+        {name: 'Company'},
+        {name: 'Location', sortable: true, filterable: true}
+      ];
+
+      gridEl.addEventListener('filter', function(event) {
+        const newData = filterByColumn(event.detail, cellData);
+        gridEl.cells = newData;
+      });
+    })();
+  </script>
+</body>
+</html>

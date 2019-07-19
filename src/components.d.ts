@@ -232,6 +232,7 @@ export namespace Components {
     */
     'popupLabel'?: string;
   }
+
   interface SuiGrid {
     /**
     * Properties for Usability test case behaviors: *
@@ -255,6 +256,7 @@ export namespace Components {
     * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
     */
     'gridType': 'grid' | 'table';
+    'headerActionsMenu': boolean;
     /**
     * String ID of labelling element
     */
@@ -292,6 +294,7 @@ export namespace Components {
     * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
     */
     'gridType'?: 'grid' | 'table';
+    'headerActionsMenu'?: boolean;
     /**
     * String ID of labelling element
     */

@@ -52,6 +52,7 @@ export class SuiGrid {
   @Prop() actionsColumn: boolean;
   @Prop() editable: boolean = true;
   @Prop() editOnClick: boolean;
+  @Prop() headerActionsMenu: boolean;
   @Prop() rowSelection: RowSelectionPattern;
 
   /**
@@ -150,6 +151,7 @@ export class SuiGrid {
       columns = [],
       description,
       gridType = 'table',
+      headerActionsMenu,
       rowSelection,
       selectedRows,
       sortedCells = [],
@@ -182,28 +184,12 @@ export class SuiGrid {
             return renderHeaderCell({
               column,
               colIndex: index,
+              actionsMenu: headerActionsMenu,
               isSortedColumn: sortedColumn === index,
               sortDirection: sortState,
               onSort: this.onSortColumn.bind(this),
               onFilter: this.onFilterInput.bind(this)
             });
-            // <th role="columnheader" class="cell heading-cell" aria-sort={column.sortable ? sortedColumn === index ? sortState : 'none' : null}>
-            //   <span class="column-title">{column.name}</span>
-            //   {column.sortable
-            //     ? <button
-            //         class={{ 'filter-button': true, 'grid-button': true, [sortState]: sortedColumn === index }}
-            //         onClick={() => this.onSortColumn(index)}
-            //       >
-            //         <span class="visuallyHidden">{sortedColumn === index ? sortState : 'sort'}</span>
-            //         <img alt="" role="img" src={`/assets/sort-${sortedColumn === index ? sortState : 'none'}.svg`} />
-            //       </button>
-            //     : null
-            //   }
-            //   {column.filterable
-            //     ? <input type="text" class="filter-input" onInput={(event) => this.onFilterInput(event, column)} />
-            //     : null
-            //   }
-            // </th>
           })}
         </tr>
       </thead>

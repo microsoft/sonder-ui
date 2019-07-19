@@ -57,7 +57,6 @@ export class SuiDisclosure {
 
   @Listen('focusout')
   onBlur(event: FocusEvent) {
-    console.log('focus out event', this);
     const focusWithin = this.parentRef.contains(event.relatedTarget as HTMLElement);
     if (!focusWithin) {
       this.open = false;
