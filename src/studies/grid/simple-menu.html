@@ -36,11 +36,11 @@
       gridEl.editable = false;
       gridEl.headerActionsMenu = true;
       gridEl.columns = [
-        {name: 'First', filterable: true},
-        {name: 'Last', sortable: true},
-        {name: 'Email'},
-        {name: 'Company'},
-        {name: 'Location', sortable: true, filterable: true}
+        {name: 'First', filterable: true, sortable: true},
+        {name: 'Last', filterable: true, sortable: true},
+        {name: 'Email', filterable: true, sortable: true},
+        {name: 'Company', filterable: true, sortable: true},
+        {name: 'Location', filterable: true, sortable: true}
       ];
 
       gridEl.addEventListener('filter', function(event) {

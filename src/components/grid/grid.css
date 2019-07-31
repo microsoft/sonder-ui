@@ -175,3 +175,16 @@ input:checked ~ .selection-indicator::after,
   width: 1px;
   white-space: nowrap;
 }
+
+/* study variant styles */
+
+/* actions menu popup in grid header cell */
+.actions-menu {
+  text-align: left;
+}
+
+.actions-menu label,
+.actions-menu .sort-label {
+  display: block;
+  margin: 0 0 0.2em;
+}

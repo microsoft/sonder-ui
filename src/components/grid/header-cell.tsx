@@ -56,31 +56,34 @@ function renderActionsMenu(options: HeaderOptions, idBase: string) {
     return null;
   }
 
-  return <sui-disclosure class="actions-menu" buttonLabel="column actions">
-    <span slot="button">
-      <img alt="menu" role="img" src="/assets/menu.svg" />
-    </span>
-    <div slot="popup">
-    {column.filterable ? [
-      <label id={`${idBase}-filter`}>Filter</label>,
-      <input
-        type="text"
-        aria-labelledby={`${idBase}-filter ${idBase}`}
-        class="filter-input"
-        onInput={(event) => {
-          onFilter((event.target as HTMLInputElement).value, column);
-          }
-        }
-      />
-      ] : null}
-      {column.sortable ?
-      <button
-        class={{ 'filter-button': true, 'grid-button': true, [sortDirection]: isSortedColumn }}
-        onClick={() => onSort(index)}
-      >
-        <img alt={isSortedColumn ? sortDirection : 'sort'} role="img" src={`/assets/sort-${isSortedColumn ? sortDirection : 'none'}.svg`} />
-      </button>
-      : null}
-    </div>
-  </sui-disclosure>;
+  return [
+    <span class="sort-indicator">
+      { isSortedColumn ? <img alt={sortDirection} role="img" src={`/assets/sort-${sortDirection}.svg`} /> : null }
+    </span>,
+    <sui-disclosure class="actions-menu" buttonLabel="column actions">
+      <span slot="button">
+        <img alt="" role="img" src="/assets/menu.svg" />
+      </span>
+      <div slot="popup">
+        {column.filterable ? [
+          <label id={`${idBase}-filter`}>Filter:</label>,
+          <input
+            type="text"
+            aria-labelledby={`${idBase}-filter ${idBase}`}
+            class="filter-input"
+            onInput={(event) => onFilter((event.target as HTMLInputElement).value, column)}
+          />
+        ] : null}
+        {column.sortable ? [
+          <span class="sort-label">Sort:</span>,
+          <button
+            class={{ 'filter-button': true, 'grid-button': true, [sortDirection]: isSortedColumn }}
+            onClick={() => onSort(index)}
+          >
+            <img alt={isSortedColumn && sortDirection === Sort.Ascending ? 'sort ascending' : 'sort descending'} role="img" src={`/assets/sort-${isSortedColumn ? sortDirection : 'none'}.svg`} />
+          </button>
+        ] : null}
+      </div>
+    </sui-disclosure>
+  ];
 }
