@@ -41,7 +41,7 @@ export class SuiGrid {
   /**
    * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
    */
-  @Prop() pageLength: number;
+  @Prop() pageLength = 30;
 
   /**
    * Custom function to control the render of cell content
@@ -264,7 +264,7 @@ export class SuiGrid {
   }
 
   private onCellKeydown(event: KeyboardEvent) {
-    const { pageLength = 0 } = this;
+    const { pageLength } = this;
     let [colIndex, rowIndex] = this.activeCell;
     switch(event.key) {
       case 'ArrowUp':
@@ -344,7 +344,7 @@ export class SuiGrid {
   }
 
   private onRowKeyDown(event: KeyboardEvent) {
-    const { pageLength = 0 } = this;
+    const { pageLength } = this;
     let [colIndex, rowIndex] = this.activeCell;
     switch(event.key) {
       case 'ArrowUp':
