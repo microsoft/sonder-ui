@@ -47,6 +47,12 @@
         const newData = filterByColumn(event.detail, cellData);
         gridEl.cells = newData;
       });
+
+      gridEl.addEventListener('editCell', function(event) {
+        const { value, column, row } = event.detail;
+        cellData[row][column] = value;
+        gridEl.cells = [...cellData];
+      });
     })();
   </script>
 </body>

@@ -48,6 +48,11 @@ export class SuiGrid {
    */
   @Prop() renderCustomCell: (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
 
+  /**
+   * Index of the column that best labels a row
+   */
+  @Prop() titleColumn = 0;
+
   /** Properties for Usability test case behaviors: **/
   @Prop() actionsColumn: boolean;
   @Prop() editable: boolean = true;
@@ -68,6 +73,13 @@ export class SuiGrid {
   @Event({
     eventName: 'rowSelect'
   }) rowSelectionEvent: EventEmitter;
+
+  /**
+   * Emit a custom edit event when cell content change is submitted
+   */
+  @Event({
+    eventName: 'editCell'
+  }) editCellEvent: EventEmitter<{value: string; column: number; row: number;}>;
 
   /**
    * Save number of selected rows
@@ -141,7 +153,7 @@ export class SuiGrid {
 
   @Listen('focusout')
   onBlur(event: FocusEvent) {
-    if (event.relatedTarget !== this.focusRef) {
+    if (this.isEditing && event.relatedTarget && event.relatedTarget !== this.focusRef) {
       this.updateEditing(false, false);
     }
   }
@@ -169,7 +181,7 @@ export class SuiGrid {
               <span class="visuallyHidden">select row</span>
               <input
                 type="checkbox"
-                aria-label={rowSelectionState ? 'deselect all rows' : 'select all rows'}
+                aria-label="select all rows"
                 checked={!!rowSelectionState}
                 ref={(el) => {
                   if (rowSelectionState === 'indeterminate') {
@@ -202,6 +214,7 @@ export class SuiGrid {
             isSelected,
             selection: rowSelection,
             renderCell: this.renderCell.bind(this),
+            renderCheckboxCell: this.renderCheckboxCell.bind(this),
             onSelectionChange: this.onRowSelect.bind(this)
           };
 
@@ -265,6 +278,7 @@ export class SuiGrid {
 
   private onCellKeydown(event: KeyboardEvent) {
     const { pageLength } = this;
+    const maxCellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.columns.length : this.columns.length - 1;
     let [colIndex, rowIndex] = this.activeCell;
     switch(event.key) {
       case 'ArrowUp':
@@ -277,13 +291,13 @@ export class SuiGrid {
         colIndex = Math.max(0, colIndex - 1);
         break;
       case 'ArrowRight':
-        colIndex = Math.min(this.columns.length - 1, colIndex + 1);
+        colIndex = Math.min(maxCellIndex, colIndex + 1);
         break;
       case 'Home':
         colIndex = 0;
         break;
       case 'End':
-        colIndex = this.columns.length - 1;
+        colIndex = maxCellIndex;
         break;
       case 'Enter':
       case ' ':
@@ -319,6 +333,15 @@ export class SuiGrid {
     this.filterEvent.emit(filters);
   }
 
+  private onInputBlur(event: FocusEvent) {
+    const cellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.activeCell[0] - 1 : this.activeCell[0];
+    this.editCellEvent.emit({
+      value: (event.target as HTMLInputElement).value,
+      column: cellIndex,
+      row: this.activeCell[1]
+    });
+  }
+
   private onInputKeyDown(event: KeyboardEvent) {
     // allow input to handle its own keystrokes
     event.stopPropagation();
@@ -330,13 +353,24 @@ export class SuiGrid {
       this.updateEditing(false, true);
     }
 
+    // save value on enter
+    if (key === 'Enter') {
+      const cellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.activeCell[0] - 1 : this.activeCell[0];
+      this.editCellEvent.emit({
+        value: (event.target as HTMLInputElement).value,
+        column: cellIndex,
+        row: this.activeCell[1]
+      });
+    }
+
     // allow tab and shift+tab to move through cells in a row
     else if (key === 'Tab') {
+      const maxCellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.columns.length : this.columns.length - 1;
       if (shiftKey && this.activeCell[0] > 0) {
         this.updateActiveCell(this.activeCell[0] - 1, this.activeCell[1]);
         event.preventDefault();
       }
-      else if (!shiftKey && this.activeCell[0] < this.columns.length - 1) {
+      else if (!shiftKey && this.activeCell[0] < maxCellIndex) {
         this.updateActiveCell(this.activeCell[0] + 1, this.activeCell[1]);
         event.preventDefault();
       }
@@ -397,6 +431,7 @@ export class SuiGrid {
     const isGrid = this.gridType === 'grid';
     return <td
       role={isGrid ? 'gridcell' : 'cell'}
+      id={`cell-${rowIndex}-${cellIndex}`}
       class={{'cell': true, 'editing': this.isEditing && isActiveCell }}
       tabIndex={isGrid ? isActiveCell ? 0 : -1 : null}
       ref={isActiveCell && !this.isEditing && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
@@ -404,7 +439,7 @@ export class SuiGrid {
       onDblClick={this.onCellDoubleClick.bind(this)}
     >
       {this.isEditing && isActiveCell
-        ? <input value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} ref={(el) => this.focusRef = el} />
+        ? <input value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} onBlur={this.onInputBlur.bind(this)} ref={(el) => this.focusRef = el} />
         : <span class="cell-content">{this.renderCellContent(content, cellIndex, rowIndex)}</span>
       }
     </td>;
@@ -427,6 +462,22 @@ export class SuiGrid {
     else {
       return renderCustomCell(content, colIndex, rowIndex);
     }
+  }
+
+  private renderCheckboxCell(rowIndex: number, selected: boolean) {
+    const activeCellId = this.activeCell.join('-');
+    return <td role="gridcell" class="checkbox-cell">
+      <input
+        type="checkbox"
+        checked={selected}
+        aria-labelledby={`cell-${rowIndex}-${this.titleColumn + 1}`}
+        tabIndex={activeCellId === `0-${rowIndex}` ? 0 : -1}
+        ref={activeCellId === `0-${rowIndex}` ? (el) => { this.focusRef = el; } : null}
+        onChange={(event) => this.onRowSelect(this.sortedCells[rowIndex], (event.target as HTMLInputElement).checked)}
+        onKeyDown={(event) => { (event.key === ' ' || event.key === 'Enter') && event.stopPropagation(); }}
+      />
+      <span class="selection-indicator"></span>
+    </td>;
   }
 
   private updateActiveCell(colIndex, rowIndex): boolean {

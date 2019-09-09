@@ -17,6 +17,7 @@ export interface RowOptions {
   isActiveRow?: boolean;
   setFocusRef?: (elem: HTMLElement) => void;
   renderCell: (rowIndex: number, cellIndex: number, content: string) => JSX.Element;
+  renderCheckboxCell: (rowIndex: number, selected: boolean) => JSX.Element;
   onSelectionChange: (row: string[], selected: boolean) => void;
   onRowKeyDown?: (event: KeyboardEvent) => void;
 }
@@ -60,13 +61,10 @@ function renderAriaSelectionRow(options: RowOptions) {
 }
 
 function renderCheckboxSelectionRow(options: RowOptions) {
-  const { cells = [], index, renderCell, isSelected = false, onSelectionChange } = options;
+  const { cells = [], index, renderCell, renderCheckboxCell, isSelected = false } = options;
   return <tr role="row" class={{'row': true, 'selected-row': isSelected}}>
-    <td role="gridcell" class="checkbox-cell">
-      <input type="checkbox" checked={isSelected} onChange={(event) => onSelectionChange(cells, (event.target as HTMLInputElement).checked)} />
-      <span class="selection-indicator"></span>
-    </td>
-    {cells.map((cell, cellIndex) => renderCell(index, cellIndex, cell))}
+    {renderCheckboxCell(index, isSelected)}
+    {cells.map((cell, cellIndex) => renderCell(index, cellIndex + 1, cell))}
   </tr>;
 }
 

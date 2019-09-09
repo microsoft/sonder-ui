@@ -270,6 +270,10 @@ export namespace Components {
     */
     'renderCustomCell': (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
     'rowSelection': RowSelectionPattern;
+    /**
+    * Index of the column that best labels a row
+    */
+    'titleColumn': number;
   }
   interface SuiGridAttributes extends StencilHTMLAttributes {
     /**
@@ -300,6 +304,10 @@ export namespace Components {
     */
     'labelledBy'?: string;
     /**
+    * Emit a custom edit event when cell content change is submitted
+    */
+    'onEditCell'?: (event: CustomEvent<{value: string; column: number; row: number;}>) => void;
+    /**
     * Emit a custom filter event
     */
     'onFilter'?: (event: CustomEvent) => void;
@@ -316,6 +324,10 @@ export namespace Components {
     */
     'renderCustomCell'?: (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
     'rowSelection'?: RowSelectionPattern;
+    /**
+    * Index of the column that best labels a row
+    */
+    'titleColumn'?: number;
   }
 
   interface ListboxButton {
