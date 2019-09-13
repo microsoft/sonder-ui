@@ -8,6 +8,7 @@ export interface Column {
   filterable?: boolean;
   sortable?: boolean;
   editable?: boolean;
+  actionsColumn?: boolean;
 }
 
 /* Helper function to filter data by column */

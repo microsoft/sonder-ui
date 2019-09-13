@@ -118,6 +118,13 @@ input:checked ~ .selection-indicator::after,
   width: 100%;
 }
 
+.cell-content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .heading-cell {
   align-items: center;
   display: flex;

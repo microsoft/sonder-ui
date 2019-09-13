@@ -29,7 +29,7 @@
       const gridEl = document.querySelector('.grid');
       let cellData = gridData.map((row) => {
         const rowData = Object.keys(row).map((key) => row[key]);
-        rowData.push('actions');
+        rowData.push('View', 'Edit');
         return rowData;
       });
       gridEl.cells = cellData;
@@ -37,14 +37,14 @@
       gridEl.rowSelection = 'none';
       gridEl.editable = false;
       gridEl.gridType = 'grid';
-      gridEl.actionsColumn = true;
       gridEl.columns = [
         {name: 'First', filterable: true},
         {name: 'Last', sortable: true},
         {name: 'Email'},
         {name: 'Company'},
         {name: 'Location', sortable: true, filterable: true},
-        {name: 'Actions'}
+        {name: 'More Info', actionsColumn: true},
+        {name: 'Edit', actionsColumn: true}
       ];
 
       gridEl.addEventListener('filter', function(event) {

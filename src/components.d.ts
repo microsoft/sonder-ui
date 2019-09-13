@@ -235,10 +235,6 @@ export namespace Components {
 
   interface SuiGrid {
     /**
-    * Properties for Usability test case behaviors: *
-    */
-    'actionsColumn': boolean;
-    /**
     * Grid data
     */
     'cells': string[][];
@@ -251,6 +247,9 @@ export namespace Components {
     */
     'description': string;
     'editOnClick': boolean;
+    /**
+    * Properties for Usability test case behaviors: *
+    */
     'editable': boolean;
     /**
     * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
@@ -270,16 +269,14 @@ export namespace Components {
     */
     'renderCustomCell': (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
     'rowSelection': RowSelectionPattern;
+    'simpleEditable': boolean;
     /**
     * Index of the column that best labels a row
     */
     'titleColumn': number;
+    'useApplicationRole': boolean;
   }
   interface SuiGridAttributes extends StencilHTMLAttributes {
-    /**
-    * Properties for Usability test case behaviors: *
-    */
-    'actionsColumn'?: boolean;
     /**
     * Grid data
     */
@@ -293,6 +290,9 @@ export namespace Components {
     */
     'description'?: string;
     'editOnClick'?: boolean;
+    /**
+    * Properties for Usability test case behaviors: *
+    */
     'editable'?: boolean;
     /**
     * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
@@ -324,10 +324,12 @@ export namespace Components {
     */
     'renderCustomCell'?: (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
     'rowSelection'?: RowSelectionPattern;
+    'simpleEditable'?: boolean;
     /**
     * Index of the column that best labels a row
     */
     'titleColumn'?: number;
+    'useApplicationRole'?: boolean;
   }
 
   interface ListboxButton {

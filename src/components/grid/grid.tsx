@@ -54,11 +54,12 @@ export class SuiGrid {
   @Prop() titleColumn = 0;
 
   /** Properties for Usability test case behaviors: **/
-  @Prop() actionsColumn: boolean;
   @Prop() editable: boolean = true;
   @Prop() editOnClick: boolean;
   @Prop() headerActionsMenu: boolean;
   @Prop() rowSelection: RowSelectionPattern;
+  @Prop() simpleEditable = false;
+  @Prop() useApplicationRole = false;
 
   /**
    * Emit a custom filter event
@@ -153,7 +154,7 @@ export class SuiGrid {
 
   @Listen('focusout')
   onBlur(event: FocusEvent) {
-    if (this.isEditing && event.relatedTarget && event.relatedTarget !== this.focusRef) {
+    if (this.isEditing && event.relatedTarget && event.relatedTarget !== this.focusRef && !this.simpleEditable) {
       this.updateEditing(false, false);
     }
   }
@@ -168,11 +169,13 @@ export class SuiGrid {
       selectedRows,
       sortedCells = [],
       sortedColumn,
-      sortState
+      sortState,
+      useApplicationRole
     } = this;
     const rowSelectionState = this.getSelectionState();
+    const tableRole = useApplicationRole ? 'application' : gridType;
 
-    return <table role={gridType} class="grid" aria-labelledby={this.labelledBy}>
+    return <table role={tableRole} aria-roledescription={useApplicationRole ? 'editable data grid' : null} class="grid" aria-labelledby={this.labelledBy}>
       {description ? <caption>{description}</caption> : null}
       <thead role="rowgroup" class="grid-header">
         <tr role="row" class="row">
@@ -334,12 +337,10 @@ export class SuiGrid {
   }
 
   private onInputBlur(event: FocusEvent) {
-    const cellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.activeCell[0] - 1 : this.activeCell[0];
-    this.editCellEvent.emit({
-      value: (event.target as HTMLInputElement).value,
-      column: cellIndex,
-      row: this.activeCell[1]
-    });
+    if (!this.simpleEditable) {
+      const cellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.activeCell[0] - 1 : this.activeCell[0];
+      this.saveCell(cellIndex, this.activeCell[1], (event.target as HTMLInputElement).value);
+    }
   }
 
   private onInputKeyDown(event: KeyboardEvent) {
@@ -356,15 +357,11 @@ export class SuiGrid {
     // save value on enter
     if (key === 'Enter') {
       const cellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.activeCell[0] - 1 : this.activeCell[0];
-      this.editCellEvent.emit({
-        value: (event.target as HTMLInputElement).value,
-        column: cellIndex,
-        row: this.activeCell[1]
-      });
+      this.saveCell(cellIndex, this.activeCell[1], (event.target as HTMLInputElement).value);
     }
 
     // allow tab and shift+tab to move through cells in a row
-    else if (key === 'Tab') {
+    else if (key === 'Tab' && !this.simpleEditable) {
       const maxCellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.columns.length : this.columns.length - 1;
       if (shiftKey && this.activeCell[0] > 0) {
         this.updateActiveCell(this.activeCell[0] - 1, this.activeCell[1]);
@@ -427,7 +424,8 @@ export class SuiGrid {
 
   private renderCell(rowIndex: number, cellIndex: number, content: string) {
     const activeCellId = this.activeCell.join('-');
-    const isActiveCell = activeCellId === `${cellIndex}-${rowIndex}` && !(this.actionsColumn && content === 'actions');
+    const currentCellKey = `${cellIndex}-${rowIndex}`;
+    const isActiveCell = activeCellId === currentCellKey && !this.columns[cellIndex].actionsColumn;
     const isGrid = this.gridType === 'grid';
     return <td
       role={isGrid ? 'gridcell' : 'cell'}
@@ -442,21 +440,33 @@ export class SuiGrid {
         ? <input value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} onBlur={this.onInputBlur.bind(this)} ref={(el) => this.focusRef = el} />
         : <span class="cell-content">{this.renderCellContent(content, cellIndex, rowIndex)}</span>
       }
+      {this.simpleEditable && !this.columns[cellIndex].actionsColumn ?
+        this.isEditing && isActiveCell ?
+          [
+            <button class="grid-button" key={`${currentCellKey}-save`} type="button" onClick={() => { this.updateEditing(false, true); event.stopPropagation(); }}><img src="/assets/ok.svg" alt="Save" role="img" /></button>,
+            <button class="grid-button" key={`${currentCellKey}-cancel`} type="button" onClick={() => { this.updateEditing(false, true); event.stopPropagation(); }}><img src="/assets/cancel.svg" alt="Cancel" role="img" /></button>
+          ]
+          : <button class="grid-button" key={`${currentCellKey}-edit`} type="button" onClick={() => { this.updateEditing(true, true); event.stopPropagation(); }}><img src="/assets/edit.svg" alt="Edit" role="img" /></button>
+        : null
+      }
     </td>;
   }
 
   private renderCellContent(content: string, colIndex: number, rowIndex: number) {
-    const { actionsColumn = false, gridType, renderCustomCell = (content) => content } = this;
-    if (actionsColumn && content === 'actions') {
+    const { gridType, renderCustomCell = (content) => content } = this;
+    const isActionsColumn = this.columns[colIndex] && this.columns[colIndex].actionsColumn;
+    if (isActionsColumn) {
       const isActiveCell = this.activeCell.join('-') === `${colIndex}-${rowIndex}`;
       // spoof an action button
       return <button
         class="test-actions grid-button"
+        id={`action-${rowIndex}-${colIndex}`}
+        aria-labelledby={`action-${rowIndex}-${colIndex} cell-${rowIndex}-${this.titleColumn}`}
         tabIndex={gridType === 'grid' ? isActiveCell ? 0 : -1 : null}
         ref={isActiveCell && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
-        onClick={(() => alert('This is just a test, there is no more content'))}
+        onClick={(() => alert(`This is just a test, you successfully activated the ${content} button`))}
         >
-          View
+          {content}
         </button>;
     }
     else {
@@ -480,6 +490,10 @@ export class SuiGrid {
     </td>;
   }
 
+  private saveCell(column: number, row: number, value: string) {
+    this.editCellEvent.emit({ column, row, value });
+  }
+
   private updateActiveCell(colIndex, rowIndex): boolean {
     if (colIndex !== this.activeCell[0] || rowIndex !== this.activeCell[1]) {
       this.callFocus = true;
@@ -491,9 +505,10 @@ export class SuiGrid {
   }
 
   private updateEditing(editing: boolean, callFocus: boolean) {
-    if (!this.editable) {
+    if (!this.editable && !this.simpleEditable) {
       return
     };
+    console.log('update editing to', editing);
 
     this.isEditing = editing;
     this.callFocus = callFocus;
