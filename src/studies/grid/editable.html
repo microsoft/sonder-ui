@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Grid Usability Study</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <script src="/build/caiacc.js"></script>
+</head>
+<body>
+  <div role="main" class="main">
+    <h1>Real Estate Co.</h1>
+    <p>The real estate company you work at has a collection of houses for sale in various cities. Your job is to use the following table to view and manage the listings.</p>
+
+    <h2 id="grid-heading">House Listings</h2>
+    <sui-grid class="grid"></sui-grid>
+
+    <h2>Fake Company Info</h2>
+
+    <p>Real estate is "property consisting of land and the buildings on it, along with its natural resources such as crops, minerals or water; immovable property of this nature; an interest vested in this (also) an item of real property, (more generally) buildings or housing in general. Also: the business of real estate; the profession of buying, selling, or renting land, buildings, or housing." It is a legal term used in jurisdictions whose legal system is derived from English common law, such as India, England, Wales, Northern Ireland, United States, Canada, Pakistan, Australia, and New Zealand.</p>
+
+    <nav aria-label="Fake footer menu with mock links" class="footer">
+      <a href="#">Fake Company Home</a>
+      <a href="#">Fake About</a>
+      <a href="#">Fake Contact</a>
+    </nav>
+  </div>
+
+  <script type="text/javascript" async>
+    function filterByColumn(filters, data) {
+      return data.filter((row) => {
+        return Object.keys(filters).every((columnIndex) => {
+          const filterCell = row[columnIndex];
+          return filterCell.toLowerCase().indexOf(filters[columnIndex].trim().toLowerCase()) > -1;
+        });
+      });
+    }
+
+    (async () => {
+      const data = await fetch('/assets/homes.json');
+      const gridData = await data.json();
+      gridData.shift();
+      const gridEl = document.querySelector('.grid');
+      let cellData = gridData;
+      gridEl.cells = cellData;
+      gridEl.pageLength = 30;
+      gridEl.rowSelection = 'none';
+      gridEl.gridType = 'grid';
+      gridEl.labelledBy = 'grid-heading';
+      gridEl.useApplicationRole = true;
+      gridEl.columns = [
+        {name: 'Price', sortable: true},
+        {name: 'Square Feet'},
+        {name: 'Beds', filterable: true},
+        {name: 'Baths', filterable: true},
+        {name: 'City', filterable: true, sortable: true}
+      ];
+
+      gridEl.addEventListener('filter', function(event) {
+        const newData = filterByColumn(event.detail, cellData);
+        gridEl.cells = newData;
+      });
+
+      gridEl.addEventListener('editCell', function(event) {
+        const { value, column, row } = event.detail;
+        cellData[row][column] = value;
+        gridEl.cells = [...cellData];
+      });
+    })();
+  </script>
+</body>
+</html>

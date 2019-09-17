@@ -11,6 +11,12 @@ import '@stencil/core';
 import {
   SelectOption,
 } from './shared/interfaces';
+import {
+  Column,
+} from './components/grid/grid-helpers';
+import {
+  RowSelectionPattern,
+} from './components/grid/row';
 
 
 export namespace Components {
@@ -227,6 +233,105 @@ export namespace Components {
     'popupLabel'?: string;
   }
 
+  interface SuiGrid {
+    /**
+    * Grid data
+    */
+    'cells': string[][];
+    /**
+    * Column definitions
+    */
+    'columns': Column[];
+    /**
+    * Caption/description for the grid
+    */
+    'description': string;
+    'editOnClick': boolean;
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'editable': boolean;
+    /**
+    * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
+    */
+    'gridType': 'grid' | 'table';
+    'headerActionsMenu': boolean;
+    /**
+    * String ID of labelling element
+    */
+    'labelledBy': string;
+    /**
+    * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
+    */
+    'pageLength': number;
+    /**
+    * Custom function to control the render of cell content
+    */
+    'renderCustomCell': (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
+    'rowSelection': RowSelectionPattern;
+    'simpleEditable': boolean;
+    /**
+    * Index of the column that best labels a row
+    */
+    'titleColumn': number;
+    'useApplicationRole': boolean;
+  }
+  interface SuiGridAttributes extends StencilHTMLAttributes {
+    /**
+    * Grid data
+    */
+    'cells'?: string[][];
+    /**
+    * Column definitions
+    */
+    'columns'?: Column[];
+    /**
+    * Caption/description for the grid
+    */
+    'description'?: string;
+    'editOnClick'?: boolean;
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'editable'?: boolean;
+    /**
+    * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
+    */
+    'gridType'?: 'grid' | 'table';
+    'headerActionsMenu'?: boolean;
+    /**
+    * String ID of labelling element
+    */
+    'labelledBy'?: string;
+    /**
+    * Emit a custom edit event when cell content change is submitted
+    */
+    'onEditCell'?: (event: CustomEvent<{value: string; column: number; row: number;}>) => void;
+    /**
+    * Emit a custom filter event
+    */
+    'onFilter'?: (event: CustomEvent) => void;
+    /**
+    * Emit a custom row selection event
+    */
+    'onRowSelect'?: (event: CustomEvent) => void;
+    /**
+    * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
+    */
+    'pageLength'?: number;
+    /**
+    * Custom function to control the render of cell content
+    */
+    'renderCustomCell'?: (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
+    'rowSelection'?: RowSelectionPattern;
+    'simpleEditable'?: boolean;
+    /**
+    * Index of the column that best labels a row
+    */
+    'titleColumn'?: number;
+    'useApplicationRole'?: boolean;
+  }
+
   interface ListboxButton {
     /**
     * String label
@@ -371,6 +476,7 @@ declare global {
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
     'SuiDisclosure': Components.SuiDisclosure;
+    'SuiGrid': Components.SuiGrid;
     'ListboxButton': Components.ListboxButton;
     'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
@@ -387,6 +493,7 @@ declare global {
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
     'sui-disclosure': Components.SuiDisclosureAttributes;
+    'sui-grid': Components.SuiGridAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
@@ -443,6 +550,12 @@ declare global {
     new (): HTMLSuiDisclosureElement;
   };
 
+  interface HTMLSuiGridElement extends Components.SuiGrid, HTMLStencilElement {}
+  var HTMLSuiGridElement: {
+    prototype: HTMLSuiGridElement;
+    new (): HTMLSuiGridElement;
+  };
+
   interface HTMLListboxButtonElement extends Components.ListboxButton, HTMLStencilElement {}
   var HTMLListboxButtonElement: {
     prototype: HTMLListboxButtonElement;
@@ -482,6 +595,7 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
     'sui-disclosure': HTMLSuiDisclosureElement
+    'sui-grid': HTMLSuiGridElement
     'listbox-button': HTMLListboxButtonElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
@@ -498,6 +612,7 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
     'sui-disclosure': HTMLSuiDisclosureElement;
+    'sui-grid': HTMLSuiGridElement;
     'listbox-button': HTMLListboxButtonElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;

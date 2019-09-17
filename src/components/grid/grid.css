@@ -1,0 +1,232 @@
+/*---------------------------------------------------------------------------------------------
+*  Copyright (c) Microsoft Corporation. All rights reserved.
+*  Licensed under the MIT license. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
+
+.grid {
+  border: 1px solid #c2c2c2;
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 1100px; /* bit of a hack for examples */
+  overflow: hidden;
+}
+
+.grid-caption {
+  background-color: #fff;
+  border-bottom: 1px solid #c2c2c2;
+  padding: 0.5em;
+}
+
+.grid-header {
+  border-bottom: 1px solid #c2c2c2;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.15);
+  flex: 0 0 auto;
+  overflow-y: scroll;
+}
+
+.grid-body {
+  flex: 1 1 100%;
+  overflow-y: scroll;
+}
+
+.row {
+  background-color: #fff;
+  border-bottom: 1px solid #c2c2c2;
+  display: flex;
+}
+
+.grid-header .row {
+  border-bottom: none;
+}
+
+.row:nth-child(even) {
+  background-color: #f4f6f7;
+}
+
+.row.selected-row {
+  background-color: #b5daf6;
+}
+
+.row:focus {
+  background-color: #0067b8;
+  color: #fff;
+  outline: 4px solid transparent;
+}
+
+.selection-indicator {
+  display: block;
+  height: 1.6em;
+  position: relative;
+  width: 1.6em;
+}
+
+.checkbox-cell .selection-indicator {
+  background: #fff;
+  border: 1px solid #333;
+}
+
+input:focus ~ .selection-indicator {
+  box-shadow: 0 0 1px 3px #0067b8;
+  outline: 4px solid transparent;
+}
+
+input:checked ~ .selection-indicator::after,
+.selected-row .selection-indicator::after {
+  content: "";
+  border-bottom: 2px solid #333;
+  border-right: 2px solid #333;
+  height: 1em;
+  left: 0.5em;
+  position: absolute;
+  top: 0.1em;
+  transform: rotate(45deg);
+  width: 0.5em;
+}
+
+.indeterminate input:checked ~ .selection-indicator::after {
+  border-right: 0;
+  height: 0.75em;
+  transform: none;
+}
+
+.cell {
+  align-items: center;
+  border-left: 1px solid #c2c2c2;
+  display: flex;
+  flex: 1 100%;
+  min-width: 180px;
+  padding: 0;
+  text-overflow: ellipsis;
+}
+
+.cell:focus {
+  background-color: #0067b8;
+  color: #fff;
+  outline: 4px solid transparent;
+}
+
+.cell:first-child,
+.col:first-child {
+  border-left: 0;
+}
+
+.cell.editing {
+  align-items: stretch;
+  padding: 0;
+}
+
+.cell-content,
+.cell-edit {
+  min-width: 100px;
+  padding: 0.5em 1em;
+  width: 100%;
+}
+
+.cell-content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell .grid-button {
+  margin: 0.5em;
+}
+
+.cell .grid-button + .grid-button {
+  margin-left: 0;
+}
+
+.grid-button img {
+  width: 1.75em;
+  height: 1.75em;
+}
+
+.heading-cell {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+}
+
+.aria-selection-cell + td {
+  border-left: 0;
+}
+
+.checkbox-cell,
+.aria-selection-cell {
+  align-items: center;
+  display: flex;
+  flex: 0 0 2em;
+  justify-content: center;
+  position: relative;
+}
+
+.checkbox-cell input[type=checkbox] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 100%;
+  opacity: .00001;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+}
+
+.grid-button {
+  background-color: #e6e9ea;
+  border: 1px solid #c2c2c2;
+  border-radius: 3px;
+  padding: 0.1em 0.25em;
+}
+
+.grid-button:focus,
+.cell input:focus {
+  box-shadow: 0 0 1px 3px #0067b8;
+  outline: 4px solid transparent;
+}
+
+.filter-input {
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  margin-top: 0.5em;
+  max-width: 100%;
+  padding: 0.5em;
+}
+
+.filter-button.ascending,
+.filter-button.descending {
+  background-color: #b5daf6;
+  border-color: #0067b8;
+}
+
+.filter-button img {
+  display: block;
+}
+
+.visuallyHidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+/* study variant styles */
+
+/* actions menu popup in grid header cell */
+.actions-menu {
+  text-align: left;
+}
+
+.actions-menu label,
+.actions-menu .sort-label {
+  display: block;
+  margin: 0 0 0.2em;
+}
