@@ -42,8 +42,8 @@
       gridData.shift();
       const gridEl = document.querySelector('.grid');
       let cellData = gridData.map((row) => {
-        rowData.push('View', 'Edit');
-        return rowData;
+        row.push('View', 'Edit');
+        return row;
       });
       gridEl.cells = cellData;
       gridEl.pageLength = 30;
