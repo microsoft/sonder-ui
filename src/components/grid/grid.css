@@ -50,6 +50,7 @@
 .row:focus {
   background-color: #0067b8;
   color: #fff;
+  outline: 4px solid transparent;
 }
 
 .selection-indicator {
@@ -66,6 +67,7 @@
 
 input:focus ~ .selection-indicator {
   box-shadow: 0 0 1px 3px #0067b8;
+  outline: 4px solid transparent;
 }
 
 input:checked ~ .selection-indicator::after,
@@ -88,11 +90,11 @@ input:checked ~ .selection-indicator::after,
 }
 
 .cell {
+  align-items: center;
   border-left: 1px solid #c2c2c2;
   display: flex;
   flex: 1 100%;
   min-width: 100px;
-  overflow: hidden;
   padding: 0;
   text-overflow: ellipsis;
 }
@@ -100,6 +102,7 @@ input:checked ~ .selection-indicator::after,
 .cell:focus {
   background-color: #0067b8;
   color: #fff;
+  outline: 4px solid transparent;
 }
 
 .cell:first-child,
@@ -114,6 +117,7 @@ input:checked ~ .selection-indicator::after,
 
 .cell-content,
 .cell-edit {
+  min-width: 100px;
   padding: 0.5em 1em;
   width: 100%;
 }
@@ -123,6 +127,19 @@ input:checked ~ .selection-indicator::after,
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.cell .grid-button {
+  margin: 0.5em;
+}
+
+.cell .grid-button + .grid-button {
+  margin-left: 0;
+}
+
+.grid-button img {
+  width: 1.75em;
+  height: 1.75em;
 }
 
 .heading-cell {
@@ -162,6 +179,12 @@ input:checked ~ .selection-indicator::after,
   border: 1px solid #c2c2c2;
   border-radius: 3px;
   padding: 0.1em 0.25em;
+}
+
+.grid-button:focus,
+.cell input:focus {
+  box-shadow: 0 0 1px 3px #0067b8;
+  outline: 4px solid transparent;
 }
 
 .filter-input {

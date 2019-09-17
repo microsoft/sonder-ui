@@ -265,6 +265,7 @@ export class SuiGrid {
   }
 
   private onCellClick(row, column) {
+    if (this.simpleEditable) return;
     // always edit on click if clicking the active cell
     if (this.editOnClick || (this.activeCell[0] === column && this.activeCell[1] === row)) {
       this.updateEditing(true, true);
@@ -273,7 +274,7 @@ export class SuiGrid {
   }
 
   private onCellDoubleClick(event) {
-    if (!this.editOnClick) {
+    if (!this.editOnClick && !this.simpleEditable) {
       this.updateEditing(true, true);
       event.preventDefault();
     }
@@ -304,6 +305,7 @@ export class SuiGrid {
         break;
       case 'Enter':
       case ' ':
+        if (this.simpleEditable) return;
         event.preventDefault();
         this.updateEditing(true, true);
         break;
@@ -317,6 +319,16 @@ export class SuiGrid {
 
     if (this.updateActiveCell(colIndex, rowIndex)) {
       event.preventDefault();
+    }
+  }
+
+  private onEditButtonClick(event: MouseEvent, row: number, column: number, edit: boolean, save = false) {
+    event.stopPropagation();
+    this.activeCell = [column, row];
+    this.updateEditing(edit, true);
+    if (save) {
+      console.log('save', (this.focusRef as any).value);
+      this.saveCell(column, row, (this.focusRef as HTMLInputElement).value);
     }
   }
 
@@ -443,10 +455,17 @@ export class SuiGrid {
       {this.simpleEditable && !this.columns[cellIndex].actionsColumn ?
         this.isEditing && isActiveCell ?
           [
-            <button class="grid-button" key={`${currentCellKey}-save`} type="button" onClick={() => { this.updateEditing(false, true); event.stopPropagation(); }}><img src="/assets/ok.svg" alt="Save" role="img" /></button>,
-            <button class="grid-button" key={`${currentCellKey}-cancel`} type="button" onClick={() => { this.updateEditing(false, true); event.stopPropagation(); }}><img src="/assets/cancel.svg" alt="Cancel" role="img" /></button>
+            <button class="grid-button" key={`${currentCellKey}-save`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false, true) }}><img src="/assets/ok.svg" alt="Save" role="img" /></button>,
+            <button class="grid-button" key={`${currentCellKey}-cancel`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false) }}><img src="/assets/cancel.svg" alt="Cancel" role="img" /></button>
           ]
-          : <button class="grid-button" key={`${currentCellKey}-edit`} type="button" onClick={() => { this.updateEditing(true, true); event.stopPropagation(); }}><img src="/assets/edit.svg" alt="Edit" role="img" /></button>
+          : <button
+              class="grid-button"
+              key={`${currentCellKey}-edit`}
+              type="button"
+              ref={isActiveCell ? (el) => { this.focusRef = el; } : null}
+              onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, true) }}>
+                <img src="/assets/edit.svg" alt="Edit" role="img" />
+              </button>
         : null
       }
     </td>;
@@ -508,7 +527,6 @@ export class SuiGrid {
     if (!this.editable && !this.simpleEditable) {
       return
     };
-    console.log('update editing to', editing);
 
     this.isEditing = editing;
     this.callFocus = callFocus;

@@ -24,14 +24,15 @@
     }
 
     (async () => {
-      const data = await fetch('/assets/gridData.json');
+      const data = await fetch('/assets/homes.json');
       const gridData = await data.json();
+      gridData.shift();
       const gridEl = document.querySelector('.grid');
       let cellData = gridData.map((row) => {
-        const rowData = Object.keys(row).map((key) => row[key]);
-        rowData.push('View');
-        return rowData;
+        row.push('View');
+        return row;
       });
+      console.log(cellData);
       gridEl.cells = cellData;
       gridEl.pageLength = 30;
       gridEl.rowSelection = 'none';
@@ -39,17 +40,24 @@
       gridEl.simpleEditable = true;
       gridEl.gridType = 'table';
       gridEl.columns = [
-        {name: 'First', filterable: true},
-        {name: 'Last', sortable: true},
-        {name: 'Email'},
-        {name: 'Company'},
-        {name: 'Location', sortable: true, filterable: true},
-        {name: 'Actions', actionsColumn: true}
+        {name: 'Price', sortable: true},
+        {name: 'Square Feet'},
+        {name: 'Beds', filterable: true},
+        {name: 'Baths', filterable: true},
+        {name: 'Lot (acres)'},
+        {name: 'City', filterable: true, sortable: true},
+        {name: 'View', actionsColumn: true}
       ];
 
       gridEl.addEventListener('filter', function(event) {
         const newData = filterByColumn(event.detail, cellData);
         gridEl.cells = newData;
+      });
+
+      gridEl.addEventListener('editCell', function(event) {
+        const { value, column, row } = event.detail;
+        cellData[row][column] = value;
+        gridEl.cells = [...cellData];
       });
     })();
   </script>
