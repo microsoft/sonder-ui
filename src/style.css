@@ -16,6 +16,24 @@ body {
   padding: 0;
 }
 
+[role=main] {
+  padding: 1em 2em;
+}
+
+.footer {
+  background-color: #e6e9ea;
+  margin-top: 2em;
+  padding: 1em;
+  text-align: center;
+}
+
+.footer a {
+  display: inline-block;
+  padding: 0.5em;
+}
+
+/* Combo usability study */
+
 .example-form {
   background-color: #fff;
   border: 1px solid rgba(0,0,0,.5);
@@ -58,3 +76,5 @@ body {
   display: block;
   margin-bottom: 1.5em;
 }
+
+/* Grid usability study */
