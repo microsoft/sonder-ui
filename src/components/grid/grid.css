@@ -151,10 +151,6 @@ input:checked ~ .selection-indicator::after,
   padding: 0.5em 1em;
 }
 
-.aria-selection-cell + td {
-  border-left: 0;
-}
-
 .checkbox-cell,
 .aria-selection-cell {
   align-items: center;

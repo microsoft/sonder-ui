@@ -53,9 +53,10 @@ function renderAriaSelectionRow(options: RowOptions) {
       }
     }}
   >
-    <div role="presentation" class="aria-selection-cell" onClick={() => { onSelectionChange(cells, !isSelected); }}>
+    <td role="gridcell" class="aria-selection-cell" onClick={() => { onSelectionChange(cells, !isSelected); }}>
       <span class="selection-indicator"></span>
-    </div>
+      <span class="visuallyHidden">row {isSelected ? 'selected' : 'not selected'}</span>
+    </td>
     {cells.map((cell, cellIndex) => renderCell(index, cellIndex, cell))}
   </tr>;
 }

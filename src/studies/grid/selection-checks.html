@@ -37,7 +37,7 @@
     }
 
     (async () => {
-      const data = await fetch('/assets/gridData.json');
+      const data = await fetch('/assets/homes.json');
       const gridData = await data.json();
       gridData.shift();
       const gridEl = document.querySelector('.grid');

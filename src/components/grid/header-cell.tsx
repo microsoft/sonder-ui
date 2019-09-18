@@ -23,7 +23,8 @@ export interface HeaderOptions {
 export function renderHeaderCell(options: HeaderOptions): JSX.Element {
   const { actionsMenu = false, colIndex, column, isSortedColumn = false, sortDirection } = options;
   const idBase = `col-${colIndex}`;
-  return <th role="columnheader" class="cell heading-cell" aria-sort={column.sortable ? isSortedColumn ? sortDirection : 'none' : null}>
+  // @ts-ignore
+  return <th role="columnheader" abbr={column.name} class="cell heading-cell" aria-labelledby={idBase} aria-sort={column.sortable ? isSortedColumn ? sortDirection : 'none' : null}>
     <span id={idBase} class="column-title">{column.name}</span>
     {actionsMenu ? renderActionsMenu(options, idBase) : renderStaticActions(options, idBase)}
   </th>
@@ -60,7 +61,7 @@ function renderActionsMenu(options: HeaderOptions, idBase: string) {
     <span class="sort-indicator">
       { isSortedColumn ? <img alt={sortDirection} role="img" src={`/assets/sort-${sortDirection}.svg`} /> : null }
     </span>,
-    <sui-disclosure class="actions-menu" buttonLabel="column actions">
+    <sui-disclosure class="actions-menu" buttonLabel={`${column.name} actions`}>
       <span slot="button">
         <img alt="" role="img" src="/assets/menu.svg" />
       </span>
