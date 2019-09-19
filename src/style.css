@@ -98,6 +98,10 @@ body {
   outline: 4px solid transparent;
 }
 
+.example-form button[type=submit]:disabled {
+  background-color: #999;
+}
+
 .form-input {
   display: block;
   margin-bottom: 1.5em;
