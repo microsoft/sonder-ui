@@ -32,7 +32,33 @@ body {
   padding: 0.5em;
 }
 
-/* Combo usability study */
+.skip-link {
+  background-color: #ddd;
+  border: 0;
+  clip: rect(0 0 0 0);
+  display: inline-block;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+.skip-link:focus {
+  border: 1px solid #333;
+  box-shadow: 0 0 6px 2px #0067b8;
+  clip: auto;
+  font-weight: bold;
+  height: auto;
+  margin: 0;
+  outline: 4px solid transparent;
+  padding: 0.5em;
+  width: auto;
+}
+
+/* Usability study styles */
 
 .example-form {
   background-color: #fff;
@@ -76,5 +102,3 @@ body {
   display: block;
   margin-bottom: 1.5em;
 }
-
-/* Grid usability study */

@@ -388,15 +388,19 @@ export class SuiGrid {
       this.saveCell(cellIndex, this.activeCell[1], (event.target as HTMLInputElement).value);
     }
 
-    // allow tab and shift+tab to move through cells in a row
-    else if (key === 'Tab' && !this.simpleEditable) {
+    // allow tab and shift+tab to move through cells in a row for edit on click grid
+    else if (key === 'Tab' && this.editOnClick) {
       const maxCellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.columns.length : this.columns.length - 1;
       if (shiftKey && this.activeCell[0] > 0) {
+        this.saveCell(this.activeCell[0], this.activeCell[1], (event.target as HTMLInputElement).value);
         this.updateActiveCell(this.activeCell[0] - 1, this.activeCell[1]);
+        this.preventSave = true;
         event.preventDefault();
       }
       else if (!shiftKey && this.activeCell[0] < maxCellIndex) {
+        this.saveCell(this.activeCell[0], this.activeCell[1], (event.target as HTMLInputElement).value);
         this.updateActiveCell(this.activeCell[0] + 1, this.activeCell[1]);
+        this.preventSave = true;
         event.preventDefault();
       }
     }
