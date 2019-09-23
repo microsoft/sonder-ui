@@ -357,6 +357,39 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
+  interface SuiModal {
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'focusTarget': 'close' | 'wrapper';
+    /**
+    * Optionally give the modal a header, also used as the accessible name
+    */
+    'heading': string;
+    /**
+    * Whether the modal is open or closed
+    */
+    'open': boolean;
+  }
+  interface SuiModalAttributes extends StencilHTMLAttributes {
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'focusTarget'?: 'close' | 'wrapper';
+    /**
+    * Optionally give the modal a header, also used as the accessible name
+    */
+    'heading'?: string;
+    /**
+    * Emit a custom close event when the modal closes
+    */
+    'onClose'?: (event: CustomEvent) => void;
+    /**
+    * Whether the modal is open or closed
+    */
+    'open'?: boolean;
+  }
+
   interface MultiselectButtons {
     /**
     * String label
@@ -478,6 +511,7 @@ declare global {
     'SuiDisclosure': Components.SuiDisclosure;
     'SuiGrid': Components.SuiGrid;
     'ListboxButton': Components.ListboxButton;
+    'SuiModal': Components.SuiModal;
     'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
     'MultiselectInline': Components.MultiselectInline;
@@ -495,6 +529,7 @@ declare global {
     'sui-disclosure': Components.SuiDisclosureAttributes;
     'sui-grid': Components.SuiGridAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
+    'sui-modal': Components.SuiModalAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
     'multiselect-inline': Components.MultiselectInlineAttributes;
@@ -562,6 +597,12 @@ declare global {
     new (): HTMLListboxButtonElement;
   };
 
+  interface HTMLSuiModalElement extends Components.SuiModal, HTMLStencilElement {}
+  var HTMLSuiModalElement: {
+    prototype: HTMLSuiModalElement;
+    new (): HTMLSuiModalElement;
+  };
+
   interface HTMLMultiselectButtonsElement extends Components.MultiselectButtons, HTMLStencilElement {}
   var HTMLMultiselectButtonsElement: {
     prototype: HTMLMultiselectButtonsElement;
@@ -597,6 +638,7 @@ declare global {
     'sui-disclosure': HTMLSuiDisclosureElement
     'sui-grid': HTMLSuiGridElement
     'listbox-button': HTMLListboxButtonElement
+    'sui-modal': HTMLSuiModalElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
     'multiselect-inline': HTMLMultiselectInlineElement
@@ -614,6 +656,7 @@ declare global {
     'sui-disclosure': HTMLSuiDisclosureElement;
     'sui-grid': HTMLSuiGridElement;
     'listbox-button': HTMLListboxButtonElement;
+    'sui-modal': HTMLSuiModalElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;
     'multiselect-inline': HTMLMultiselectInlineElement;

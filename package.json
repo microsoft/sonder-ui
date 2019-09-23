@@ -16,7 +16,9 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
-  "dependencies": {},
+  "dependencies": {
+    "wicg-inert": "^2.1.2"
+  },
   "devDependencies": {
     "@stencil/core": "~0.16.2"
   },

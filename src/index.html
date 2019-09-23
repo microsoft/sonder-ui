@@ -16,51 +16,62 @@
   </style>
 </head>
 <body>
-  <h1>Readonly Single-Selects</h1>
+  <div class="main" role="main">
+    <h1>Component Demos</h1>
+    <h2>Readonly Single-Selects</h2>
 
-  <combo-native label="Select a state (native)" class="fruit-select"></combo-native>
+    <combo-native label="Select a state (native)" class="fruit-select"></combo-native>
 
-  <combo-readonly label="Select a state (readonly)" class="fruit-select"></combo-readonly>
+    <combo-readonly label="Select a state (readonly)" class="fruit-select"></combo-readonly>
 
-  <combo-noinput label="Select a state (no input)" class="fruit-select"></combo-noinput>
+    <combo-noinput label="Select a state (no input)" class="fruit-select"></combo-noinput>
 
-  <listbox-button label="Select a state (button listbox)" class="fruit-select"></listbox-button>
+    <listbox-button label="Select a state (button listbox)" class="fruit-select"></listbox-button>
 
-  <h1>Editable Single-Selects</h1>
-  <combo-filter label="Select a state (filterable)" class="state-select"></combo-filter>
+    <h2>Editable Single-Selects</h2>
+    <combo-filter label="Select a state (filterable)" class="state-select"></combo-filter>
 
-  <combo-nofilter label="Select a state (no filter)" class="state-select"></combo-nofilter>
+    <combo-nofilter label="Select a state (no filter)" class="state-select"></combo-nofilter>
 
-  <combo-autoselect label="Select a state (autoselect active option)" class="state-select"></combo-autoselect>
+    <combo-autoselect label="Select a state (autoselect active option)" class="state-select"></combo-autoselect>
 
-  <combo-autocomplete label="Select a state (inline autocomplete)" class="state-select"></combo-autocomplete>
+    <combo-autocomplete label="Select a state (inline autocomplete)" class="state-select"></combo-autocomplete>
 
-  <h1>Multiselect</h1>
+    <h2>Multiselect</h2>
 
-  <multiselect-csv label="Country Multiselect (comma separated value)" class="multi-select"></multiselect-csv>
+    <multiselect-csv label="Country Multiselect (comma separated value)" class="multi-select"></multiselect-csv>
 
-  <multiselect-buttons label="Country Multiselect (with separate buttons)" class="multi-select"></multiselect-buttons>
+    <multiselect-buttons label="Country Multiselect (with separate buttons)" class="multi-select"></multiselect-buttons>
 
-  <multiselect-inline label="Country Multiselect (with inline buttons)" class="multi-select"></multiselect-inline>
+    <multiselect-inline label="Country Multiselect (with inline buttons)" class="multi-select"></multiselect-inline>
 
-  <multiselect-native label="Native Multiselect" class="fruit-select"></multiselect-native>
+    <multiselect-native label="Native Multiselect" class="fruit-select"></multiselect-native>
 
-  <h1>Disclosure</h1>
+    <h2>Disclosure</h2>
 
-  <sui-disclosure>
-    <span slot="button">Options</span>
-    <div slot="popup">
-      <label for="test-input">Filter:</label>
-      <input id="test-input" type="text">
-      <button type="button">Sort</button>
-    </div>
-  </sui-disclosure>
+    <sui-disclosure>
+      <span slot="button">Options</span>
+      <div slot="popup">
+        <label for="test-input">Filter:</label>
+        <input id="test-input" type="text">
+        <button type="button">Sort</button>
+      </div>
+    </sui-disclosure>
+
+    <h2>Modal Dialog</h2>
+    <button class="dialog-trigger">Open Dialog</button>
+  </div>
+
+  <sui-modal heading="Sonder UI Dialog" class="dialog">
+    Test Dialog Content
+  </sui-modal>
 
 
   <script type="module">
     import { states } from './assets/stateData.js';
     import { countries } from './assets/countryData.js';
 
+    // combo properties
     const fruits = [{ name: 'Apple', value: 'apple' }, { name: 'Banana', value: 'banana' }, { name: 'Clementine', value: 'clementine' }, { name: 'Durian', value: 'durian' }];
     const fruitCombos = document.querySelectorAll('.fruit-select');
     fruitCombos.forEach((combo) => {
@@ -84,6 +95,23 @@
       combo.addEventListener('select', (option) => {
         console.log('selected country:', option.value);
       });
+    });
+
+    // dialog logic
+    const dialogTrigger = document.querySelector('.dialog-trigger');
+    const dialog = document.querySelector('.dialog');
+    const pageWrapper = document.querySelector('.main');
+
+    dialogTrigger.addEventListener('click', () => {
+      dialog.open = true;
+      pageWrapper.setAttribute('inert', true);
+    });
+    dialog.addEventListener('close', () => {
+      dialog.open = false;
+      pageWrapper.removeAttribute('inert');
+      setTimeout(function() {
+        dialogTrigger.focus();
+      }, 0);
     });
   </script>
 
