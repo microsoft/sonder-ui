@@ -13,8 +13,9 @@
     <p>The real estate company you work at has a collection of houses for sale in various cities. Your job is to use the following table to view and manage the listings.</p>
 
     <h2 id="grid-heading">House Listings</h2>
-    <button class="skip-link dialog-trigger">Grid keyboard shortcuts</button>
+    <button class="skip-link dialog-trigger" data-modal="help">Grid keyboard shortcuts</button>
     <sui-grid class="grid"></sui-grid>
+    <button class="button dialog-trigger choose-trigger" data-modal="selection">Choose houses</button>
 
     <a href="selection-aria.html" id="next-link">Next grid example</a>
 
@@ -29,7 +30,7 @@
     </nav>
   </div>
 
-  <sui-modal heading="Keyboard Help" class="dialog">
+  <sui-modal heading="Keyboard Help" class="dialog" id="help">
     <p>The data cells in this selectable, editable grid are a in single tab stop, and navigated with arrow keys. The first cell in each row is a checkbox that will select the entire row. The following keyboard shortcuts are available for navigating the grid cells:</p>
     <table class="table">
       <thead>
@@ -67,6 +68,11 @@
     </table>
   </sui-modal>
 
+  <sui-modal heading="Selected Houses" class="dialog" id="selection">
+    <div class="selection-content"></div>
+    <a href="selection-aria.html" id="next-link">Finish and go to next example</a>
+  </sui-modal>
+
   <script type="text/javascript" async>
     function filterByColumn(filters, data) {
       return data.filter((row) => {
@@ -89,6 +95,7 @@
       gridEl.gridType = 'grid';
       gridEl.labelledBy = 'grid-heading';
       gridEl.columns = [
+        {name: 'Name', filterable: true},
         {name: 'Price', sortable: true},
         {name: 'Square Feet'},
         {name: 'Beds', filterable: true},
@@ -107,21 +114,56 @@
         gridEl.cells = [...cellData];
       });
 
-      // grid help modal
-      const dialogTrigger = document.querySelector('.dialog-trigger');
-      const dialog = document.querySelector('.dialog');
+      // display selected rows
+      function getSelectedRows() {
+        const selectedChecks = document.querySelectorAll('tbody input:checked');
+        const selectedRows = [];
+        selectedChecks.forEach(function(check) {
+          // super hacky, but hey
+          selectedRows.push(check.parentElement.nextElementSibling.textContent);
+        });
+        return selectedRows;
+      }
+      const selectRowsTrigger = document.querySelector('.choose-trigger');
+      const selectedRowsDisplay = document.querySelector('.selection-content');
+      selectRowsTrigger.addEventListener('click', function() {
+        const selectedRows = getSelectedRows();
+        let selectedString = '';
+        if (selectedRows.length < 1) {
+          selectedString = '<p>No houses were selected</p>';
+        }
+        else {
+          selectedString = '<ul>';
+          selectedRows.forEach(function(row) {
+            selectedString += '<li>' + row + '</li>';
+          });
+          selectedString += '</ul>';
+        }
+        selectedRowsDisplay.innerHTML = selectedString;
+      });
+
+      // grid modals
+      const dialogTriggers = document.querySelectorAll('.dialog-trigger');
+      const dialogs = document.querySelectorAll('.dialog');
       const pageWrapper = document.querySelector('.main');
 
-      dialogTrigger.addEventListener('click', () => {
-        dialog.open = true;
-        pageWrapper.setAttribute('inert', true);
+      dialogTriggers.forEach(function(trigger) {
+        trigger.addEventListener('click', function(event) {
+          const dialog = document.getElementById(event.target.getAttribute('data-modal'));
+          dialog.open = true;
+          pageWrapper.setAttribute('inert', true);
+        });
       });
-      dialog.addEventListener('close', () => {
-        dialog.open = false;
-        pageWrapper.removeAttribute('inert');
-        setTimeout(function() {
-          dialogTrigger.focus();
-        }, 0);
+
+      dialogs.forEach(function(dialog) {
+        dialog.addEventListener('close', function(event) {
+          const trigger = document.querySelector('[data-modal=' + event.target.id + ']');
+          dialog.open = false;
+          pageWrapper.removeAttribute('inert');
+          setTimeout(function() {
+            trigger.focus();
+          }, 0);
+        });
       });
     })();
   </script>

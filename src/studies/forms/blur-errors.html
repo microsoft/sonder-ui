@@ -19,21 +19,22 @@
           <legend>Shipping Information</legend>
           <div class="input-wrapper">
             <label for="name">Name</label>
-            <input id="name" type="text" class="form-input" aria-describedby="name-error" required>
             <div class="error" aria-live="assertive" id="name-error"></div>
+            <input id="name" type="text" class="form-input" aria-describedby="name-error" required>
           </div>
           <div class="input-wrapper">
             <label for="street">Street Address</label>
-            <input id="street" type="text" class="form-input" aria-describedby="street-error" required>
             <div class="error" aria-live="assertive" id="street-error"></div>
+            <input id="street" type="text" class="form-input" aria-describedby="street-error" required>
           </div>
           <div class="input-wrapper">
             <label for="city">City</label>
-            <input id="city" type="text" class="form-input" aria-describedby="city-error" required>
             <div class="error" aria-live="assertive" id="city-error"></div>
+            <input id="city" type="text" class="form-input" aria-describedby="city-error" required>
           </div>
           <div class="input-wrapper">
             <label for="state">State</label>
+            <div class="error" aria-live="assertive" id="state-error"></div>
             <select id="state" class="form-input" aria-describedby="state-error">
               <option value="">Select a State</option>
               <option>Alaska</option>
@@ -43,25 +44,24 @@
               <option>Texas</option>
               <option>Washington</option>
             </select>
-            <div class="error" aria-live="assertive" id="state-error"></div>
           </div>
           <div class="input-wrapper">
             <label for="zip">Zip Code</label>
-            <input id="zip" type="text" class="form-input" aria-describedby="zip-error" data-expected="[0-9]{5}" data-errormessage="Please enter a 5-digit number" required>
             <div class="error" aria-live="assertive" id="zip-error"></div>
+            <input id="zip" type="text" class="form-input" aria-describedby="zip-error" data-expected="[0-9]{5}" data-errormessage="Please enter a 5-digit number" required>
           </div>
         </fieldset>
         <fieldset>
           <legend>Payment</legend>
           <div class="input-wrapper">
             <label for="promo">Promo Code</label>
-            <input id="promo" type="text" class="form-input" aria-describedby="promo-error" data-expected="STUDY" data-errormessage="Please enter the code STUDY" required>
             <div class="error" aria-live="assertive" id="promo-error"></div>
+            <input id="promo" type="text" class="form-input" aria-describedby="promo-error" data-expected="STUDY" data-errormessage="Please enter the code STUDY" required>
           </div>
           <div class="input-wrapper">
             <label for="card">Credit Card</label>
-            <input id="card" type="text" class="form-input" aria-describedby="card-error" data-expected="[0-9]{16}" data-errormessage="Please enter a 16-digit number" required>
             <div class="error" aria-live="assertive" id="card-error"></div>
+            <input id="card" type="text" class="form-input" aria-describedby="card-error" data-expected="[0-9]{16}" data-errormessage="Please enter a 16-digit number" required>
           </div>
         </fieldset>
 

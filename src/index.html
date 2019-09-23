@@ -59,7 +59,7 @@
     </sui-disclosure>
 
     <h2>Modal Dialog</h2>
-    <button class="dialog-trigger">Open Dialog</button>
+    <button class="dialog-trigger button">Open Dialog</button>
   </div>
 
   <sui-modal heading="Sonder UI Dialog" class="dialog">
@@ -103,6 +103,7 @@
     const pageWrapper = document.querySelector('.main');
 
     dialogTrigger.addEventListener('click', () => {
+      console.log('open dialog');
       dialog.open = true;
       pageWrapper.setAttribute('inert', true);
     });

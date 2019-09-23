@@ -14,7 +14,10 @@
   border-radius: 4px;
   display: none;
   left: 50%;
-  min-width: 300px;
+  max-height: 90%;
+  max-width: 95%;
+  min-width: 50%;
+  overflow-y: scroll;
   padding: 0 1.5em 1.5em;
   position: fixed;
   top: 50%;
