@@ -14,6 +14,7 @@
 
     <h2 id="grid-heading">House Listings</h2>
     <a href="#next-link" class="skip-link">Skip past grid</a>
+    <button class="skip-link dialog-trigger">Grid keyboard shortcuts</button>
     
     <sui-grid class="grid"></sui-grid>
     <a href="actions.html" id="next-link">Next grid example</a>
@@ -28,6 +29,42 @@
       <a href="#">Fake Contact</a>
     </nav>
   </div>
+
+  <sui-modal heading="Keyboard Help" class="dialog">
+    <p>The following keyboard shortcuts are available for navigating and editing the grid values:</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Arrow Keys</td>
+          <td>Move through cells within the grid</td>
+        </tr>
+        <tr>
+          <td>Page up and page down</td>
+          <td>Jump 30 rows up or down</td>
+        </tr>
+        <tr>
+          <td>Home and end</td>
+          <td>Jump to the first or last cell in a row</td>
+        </tr>
+        <tr>
+          <td>Escape (editing cell)</td>
+          <td>Cancel changes and stop editing</td>
+        </tr>
+        <tr>
+          <td>Escape (general)</td>
+          <td>Return focus to skip grid link</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The grid may also be navigated by tabbing, or filtering and sorting by column.</p>
+  </sui-modal>
 
   <script type="text/javascript" async>
     function filterByColumn(filters, data) {
@@ -48,7 +85,6 @@
         row.push('View');
         return row;
       });
-      console.log(cellData);
       gridEl.cells = cellData;
       gridEl.pageLength = 30;
       gridEl.rowSelection = 'none';
@@ -74,6 +110,30 @@
         const { value, column, row } = event.detail;
         cellData[row][column] = value;
         gridEl.cells = [...cellData];
+      });
+
+      // out of grid on escape
+      gridEl.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          document.querySelector('.skip-link').focus();
+        }
+      });
+
+      // grid help modal
+      const dialogTrigger = document.querySelector('.dialog-trigger');
+      const dialog = document.querySelector('.dialog');
+      const pageWrapper = document.querySelector('.main');
+
+      dialogTrigger.addEventListener('click', () => {
+        dialog.open = true;
+        pageWrapper.setAttribute('inert', true);
+      });
+      dialog.addEventListener('close', () => {
+        dialog.open = false;
+        pageWrapper.removeAttribute('inert');
+        setTimeout(function() {
+          dialogTrigger.focus();
+        }, 0);
       });
     })();
   </script>

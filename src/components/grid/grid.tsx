@@ -466,7 +466,7 @@ export class SuiGrid {
       class={{'cell': true, 'editing': this.isEditing && isActiveCell }}
       aria-label={this.useApplicationRole ? `${cellColumn.name} ${content}` : null}
       aria-readonly={!this.editable || cellColumn.actionsColumn ? 'true' : null}
-      tabIndex={isGrid ? isActiveCell ? 0 : -1 : null}
+      tabIndex={isGrid && this.rowSelection !== RowSelectionPattern.Aria ? isActiveCell ? 0 : -1 : null}
       ref={isActiveCell && !this.isEditing && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
       onFocus={() => { this.onCellFocus(rowIndex, cellIndex)}}
       onClick={this.editable ? () => { this.onCellClick(rowIndex, cellIndex); } : null}

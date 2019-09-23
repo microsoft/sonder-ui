@@ -106,3 +106,31 @@ body {
   display: block;
   margin-bottom: 1.5em;
 }
+
+.table {
+  border: 1px solid #c2c2c2;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0 0 1em;
+}
+
+.table th,
+.table td {
+  padding: 0.5em;
+  text-align: left;
+}
+
+.table th + th,
+.table td + td {
+  border-left: 1px solid #c2c2c2;
+}
+
+.table tbody,
+.table tr + tr td {
+  border-top: 1px solid #c2c2c2;
+}
+
+.table thead tr,
+.table tr:nth-child(even) {
+  background-color: #e2e2e2;
+}

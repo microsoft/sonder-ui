@@ -63,6 +63,11 @@
   transform: rotate(-45deg);
 }
 
+.dialog-close:focus {
+  box-shadow: 0 0 6px 2px #0067b8;
+  outline: 4px solid transparent;
+}
+
 .visuallyHidden {
   position: absolute;
   height: 1px;

@@ -13,6 +13,7 @@
     <p>The real estate company you work at has a collection of houses for sale in various cities. Your job is to use the following table to view and manage the listings.</p>
 
     <h2 id="grid-heading">House Listings</h2>
+    <button class="skip-link dialog-trigger">Grid keyboard shortcuts</button>
     <sui-grid class="grid"></sui-grid>
 
     <a href="index.html" id="next-link">Return to main grid page</a>
@@ -27,6 +28,32 @@
       <a href="#">Fake Contact</a>
     </nav>
   </div>
+
+  <sui-modal heading="Keyboard Help" class="dialog">
+    <p>The rows in this selectable grid are a in single tab stop, and navigated with arrow keys. The following keyboard shortcuts are available for navigating the grid rows:</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Arrow Keys</td>
+          <td>Move up or down one row</td>
+        </tr>
+        <tr>
+          <td>Page up and page down</td>
+          <td>Jump 30 rows up or down</td>
+        </tr>
+        <tr>
+          <td>Enter or space</td>
+          <td>Select the current row</td>
+        </tr>
+      </tbody>
+    </table>
+  </sui-modal>
 
   <script type="text/javascript" async>
     function filterByColumn(filters, data) {
@@ -61,6 +88,23 @@
       gridEl.addEventListener('filter', function(event) {
         const newData = filterByColumn(event.detail, cellData);
         gridEl.cells = newData;
+      });
+
+      // grid help modal
+      const dialogTrigger = document.querySelector('.dialog-trigger');
+      const dialog = document.querySelector('.dialog');
+      const pageWrapper = document.querySelector('.main');
+
+      dialogTrigger.addEventListener('click', () => {
+        dialog.open = true;
+        pageWrapper.setAttribute('inert', true);
+      });
+      dialog.addEventListener('close', () => {
+        dialog.open = false;
+        pageWrapper.removeAttribute('inert');
+        setTimeout(function() {
+          dialogTrigger.focus();
+        }, 0);
       });
     })();
   </script>
