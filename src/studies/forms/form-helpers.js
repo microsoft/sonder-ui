@@ -8,32 +8,49 @@
 // fields have .form-input class
 // errors have a .error class
 // submit button has a .submit class
-// form-level notification region has .form-alert class
-// all other form content has .form-content class
-var UsabilityForm = function(el) {
+// parameters:
+// el -- form HTMLElement
+// onUpdateForm(valid: boolean) -- function to run when form is updated with new value
+// onSubmit(valid: boolean) -- function to run when form is submitted
+// validateOnBlur: boolean -- whether to validate and show errors on blur
+var UsabilityForm = function(el, onSubmit, onUpdateForm, validateOnBlur = true) {
   this.form = el;
+  this.onSubmit = onSubmit;
+  this.onUpdateForm = onUpdateForm;
   this.fields = Array.prototype.slice.call(document.querySelectorAll('.form-input'));
   this.submitButton = document.querySelector('.submit');
   this.fieldValidations = this.fields.map((field) => false);
-  this.formNotificationEl = el.querySelector('.form-alert');
+  this.validateOnBlur = validateOnBlur;
 }
 
 // attach listeners
 UsabilityForm.prototype.init = function() {
   var _this = this;
-  this.fields.forEach(function (field) {
-    field.addEventListener('blur', function(event) {
-      var index = _this.fields.indexOf(event.target);
-      var isValid = this.validateField(event.target);
-      _this.fieldValidations[index] = isValid;
-      _this.checkForm();
+  if (this.validateOnBlur) {
+    this.fields.forEach(function (field) {
+      field.addEventListener('blur', function(event) {
+        // check field
+        var index = _this.fields.indexOf(event.target);
+        var isValid = _this.validateField(event.target);
+        _this.fieldValidations[index] = isValid;
+
+        // check form
+        var isFormValid = _this.checkForm();
+        _this.onUpdateForm && _this.onUpdateForm(isFormValid);
+      });
     });
-  });
+  }
 
   this.form.addEventListener('submit', function(event) {
     event.preventDefault();
-    _this.form.querySelector('.form-content').innerHTML = '';
-    _this.formNotificationEl.innerHTML = 'Success!';
+    _this.fields.forEach(function (field, index) {
+      // check field
+      var isValid = _this.validateField(field);
+      _this.fieldValidations[index] = isValid;
+    });
+
+    var isFormValid = _this.checkForm();
+    _this.onSubmit && _this.onSubmit(isFormValid);
   });
 }
 
@@ -46,13 +63,6 @@ UsabilityForm.prototype.checkForm = function() {
       return;
     }
   });
-
-  if (isFormValid) {
-    this.submitButton.removeAttribute('disabled');
-  }
-  else {
-    this.submitButton.setAttribute('disabled', true);
-  }
 
   return isFormValid;
 }
@@ -71,7 +81,7 @@ UsabilityForm.prototype.validateField = function(field) {
 
   // validate field
   if (value === '') {
-    errormessage = 'This field is required';
+    errormessage = field.getAttribute('data-errormessage') || 'This field is required';
     valid = false;
   }
   else if (regexString && !value.match(new RegExp(regexString))) {

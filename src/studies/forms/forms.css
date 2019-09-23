@@ -25,6 +25,11 @@ legend, h2 {
   width: 100%;
 }
 
+.form-input:focus {
+  box-shadow: 0 0 1px 3px #0067b8;
+  outline: 4px solid transparent;
+}
+
 .input-wrapper {
   margin-bottom: 1.5em;
 }
@@ -33,7 +38,28 @@ legend, h2 {
   border-color: #cf382d;
 }
 
+.form-input.invalid:focus {
+  box-shadow: 0 0 1px 3px #cf382d;
+  outline: 4px solid transparent;
+}
+
 .required,
 .error {
   color: #cf382d;
+}
+
+.form-alert.error {
+  background-color: rgba(250,190,190,.5);
+  border: 1px solid rgba(121,35,35,.5);
+  border-radius: 3px;
+  margin-bottom: 24px;
+  padding: 16px 24px;
+}
+
+.form-alert.success {
+  background-color: rgba(190,250,220,.5);
+  border: 1px solid rgba(17,61,58,.5);
+  border-radius: 3px;
+  margin-bottom: 24px;
+  padding: 16px 24px;
 }
