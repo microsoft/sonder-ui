@@ -22,8 +22,16 @@ export class SuiModal {
    */
   @Prop() heading: string;
 
-  /** Properties for Usability test case behaviors: **/
-  @Prop() focusTarget: 'close' | 'wrapper';
+  /**
+   * Optional id to use as descriptive text for the dialog
+   */
+  @Prop() describedBy: string;
+
+  /**
+   * Properties for Usability test case behaviors:
+   */
+  @Prop() focusTarget: 'close' | 'wrapper' | 'custom';
+  @Prop() customFocusId: string;
 
 
   /**
@@ -47,24 +55,31 @@ export class SuiModal {
   }
 
   componentDidUpdate() {
-    if (this.callFocus === true && this.focusRef) {
-      this.focusRef.focus();
+    if (this.callFocus === true) {
+      let focusTarget = this.focusRef;
+      if (this.focusTarget === 'custom' && this.customFocusId) {
+        focusTarget = document.getElementById(this.customFocusId);
+      }
+
+      focusTarget && focusTarget.focus();
       this.callFocus = false;
     }
   }
 
   render() {
-    const { open, heading, focusTarget = 'close' } = this;
+    const { open, heading, describedBy, focusTarget = 'close' } = this;
 
     return (
       <div class={{'dialog-wrapper': true, 'open': open}}>
         <div class="dialog-bg" onClick={this.onCloseClick.bind(this)}></div>
         <div
           aria-labelledby={heading ? 'dialog-title' : null}
+          aria-describedby={describedBy}
           aria-modal="true"
           class="dialog-body"
           ref={(el) => focusTarget === 'wrapper' ? this.focusRef = el : null}
           role="dialog"
+          tabIndex={focusTarget === 'wrapper' ? -1 : null}
           onKeyDown={this.onPopupKeyDown.bind(this)}
         >
           <div class="dialog-header">
@@ -75,7 +90,9 @@ export class SuiModal {
               <span class="visuallyHidden">close</span>
             </button>
           </div>
-          <slot />
+          <div class="dialog-content">
+            <slot />
+          </div>
         </div>
       </div>
     );

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Modal Dialog Usability Study</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <link rel="stylesheet" href="./forms.css"></style>
+  <script src="/build/caiacc.js"></script>  
+</head>
+<body>
+  <div role="main" class="main example-form">
+    <h1>Animal Shelter: Intake</h1>
+    <p>Animals that have not yet been processed into the shelter are listed below. This page allows you to update their information and add them to the animal shelter database.</p>
+    <div class="card">
+      <h2>New Cats</h2>
+      <ul id="cats">
+        <li>Unnamed Cat 1</li>
+        <li>Unnamed Cat 2</li>
+        <li>Unnamed Cat 3</li>
+        <li>Unnamed Cat 4</li>
+        <li>Unnamed Cat 5</li>
+      </ul>
+      
+      <button type="button" class="button dialog-trigger" data-modal="cats-modal">Edit cats</button>
+    </div>
+
+    <div class="card">
+      <h2>New Cats</h2>
+      <ul id="dogs">
+        <li>Unnamed Dog 1</li>
+        <li>Unnamed Dog 2</li>
+        <li>Unnamed Dog 3</li>
+        <li>Unnamed Dog 4</li>
+        <li>Unnamed Dog 5</li>
+        <li>Unnamed Dog 6</li>
+      </ul>
+      
+      <button type="button" class="button dialog-trigger" data-modal="dogs-modal">Edit dogs</button>
+    </div>
+
+    <div class="card">
+      <h2>Other Animals</h2>
+      <ul id="others">
+        <li>Unnamed Bird 1</li>
+        <li>Unnamed Hamster 2</li>
+        <li>Unnamed Gerbil 3</li>
+        <li>Unnamed Iguana 4</li>
+      </ul>
+      
+      <button type="button" class="button dialog-trigger" data-modal="others-modal">Edit other animals</button>
+    </div>
+
+    <button type="button" class="submit button" id="save-all">Save all</button>
+  </div>
+
+  <sui-modal heading="Cat Information" focus-target="custom" custom-focus-id="cats-first" class="dialog" id="cats-modal">
+    <fieldset>
+      <legend>Assign new cat names</legend>
+      <input type="text" class="form-input" id="cats-first" aria-label="cat 1" value="Unnamed Cat 1">
+      <input type="text" class="form-input" aria-label="cat 2" value="Unnamed Cat 2">
+      <input type="text" class="form-input" aria-label="cat 3" value="Unnamed Cat 3">
+      <input type="text" class="form-input" aria-label="cat 4" value="Unnamed Cat 4">
+      <input type="text" class="form-input" aria-label="cat 5" value="Unnamed Cat 5">
+    </fieldset>
+    <p>Disclaimer: names with obscenities, current politicians, just the word "Cat", or duplicates of existing animals will be altered if submitted. Please do your best to help our kitties get adopted as soon as possible!</p>
+    <button type="button" class="submit button" data-controls="cats">Save</button>
+  </sui-modal>
+
+  <sui-modal heading="Dog Information" focus-target="close" class="dialog" id="dogs-modal">
+    <fieldset>
+      <legend>Assign new dog names</legend>
+      <input type="text" class="form-input" aria-label="dog 1" value="Unnamed Dog 1">
+      <input type="text" class="form-input" aria-label="dog 2" value="Unnamed Dog 2">
+      <input type="text" class="form-input" aria-label="dog 3" value="Unnamed Dog 3">
+      <input type="text" class="form-input" aria-label="dog 4" value="Unnamed Dog 4">
+      <input type="text" class="form-input" aria-label="dog 5" value="Unnamed Dog 5">
+      <input type="text" class="form-input" aria-label="dog 6" value="Unnamed Dog 6">
+    </fieldset>
+    <p>Disclaimer: names with obscenities, current politicians, just the word "Dog" or "Hey You", or duplicates of existing animals will be altered if submitted. Please do your best to help our dogs get adopted as soon as possible!</p>
+    <button type="button" class="submit button" data-controls="dogs">Save</button>
+  </sui-modal>
+
+  <sui-modal heading="Other Animal Information" focus-target="wrapper" class="dialog" id="others-modal">
+    <fieldset>
+      <legend>Assign new names</legend>
+      <label for="other1">Bird</label>
+      <input type="text" id="other1" class="form-input" aria-label="other 1" value="Unnamed Bird 1">
+      <label for="other2">Hamster</label>
+      <input type="text" id="other2" class="form-input" aria-label="other 2" value="Unnamed Hamster 2">
+      <label for="other3">Gerbil</label>
+      <input type="text" id="other3" class="form-input" aria-label="other 3" value="Unnamed Gerbil 3">
+      <label for="other4">Iguana</label>
+      <input type="text" id="other4" class="form-input" aria-label="other 4" value="Unnamed Iguana 4">
+    </fieldset>
+    <p>Disclaimer: names with obscenities, current politicians, birds named "Birdbrain", or duplicates of existing animals will be altered if submitted. Please do your best to help all our animals get adopted as soon as possible!</p>
+    <button type="button" class="submit button" data-controls="others">Save</button>
+  </sui-modal>
+
+  <script type="text/javascript">
+    const dialogTriggers = document.querySelectorAll('.dialog-trigger');
+    const dialogs = document.querySelectorAll('.dialog');
+    const pageWrapper = document.querySelector('.main');
+
+    // animal data
+    const animals = {
+      cats: ['Unnamed Cat 1', 'Unnamed Cat 2', 'Unnamed Cat 3', 'Unnamed Cat 4', 'Unnamed Cat 5'],
+      dogs: ['Unnamed Dog 1', 'Unnamed Dog 2', 'Unnamed Dog 3', 'Unnamed Dog 4', 'Unnamed Dog 5', 'Unnamed Dog 6'],
+      others: ['Unnamed Bird 1', 'Unnamed Hamster 2', 'Unnamed Gerbil 3', 'Unnamed Iguana 4']
+    };
+
+    function closeDialog(dialog) {
+      const trigger = document.querySelector('[data-modal=' + dialog.id + ']');
+      dialog.open = false;
+      pageWrapper.removeAttribute('inert');
+      // setTimeout needed, likely due to inert polyfill
+      setTimeout(function() {
+        trigger.focus();
+      }, 0);
+    }
+
+    dialogTriggers.forEach(function(trigger) {
+      trigger.addEventListener('click', function(event) {
+        const dialog = document.getElementById(event.target.getAttribute('data-modal'));
+        dialog.open = true;
+        pageWrapper.setAttribute('inert', true);
+      });
+    });
+
+    dialogs.forEach(function(dialog) {
+      dialog.addEventListener('close', function(event) {
+        closeDialog(event.target);
+      });
+    });
+
+    // update animal names on modal save
+    const saveButtons = document.querySelectorAll('button[data-controls]');
+    saveButtons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        const animalType = event.target.getAttribute('data-controls');
+        const modal = document.getElementById(animalType + '-modal');
+        updateAnimalData(animalType, event.target.parentElement);
+        closeDialog(modal);
+      });
+    });
+
+    function updateAnimalData(animal, modal) {
+      const nameInputs = Array.prototype.slice.call(modal.querySelectorAll('input'));
+      const animalNames = nameInputs.map(function(input, index) {
+        return input.value || animals[animal][index];
+      });
+      const listEl = document.getElementById(animal);
+      const newListItems = animalNames.map(function(name) {
+        return '<li>' + name + '</li>';
+      });
+
+      animals[animal] = animalNames;
+      listEl.innerHTML = newListItems.join('');
+    }
+
+    // save all action
+    const saveButton = document.getElementById('save-all');
+    saveButton.addEventListener('click', function() {
+      const confirmationEl = document.createElement('h1');
+      confirmationEl.setAttribute('tabindex', '-1');
+      confirmationEl.innerHTML = 'All animal information saved.'
+
+      pageWrapper.innerHTML = '';
+      pageWrapper.appendChild(confirmationEl);
+      confirmationEl.focus();
+    });
+  </script>
+</body>
+</html>

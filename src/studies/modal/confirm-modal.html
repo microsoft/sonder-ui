@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Modal Dialog Usability Study</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <link rel="stylesheet" href="./forms.css"></style>
+  <script src="/build/caiacc.js"></script>  
+</head>
+<body>
+  <div role="main" class="main example-form">
+    <h1>Manage Your Account</h1>
+
+    <div class="card">
+      <label for="username">Username</label>
+      <input type="text" id="username" class="form-input" value="A11y-tester">
+      <button type="button" class="button dialog-trigger" data-modal="username-modal">Update username</button>
+    </div>
+
+    <div class="card">
+      <label for="password">Password</label>
+      <input type="password" id="password" class="form-input" value="12345">
+      <button type="button" class="button dialog-trigger" data-modal="password-modal">Update password</button>
+    </div>
+
+    <div class="card">
+      <h2>Delete Account</h2>
+      <p id="delete-warning">Warning: this action is irreversable, and all account data will be permanently deleted.</p>
+      <button type="button" class="button dialog-trigger" aria-describedby="delete-warning" data-modal="delete-modal">Delete your account</button>
+    </div>
+  </div>
+
+  <sui-modal heading="Confirm Username" described-by="username-description" focus-target="custom" custom-focus-id="username-confirm" class="dialog" id="username-modal">
+    <p id="username-description"></p>
+    <button type="button" class="submit button" id="username-confirm">Confirm</button>
+    <button type="button" class="button" id="username-cancel">Cancel</button>
+  </sui-modal>
+
+  <sui-modal heading="Confirm Password" described-by="password-description" focus-target="close" class="dialog" id="password-modal">
+    <p id="password-description">By selecting "Confirm" you will permanently change your password.</p>
+    <button type="button" class="submit button" id="password-confirm">Confirm</button>
+    <button type="button" class="button" data-modal="password-modal" id="password-cancel">Cancel</button>
+  </sui-modal>
+
+  <sui-modal heading="Confirm Deleting Account" described-by="delete-description" focus-target="wrapper" class="dialog" id="delete-modal">
+    <p id="delete-description">Last chance to change your mind!</p>
+    <button type="button" class="button warning" id="delete-confirm">Permanently Delete Account</button>
+    <button type="button" class="button" id="delete-cancel" data-modal="delete-modal">Cancel</button>
+  </sui-modal>
+
+  <script type="text/javascript">
+    const dialogTriggers = document.querySelectorAll('.dialog-trigger');
+    const dialogs = document.querySelectorAll('.dialog');
+    const pageWrapper = document.querySelector('.main');
+
+    let currentUsername = 'A11y-tester';
+    let currentPassword = '12345';
+
+    function closeDialog(dialog) {
+      const trigger = document.querySelector('[data-modal=' + dialog.id + ']');
+      dialog.open = false;
+      pageWrapper.removeAttribute('inert');
+      // setTimeout needed, likely due to inert polyfill
+      setTimeout(function() {
+        trigger.focus();
+      }, 0);
+    }
+
+    dialogTriggers.forEach(function(trigger) {
+      trigger.addEventListener('click', function(event) {
+        const dialog = document.getElementById(event.target.getAttribute('data-modal'));
+        dialog.open = true;
+        pageWrapper.setAttribute('inert', true);
+      });
+    });
+
+    dialogs.forEach(function(dialog) {
+      dialog.addEventListener('close', function(event) {
+        closeDialog(event.target);
+      });
+    });
+
+    // update username dialog content with new value
+    const triggerUsername = document.querySelector('[data-modal="username-modal"]');
+    triggerUsername.addEventListener('click', function() {
+      const newUsername = triggerUsername.previousElementSibling.value;
+      const dialog = document.getElementById(event.target.getAttribute('data-modal'));
+      dialog.querySelector('p').innerHTML = 'Your username will be updated to ' + newUsername;
+    });
+
+    // cancel actions
+    document.getElementById('username-cancel').addEventListener('click', function() {
+      closeDialog(document.getElementById('username-modal'));
+      document.getElementById('username').value = currentUsername;
+    });
+
+    document.getElementById('password-cancel').addEventListener('click', function() {
+      closeDialog(document.getElementById('password-modal'));
+      document.getElementById('password').value = currentPassword;
+    });
+
+    document.getElementById('delete-cancel').addEventListener('click', function() {
+      closeDialog(document.getElementById('delete-modal'));
+    });
+
+    // confirm actions
+    document.getElementById('username-confirm').addEventListener('click', function() {
+      closeDialog(document.getElementById('username-modal'));
+      currentUsername = document.getElementById('username').value;
+    });
+
+    document.getElementById('password-confirm').addEventListener('click', function() {
+      closeDialog(document.getElementById('password-modal'));
+      currentUsername = document.getElementById('password').value;
+    });
+
+    // delete account action
+    const deleteButton = document.getElementById('delete-confirm');
+    deleteButton.addEventListener('click', function() {
+      const dialog = document.getElementById('delete-modal');
+      closeDialog(dialog);
+
+      const confirmationEl = document.createElement('h1');
+      confirmationEl.setAttribute('tabindex', '-1');
+      confirmationEl.innerHTML = 'Account successfully deleted.'
+
+      pageWrapper.innerHTML = '';
+      pageWrapper.appendChild(confirmationEl);
+      confirmationEl.focus();
+    });
+  </script>
+</body>
+</html>

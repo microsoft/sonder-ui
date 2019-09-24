@@ -358,10 +358,15 @@ export namespace Components {
   }
 
   interface SuiModal {
+    'customFocusId': string;
     /**
-    * Properties for Usability test case behaviors: *
+    * Optional id to use as descriptive text for the dialog
     */
-    'focusTarget': 'close' | 'wrapper';
+    'describedBy': string;
+    /**
+    * Properties for Usability test case behaviors:
+    */
+    'focusTarget': 'close' | 'wrapper' | 'custom';
     /**
     * Optionally give the modal a header, also used as the accessible name
     */
@@ -372,10 +377,15 @@ export namespace Components {
     'open': boolean;
   }
   interface SuiModalAttributes extends StencilHTMLAttributes {
+    'customFocusId'?: string;
     /**
-    * Properties for Usability test case behaviors: *
+    * Optional id to use as descriptive text for the dialog
     */
-    'focusTarget'?: 'close' | 'wrapper';
+    'describedBy'?: string;
+    /**
+    * Properties for Usability test case behaviors:
+    */
+    'focusTarget'?: 'close' | 'wrapper' | 'custom';
     /**
     * Optionally give the modal a header, also used as the accessible name
     */

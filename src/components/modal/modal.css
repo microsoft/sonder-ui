@@ -18,7 +18,6 @@
   max-width: 95%;
   min-width: 50%;
   overflow-y: scroll;
-  padding: 0 1.5em 1.5em;
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -28,12 +27,15 @@
   display:  block;
 }
 
+.dialog-content {
+  padding: 1.5em 1.5em;
+}
+
 .dialog-header {
   align-items: center;
   border-bottom: 1px solid rgba(0,0,0,.42);
   display: flex;
   justify-content: space-between;
-  margin: 0 -1.5em 1em;
   padding: 1em 0.5em 1em 1.5em;
 }
 
