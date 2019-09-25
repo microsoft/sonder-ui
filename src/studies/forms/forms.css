@@ -17,6 +17,15 @@ legend, h2 {
   margin-bottom: 1.5em;
 }
 
+.label-wrapper {
+  margin: 0.5em 0 0.5em;
+}
+
+.label-wrapper label {
+  float: left;
+  margin: 0 0.5em 0 0;
+}
+
 .form-input {
   border: 2px solid rgba(0,0,0,.5);
   margin-bottom: 0;
@@ -50,4 +59,11 @@ legend, h2 {
   border-radius: 3px;
   margin-bottom: 24px;
   padding: 16px 24px;
+}
+
+.hint {
+  display: block;
+  color: #3a3a3a;
+  font-size: 0.9em;
+  margin-bottom: 0.5em;
 }

@@ -1,4 +1,4 @@
-.wrapper {
+.disclosure {
   position: relative;
 }
 
@@ -22,10 +22,16 @@
   display: none;
   padding: 1.5em 1em 1em;
   position: absolute;
+  z-index: 2;
 }
 
 .open .popup {
   display:  block;
+}
+
+.popup.right {
+  right: 0;
+  min-width: 300px;
 }
 
 .close {

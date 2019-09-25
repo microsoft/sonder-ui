@@ -213,6 +213,10 @@ export namespace Components {
     * Optionally set the popup region's accessible name using aria-label (recommended)
     */
     'popupLabel': string;
+    /**
+    * Set the position of the disclosure, defaults to left
+    */
+    'position': 'left' | 'right';
   }
   interface SuiDisclosureAttributes extends StencilHTMLAttributes {
     /**
@@ -231,6 +235,10 @@ export namespace Components {
     * Optionally set the popup region's accessible name using aria-label (recommended)
     */
     'popupLabel'?: string;
+    /**
+    * Set the position of the disclosure, defaults to left
+    */
+    'position'?: 'left' | 'right';
   }
 
   interface SuiGrid {
@@ -507,6 +515,35 @@ export namespace Components {
     */
     'required'?: boolean;
   }
+
+  interface SuiTooltip {
+    /**
+    * Text to show within the tooltip
+    */
+    'content': string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position': 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId': string;
+  }
+  interface SuiTooltipAttributes extends StencilHTMLAttributes {
+    /**
+    * Text to show within the tooltip
+    */
+    'content'?: string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position'?: 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId'?: string;
+  }
 }
 
 declare global {
@@ -526,6 +563,7 @@ declare global {
     'MultiselectCsv': Components.MultiselectCsv;
     'MultiselectInline': Components.MultiselectInline;
     'MultiselectNative': Components.MultiselectNative;
+    'SuiTooltip': Components.SuiTooltip;
   }
 
   interface StencilIntrinsicElements {
@@ -544,6 +582,7 @@ declare global {
     'multiselect-csv': Components.MultiselectCsvAttributes;
     'multiselect-inline': Components.MultiselectInlineAttributes;
     'multiselect-native': Components.MultiselectNativeAttributes;
+    'sui-tooltip': Components.SuiTooltipAttributes;
   }
 
 
@@ -637,6 +676,12 @@ declare global {
     new (): HTMLMultiselectNativeElement;
   };
 
+  interface HTMLSuiTooltipElement extends Components.SuiTooltip, HTMLStencilElement {}
+  var HTMLSuiTooltipElement: {
+    prototype: HTMLSuiTooltipElement;
+    new (): HTMLSuiTooltipElement;
+  };
+
   interface HTMLElementTagNameMap {
     'combo-autocomplete': HTMLComboAutocompleteElement
     'combo-autoselect': HTMLComboAutoselectElement
@@ -653,6 +698,7 @@ declare global {
     'multiselect-csv': HTMLMultiselectCsvElement
     'multiselect-inline': HTMLMultiselectInlineElement
     'multiselect-native': HTMLMultiselectNativeElement
+    'sui-tooltip': HTMLSuiTooltipElement
   }
 
   interface ElementTagNameMap {
@@ -671,6 +717,7 @@ declare global {
     'multiselect-csv': HTMLMultiselectCsvElement;
     'multiselect-inline': HTMLMultiselectInlineElement;
     'multiselect-native': HTMLMultiselectNativeElement;
+    'sui-tooltip': HTMLSuiTooltipElement;
   }
 
 

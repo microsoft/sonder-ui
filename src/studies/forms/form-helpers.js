@@ -17,7 +17,7 @@ var UsabilityForm = function(el, onSubmit, onUpdateForm, validateOnBlur = true) 
   this.form = el;
   this.onSubmit = onSubmit;
   this.onUpdateForm = onUpdateForm;
-  this.fields = Array.prototype.slice.call(document.querySelectorAll('.form-input'));
+  this.fields = Array.prototype.slice.call(document.querySelectorAll('.form-input[required]'));
   this.submitButton = document.querySelector('.submit');
   this.fieldValidations = this.fields.map((field) => false);
   this.validateOnBlur = validateOnBlur;
@@ -74,7 +74,7 @@ UsabilityForm.prototype.checkForm = function() {
 UsabilityForm.prototype.validateField = function(field) {
   const value = field.value.trim();
   const regexString = field.getAttribute('data-expected');
-  const errorEl = field.parentNode.querySelector('.error');
+  const errorEl = field.closest('.input-wrapper').querySelector('.error');
 
   let valid = true;
   let errormessage = '';

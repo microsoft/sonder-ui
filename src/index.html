@@ -60,6 +60,21 @@
 
     <h2>Modal Dialog</h2>
     <button class="dialog-trigger button">Open Dialog</button>
+
+    <h2>Tooltip</h2>
+    <p>
+      <label for="tooltip-test">Name</label>
+      <sui-tooltip tooltip-id="input-tooltip" content="Enter both your first and last names" style="display:inline-block;">
+        <input type="text" class="form-input" aria-describedby="input-tooltip" id="tooltip-test">
+      </sui-tooltip>
+    </p>
+
+    <p>
+      <label for="tooltip2">Address</label>
+      <sui-tooltip tooltip-id="address-tooltip" content="Your street address, excluding city and state" position="top" style="display:inline-block;">
+        <input type="text" class="form-input" aria-describedby="address-tooltip" id="tooltip2">
+      </sui-tooltip>
+    </p>
   </div>
 
   <sui-modal heading="Sonder UI Dialog" class="dialog">

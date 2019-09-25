@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Forms Usability Study</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <link rel="stylesheet" href="./forms.css"></style>
+  <script src="/build/caiacc.js"></script>
+</head>
+<body>
+  <div role="main">
+    <form class="example-form" novalidate>
+      <h1>Create an Account</h1>
+      <div class="form-alert" aria-live="assertive"></div>
+      <div class="form-content">
+        <div class="input-wrapper">
+          <label for="username">Username<span class="required">*</span></label>
+          <div class="error" id="username-error"></div>
+          <sui-tooltip tooltip-id="username-hint" content="Your username must be at least 5 characters long and contain only letters and numbers">
+            <input id="username" type="text" class="form-input" aria-describedby="username-error username-hint" data-expected="^[a-zA-Z0-9]{5,}$" data-errormessage="Please update your username to be at least 5 letters or numbers long" required>
+          </sui-tooltip>
+        </div>
+        <div class="input-wrapper">
+          <label for="password">Password<span class="required">*</span></label>
+          <div class="error" id="password-error"></div>
+          <sui-tooltip tooltip-id="password-hint" content="Your password must be at least eight characters long, and contain an uppercase letter, a lowercase letter, a number and a special character (@$!%*?&)">
+            <input id="password" type="password" class="form-input" aria-describedby="password-error password-hint" data-expected="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" data-errormessage="Please update your password to meet all the character requirements" required>
+          </sui-tooltip>
+        </div>
+        <div class="input-wrapper">
+          <label for="email">Recovery Email</label>
+          <input id="email" type="email" class="form-input">
+        </div>
+
+        <button type="submit" class="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="./form-helpers.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var formEl = document.querySelector('.example-form');
+    var formAlert = document.querySelector('.form-alert');
+    function getErrorFields() {
+      var errorFields = document.querySelectorAll('[aria-invalid=true]');
+      var errorFieldNames = [];
+      errorFields.forEach(function(field) {
+        // get label text for field
+        const label = document.querySelector('label[for=' + field.id + ']');
+        errorFieldNames.push(label.childNodes[0].textContent);
+      });
+      return errorFieldNames;
+    }
+    function onUpdate() {}
+    function onSubmit(formValid) {
+      if (formValid) {
+        document.querySelector('.form-content').innerHTML = '';
+        formAlert.classList.remove('error');
+        formAlert.classList.add('success');
+        formAlert.innerHTML = 'Success!';
+      }
+      else {
+        var errorFields = getErrorFields();
+        var lastField = errorFields.pop();
+        formAlert.classList.add('error');
+        formAlert.innerHTML = errorFields.length ? 'Please fix errors in ' + errorFields.join(', ') + ' and ' + lastField : 'Please fix ' + lastField;
+      }
+    }
+    var form = new UsabilityForm(formEl, onSubmit, onUpdate, false);
+    form.init();
+  </script>
+</body>
+</html>

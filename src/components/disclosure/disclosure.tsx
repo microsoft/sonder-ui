@@ -22,6 +22,11 @@ export class SuiDisclosure {
   @Prop() popupLabel: string;
 
   /**
+   * Set the position of the disclosure, defaults to left
+   */
+  @Prop() position: 'left' | 'right';
+
+  /**
    * Emit a custom open event when the popup opens
    */
   @Event({
@@ -64,7 +69,7 @@ export class SuiDisclosure {
   }
 
   render() {
-    const { buttonLabel, open, popupLabel } = this;
+    const { buttonLabel, open, popupLabel, position = 'left' } = this;
 
     return (
       <div class={{'disclosure': true, 'open': open}} ref={(el) => this.parentRef = el}>
@@ -73,17 +78,18 @@ export class SuiDisclosure {
           aria-label={buttonLabel !== undefined ? buttonLabel : null}
           class="trigger"
           ref={(el) => open ? null : this.focusRef = el}
+          type="button"
           onClick={this.onButtonClick.bind(this)}
         >
           <slot name="button" />
         </button>
         <div
           aria-label={popupLabel || null}
-          class="popup"
+          class={{'popup': true, 'right': position === 'right' }}
           role="region"
           onKeyDown={this.onPopupKeyDown.bind(this)}
         >
-          <button class="close" ref={(el) => open ? this.focusRef = el : null} onClick={this.onCloseClick.bind(this)}>
+          <button class="close" ref={(el) => open ? this.focusRef = el : null} type="button" onClick={this.onCloseClick.bind(this)}>
             <span class="visuallyHidden">close</span>
           </button>
           <slot name="popup" />
