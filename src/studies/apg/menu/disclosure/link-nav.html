@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Menu Example 2</title>
+
+  <!--  js and css for the disclosure example. -->
+  <link href="css/disclosure-navigation.css" rel="stylesheet">
+  <script src="js/disclosureMenu.js" type="text/javascript"></script>
+
+</head>
+<body>
+  <main style="max-width: 50em">
+  <h1>Mythical University</h1>
+  <h2>Example Usage Options</h2>
+  <p>
+    This example demonstrates two different ways of implementing keyboard support.
+    Toggle between them with the following checkbox.
+  </p>
+  <label for="arrow-behavior-switch">
+    <input type="checkbox" id="arrow-behavior-switch" checked>
+    Include optional support for arrow keys, <kbd>Home</kbd>, and <kbd>End</kbd> 
+  </label>
+  
+  <section>
+    <div id="ex1">
+      <nav aria-label="Mythical University">
+        <ul id="exTest" class="disclosure-nav">
+          <li>
+            <button aria-expanded="true" aria-controls="id_about_menu">About</button>
+            <ul id="id_about_menu">
+              <li>
+                <a href="#mythical-page-content">Overview</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Administration</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Facts</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Campus Tours</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button aria-expanded="true" aria-controls="id_admissions_menu">Admissions</button>
+            <ul id="id_admissions_menu">
+              <li>
+                <a href="#mythical-page-content">Apply</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Tuition</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Sign Up</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Visit</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Photo Tour</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Connect</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button aria-expanded="true" aria-controls="id_academics_menu">Academics</button>
+            <ul id="id_academics_menu">
+              <li>
+                <a href="#mythical-page-content">Colleges &amp; Schools</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Programs of Study</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Honors Programs</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Online Courses</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Course Explorer</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Register for Class</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Academic Calendar</a>
+              </li>
+              <li>
+                <a href="#mythical-page-content">Transcripts</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div id="mythical-page-content" class="disclosure-pagecontent" tabindex="-1" role="region" aria-label="Mythical University sample page content">
+        <h3 id="mythical-page-heading">Mythical University Home Page</h3>
+        <p>Sample content section. Activating a link above will update and navigate to this region.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</body>
+</html>
