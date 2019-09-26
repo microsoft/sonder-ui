@@ -71,6 +71,31 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
+  interface ComboEleven {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface ComboElevenAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
   interface ComboFilter {
     /**
     * String label
@@ -190,6 +215,31 @@ export namespace Components {
     'options': SelectOption[];
   }
   interface ComboReadonlyAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
+  interface ComboTwelve {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface ComboTwelveAttributes extends StencilHTMLAttributes {
     /**
     * String label
     */
@@ -351,6 +401,31 @@ export namespace Components {
     'options': SelectOption[];
   }
   interface ListboxButtonAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
+  interface ListboxExpand {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface ListboxExpandAttributes extends StencilHTMLAttributes {
     /**
     * String label
     */
@@ -550,14 +625,17 @@ declare global {
   interface StencilElementInterfaces {
     'ComboAutocomplete': Components.ComboAutocomplete;
     'ComboAutoselect': Components.ComboAutoselect;
+    'ComboEleven': Components.ComboEleven;
     'ComboFilter': Components.ComboFilter;
     'ComboNative': Components.ComboNative;
     'ComboNofilter': Components.ComboNofilter;
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
+    'ComboTwelve': Components.ComboTwelve;
     'SuiDisclosure': Components.SuiDisclosure;
     'SuiGrid': Components.SuiGrid;
     'ListboxButton': Components.ListboxButton;
+    'ListboxExpand': Components.ListboxExpand;
     'SuiModal': Components.SuiModal;
     'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
@@ -569,14 +647,17 @@ declare global {
   interface StencilIntrinsicElements {
     'combo-autocomplete': Components.ComboAutocompleteAttributes;
     'combo-autoselect': Components.ComboAutoselectAttributes;
+    'combo-eleven': Components.ComboElevenAttributes;
     'combo-filter': Components.ComboFilterAttributes;
     'combo-native': Components.ComboNativeAttributes;
     'combo-nofilter': Components.ComboNofilterAttributes;
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
+    'combo-twelve': Components.ComboTwelveAttributes;
     'sui-disclosure': Components.SuiDisclosureAttributes;
     'sui-grid': Components.SuiGridAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
+    'listbox-expand': Components.ListboxExpandAttributes;
     'sui-modal': Components.SuiModalAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
@@ -596,6 +677,12 @@ declare global {
   var HTMLComboAutoselectElement: {
     prototype: HTMLComboAutoselectElement;
     new (): HTMLComboAutoselectElement;
+  };
+
+  interface HTMLComboElevenElement extends Components.ComboEleven, HTMLStencilElement {}
+  var HTMLComboElevenElement: {
+    prototype: HTMLComboElevenElement;
+    new (): HTMLComboElevenElement;
   };
 
   interface HTMLComboFilterElement extends Components.ComboFilter, HTMLStencilElement {}
@@ -628,6 +715,12 @@ declare global {
     new (): HTMLComboReadonlyElement;
   };
 
+  interface HTMLComboTwelveElement extends Components.ComboTwelve, HTMLStencilElement {}
+  var HTMLComboTwelveElement: {
+    prototype: HTMLComboTwelveElement;
+    new (): HTMLComboTwelveElement;
+  };
+
   interface HTMLSuiDisclosureElement extends Components.SuiDisclosure, HTMLStencilElement {}
   var HTMLSuiDisclosureElement: {
     prototype: HTMLSuiDisclosureElement;
@@ -644,6 +737,12 @@ declare global {
   var HTMLListboxButtonElement: {
     prototype: HTMLListboxButtonElement;
     new (): HTMLListboxButtonElement;
+  };
+
+  interface HTMLListboxExpandElement extends Components.ListboxExpand, HTMLStencilElement {}
+  var HTMLListboxExpandElement: {
+    prototype: HTMLListboxExpandElement;
+    new (): HTMLListboxExpandElement;
   };
 
   interface HTMLSuiModalElement extends Components.SuiModal, HTMLStencilElement {}
@@ -685,14 +784,17 @@ declare global {
   interface HTMLElementTagNameMap {
     'combo-autocomplete': HTMLComboAutocompleteElement
     'combo-autoselect': HTMLComboAutoselectElement
+    'combo-eleven': HTMLComboElevenElement
     'combo-filter': HTMLComboFilterElement
     'combo-native': HTMLComboNativeElement
     'combo-nofilter': HTMLComboNofilterElement
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
+    'combo-twelve': HTMLComboTwelveElement
     'sui-disclosure': HTMLSuiDisclosureElement
     'sui-grid': HTMLSuiGridElement
     'listbox-button': HTMLListboxButtonElement
+    'listbox-expand': HTMLListboxExpandElement
     'sui-modal': HTMLSuiModalElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
@@ -704,14 +806,17 @@ declare global {
   interface ElementTagNameMap {
     'combo-autocomplete': HTMLComboAutocompleteElement;
     'combo-autoselect': HTMLComboAutoselectElement;
+    'combo-eleven': HTMLComboElevenElement;
     'combo-filter': HTMLComboFilterElement;
     'combo-native': HTMLComboNativeElement;
     'combo-nofilter': HTMLComboNofilterElement;
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
+    'combo-twelve': HTMLComboTwelveElement;
     'sui-disclosure': HTMLSuiDisclosureElement;
     'sui-grid': HTMLSuiGridElement;
     'listbox-button': HTMLListboxButtonElement;
+    'listbox-expand': HTMLListboxExpandElement;
     'sui-modal': HTMLSuiModalElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;

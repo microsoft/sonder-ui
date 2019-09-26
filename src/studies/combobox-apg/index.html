@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Travel Agency</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <script src="/build/caiacc.js"></script>
+</head>
+<body>
+  <div class="example-form" role="main">
+    <h1 id="page-title">Customize your free flight!</h1>
+    <p>Congratulations, you won a free flight to somewhere in the United States! Just fill out the fields below to receive it.</p>
+
+    <form aria-labelledby="page-title" novalidate>
+  
+      <combo-twelve label="What state are you currently living in?" class="state-select"></combo-twelve>
+  
+      <combo-eleven label="Where do you want to go?" class="state-select"></combo-eleven>
+
+      <listbox-expand label="How long do you want your trip to be?" class="length-select"></listbox-expand>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script type="module">
+    import { states } from '/assets/stateData.js';
+    const vacationLengths = ['Weekend', 'Week', 'Two weeks', 'Month', 'Custom'];
+
+    const stateCombos = document.querySelectorAll('.state-select');
+    stateCombos.forEach((combo) => {
+      combo.options = states;
+    });
+
+    function formatOptions(stringArray) {
+      return stringArray.map((option) => ({name: option, value: option}));
+    }
+
+    const lengthCombo = document.querySelector('.length-select');
+    lengthCombo.options = formatOptions(vacationLengths);
+
+    document.querySelector('form').addEventListener('submit', () => {
+      document.getElementById('next-link').click();
+    });
+  </script>
+
+</body>
+</html>

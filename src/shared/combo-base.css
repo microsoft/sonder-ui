@@ -35,6 +35,10 @@ body {
   width: 12px;
 }
 
+.input-wrapper {
+  border-radius: 4px;
+}
+
 .combo-input {
   background-color: #f5f5f5;
   border: 2px solid rgba(0,0,0,.5);
@@ -93,7 +97,8 @@ select.combo-input {
   padding: 10px 12px 12px;
 }
 
-.combo-option.option-current {
+.combo-option.option-current,
+.combo-option:hover {
   background-color: rgba(0,0,0,0.1);
 }
 
