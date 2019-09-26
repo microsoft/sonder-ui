@@ -113,7 +113,7 @@ legend {
 
 .example-form button[type=submit]:disabled,
 .submit:disabled {
-  background-color: #999;
+  background-color: #ccc;
 }
 
 .form-input {
