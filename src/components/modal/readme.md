@@ -7,11 +7,13 @@
 
 ## Properties
 
-| Property      | Attribute      | Description                                                          | Type                   | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------- | ---------------------- | ----------- |
-| `focusTarget` | `focus-target` | Properties for Usability test case behaviors: *                      | `"close" \| "wrapper"` | `undefined` |
-| `heading`     | `heading`      | Optionally give the modal a header, also used as the accessible name | `string`               | `undefined` |
-| `open`        | `open`         | Whether the modal is open or closed                                  | `boolean`              | `false`     |
+| Property        | Attribute         | Description                                                          | Type                               | Default     |
+| --------------- | ----------------- | -------------------------------------------------------------------- | ---------------------------------- | ----------- |
+| `customFocusId` | `custom-focus-id` |                                                                      | `string`                           | `undefined` |
+| `describedBy`   | `described-by`    | Optional id to use as descriptive text for the dialog                | `string`                           | `undefined` |
+| `focusTarget`   | `focus-target`    | Properties for Usability test case behaviors:                        | `"close" \| "custom" \| "wrapper"` | `undefined` |
+| `heading`       | `heading`         | Optionally give the modal a header, also used as the accessible name | `string`                           | `undefined` |
+| `open`          | `open`            | Whether the modal is open or closed                                  | `boolean`                          | `false`     |
 
 
 ## Events

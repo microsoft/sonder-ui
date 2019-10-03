@@ -7,18 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                      | Type     | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------------------- | -------- | ----------- |
-| `buttonLabel` | `button-label` | Optional override to the button's accessible name (using aria-label)             | `string` | `undefined` |
-| `popupLabel`  | `popup-label`  | Optionally set the popup region's accessible name using aria-label (recommended) | `string` | `undefined` |
-
-
-## Events
-
-| Event   | Description                                     | Type                |
-| ------- | ----------------------------------------------- | ------------------- |
-| `close` | Emit a custom close event when the popup closes | `CustomEvent<void>` |
-| `open`  | Emit a custom open event when the popup opens   | `CustomEvent<void>` |
+| Property    | Attribute    | Description                                              | Type                | Default     |
+| ----------- | ------------ | -------------------------------------------------------- | ------------------- | ----------- |
+| `content`   | `content`    | Text to show within the tooltip                          | `string`            | `undefined` |
+| `position`  | `position`   | Optionally define tooltip position, defaults to "bottom" | `"bottom" \| "top"` | `undefined` |
+| `tooltipId` | `tooltip-id` | Give the tooltip an id to reference elsewhere            | `string`            | `undefined` |
 
 
 ----------------------------------------------

@@ -7,10 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                      | Type     | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------------------- | -------- | ----------- |
-| `buttonLabel` | `button-label` | Optional override to the button's accessible name (using aria-label)             | `string` | `undefined` |
-| `popupLabel`  | `popup-label`  | Optionally set the popup region's accessible name using aria-label (recommended) | `string` | `undefined` |
+| Property      | Attribute      | Description                                                                      | Type                | Default     |
+| ------------- | -------------- | -------------------------------------------------------------------------------- | ------------------- | ----------- |
+| `buttonLabel` | `button-label` | Optional override to the button's accessible name (using aria-label)             | `string`            | `undefined` |
+| `popupLabel`  | `popup-label`  | Optionally set the popup region's accessible name using aria-label (recommended) | `string`            | `undefined` |
+| `position`    | `position`     | Set the position of the disclosure, defaults to left                             | `"left" \| "right"` | `undefined` |
 
 
 ## Events

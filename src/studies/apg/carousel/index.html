@@ -5,13 +5,8 @@
     <title>Image Carousels</title>
 
     <!--  js and css for this example. -->
-    <script type="text/javascript">
-      var stylesheet = '/studies/apg/carousel/css/carousel-1.css';
-      if (location.href.indexOf('moreaccessible') > 0) {
-        stylesheet = '/studies/apg/carousel/css/carousel-1-more-accessible.css';
-      }
-      document.write('<link rel="stylesheet" type="text/css" href="' + stylesheet + '">')
-    </script>
+    <link href="/studies/apg/carousel/css/carousel-1.css" rel="stylesheet">
+    <link href="/studies/apg/carousel/css/carousel-1-more-accessible.css" rel="stylesheet">
 
     <script src="/studies/apg/carousel/js/carousel.js" type="text/javascript"></script>
     <script src="/studies/apg/carousel/js/carouselItem.js" type="text/javascript"></script>
@@ -26,12 +21,12 @@
       <section>
         <h2>View Options</h2>
         <ul>
-          <li><a href="/studies/apg/carousel/index.html">Overlay controls</a></li>
-          <li><a href="/studies/apg/carousel/index.html?moreaccessible">No overlay</a></li>
+          <li><button class="change-view" data-view="carousel-overlay">Overlay controls</button></li>
+          <li><button class="change-view" data-view="carousel-alt">No overlay</button></li>
         </ul>
       </section>
 
-      <section id="myCarousel" class="carousel" aria-roledescription="carousel" aria-label="Highlighted television shows">
+      <section id="myCarousel" class="carousel carousel-overlay" aria-roledescription="carousel" aria-label="Highlighted television shows">
 
         <div class="carousel-inner">
 
@@ -211,6 +206,19 @@
       </section><!-- /.carousel -->
 
     </main>
+
+    <script type="text/javascript">
+      var buttons = document.querySelectorAll('.change-view');
+      var carousel = document.getElementById('myCarousel');
+
+      buttons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          carousel.classList.remove('carousel-alt');
+          carousel.classList.remove('carousel-overlay');
+          carousel.classList.add(event.target.getAttribute('data-view'));
+        });
+      });
+    </script>
   </body>
 </html>
 
