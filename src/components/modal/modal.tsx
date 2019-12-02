@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { Component, Event, EventEmitter, Prop, Watch } from '@stencil/core';
-import 'wicg-inert';
+// import 'wicg-inert';
 
 @Component({
   tag: 'sui-modal',

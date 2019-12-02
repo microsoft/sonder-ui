@@ -160,12 +160,13 @@ select.combo-input {
   border: 2px solid rgba(0,0,0,.42);
   border-radius: 4px;
   display: flex;
+  flex-wrap: wrap;
   min-height: calc(1.4em + 26px);
   padding: 12px 16px 14px;
 }
 
 .multiselect-inline .selected-options {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
 }
 
 .multiselect-inline .selected-options li {
@@ -174,7 +175,7 @@ select.combo-input {
 
 .multiselect-inline .combo-input {
   border: none;
-  flex: 1 1 auto;
+  flex: 1 1 35%;
   min-height: calc(1.4em - 2px);
   padding: 0;
 }

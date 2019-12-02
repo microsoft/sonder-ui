@@ -111,7 +111,7 @@ export class MultiselectInline {
             {selectedOptions.map((option, i) => {
               return (
                 <li>
-                  <button class="remove-option" aria-describedby={`${htmlId}-remove`} onClick={() => { this.removeOption(i); }}>
+                  <button type="button" class="remove-option" aria-describedby={`${htmlId}-remove`} onClick={() => { this.removeOption(i); }}>
                     {option.name}
                     <span class="remove-icon" aria-hidden="true">x</span>
                   </button>

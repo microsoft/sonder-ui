@@ -45,6 +45,9 @@ export class ComboNoInput {
   // Unique ID that should really use a UUID library instead
   private htmlId = uniqueId();
 
+  // Prevent menu closing before click completed
+  private ignoreBlur = false;
+
   // save reference to input element
   private inputRef: HTMLElement;
 
@@ -92,6 +95,7 @@ export class ComboNoInput {
                   event.stopPropagation();
                   this.onOptionClick(i);
                 }}
+                onMouseDown={this.onOptionMouseDown.bind(this)}
               >{option.name}</div>
             );
           })}
@@ -126,6 +130,11 @@ export class ComboNoInput {
   }
 
   private onComboBlur() {
+    if (this.ignoreBlur) {
+      this.ignoreBlur = false;
+      return;
+    }
+
     this.updateMenuState(false, false);
   }
 
@@ -137,6 +146,10 @@ export class ComboNoInput {
     this.onOptionChange(index);
     this.selectOption(index);
     this.updateMenuState(false);
+  }
+
+  private onOptionMouseDown() {
+    this.ignoreBlur = true;
   }
 
   private selectOption(index: number) {
