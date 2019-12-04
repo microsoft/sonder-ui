@@ -31,7 +31,6 @@ export enum MenuActions {
   Open,
   Previous,
   Select,
-  Space,
   Type
 }
 
@@ -57,7 +56,7 @@ export function findMatches(options: SelectOption[], search: string): SelectOpti
 // return combobox action from key press
 export function getActionFromKey(key: string, menuOpen: boolean): MenuActions {
   // handle opening when closed
-  if (!menuOpen && (key === Keys.Down || key === Keys.Enter || key === Keys.Space)) {
+  if (!menuOpen && key === Keys.Down) {
     return MenuActions.Open;
   }
 
@@ -79,9 +78,6 @@ export function getActionFromKey(key: string, menuOpen: boolean): MenuActions {
   }
   else if (key === Keys.Enter) {
     return MenuActions.CloseSelect;
-  }
-  else if (key === Keys.Space) {
-    return MenuActions.Space;
   }
   else if (key === Keys.Backspace || key === Keys.Clear || key.length === 1) {
     return MenuActions.Type;
@@ -134,5 +130,5 @@ export function maintainScrollVisibility(activeElement: HTMLElement, scrollParen
 // generate unique ID, the quick 'n dirty way
 let idIndex = 0;
 export function uniqueId() {
-  return `sui-${++idIndex}`;
+  return `combo-${++idIndex}`;
 }

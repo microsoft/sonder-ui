@@ -12,14 +12,151 @@ import {
   SelectOption,
 } from './shared/interfaces';
 import {
+  SelectOption as SelectOption2,
+} from './draft-components/shared/interfaces';
+import {
   Column,
-} from './components/grid/grid-helpers';
+} from './draft-components/grid/grid-helpers';
 import {
   RowSelectionPattern,
-} from './components/grid/row';
+} from './draft-components/grid/row';
 
 
 export namespace Components {
+
+  interface SuiDisclosure {
+    /**
+    * Optional override to the button's accessible name (using aria-label)
+    */
+    'buttonLabel': string;
+    /**
+    * Optionally set the popup region's accessible name using aria-label (recommended)
+    */
+    'popupLabel': string;
+    /**
+    * Set the position of the disclosure, defaults to left
+    */
+    'position': 'left' | 'right';
+  }
+  interface SuiDisclosureAttributes extends StencilHTMLAttributes {
+    /**
+    * Optional override to the button's accessible name (using aria-label)
+    */
+    'buttonLabel'?: string;
+    /**
+    * Emit a custom close event when the popup closes
+    */
+    'onClose'?: (event: CustomEvent) => void;
+    /**
+    * Emit a custom open event when the popup opens
+    */
+    'onOpen'?: (event: CustomEvent) => void;
+    /**
+    * Optionally set the popup region's accessible name using aria-label (recommended)
+    */
+    'popupLabel'?: string;
+    /**
+    * Set the position of the disclosure, defaults to left
+    */
+    'position'?: 'left' | 'right';
+  }
+
+  interface SuiModal {
+    'customFocusId': string;
+    /**
+    * Optional id to use as descriptive text for the dialog
+    */
+    'describedBy': string;
+    /**
+    * Properties for Usability test case behaviors:
+    */
+    'focusTarget': 'close' | 'wrapper' | 'custom';
+    /**
+    * Optionally give the modal a header, also used as the accessible name
+    */
+    'heading': string;
+    /**
+    * Whether the modal is open or closed
+    */
+    'open': boolean;
+  }
+  interface SuiModalAttributes extends StencilHTMLAttributes {
+    'customFocusId'?: string;
+    /**
+    * Optional id to use as descriptive text for the dialog
+    */
+    'describedBy'?: string;
+    /**
+    * Properties for Usability test case behaviors:
+    */
+    'focusTarget'?: 'close' | 'wrapper' | 'custom';
+    /**
+    * Optionally give the modal a header, also used as the accessible name
+    */
+    'heading'?: string;
+    /**
+    * Emit a custom close event when the modal closes
+    */
+    'onClose'?: (event: CustomEvent) => void;
+    /**
+    * Whether the modal is open or closed
+    */
+    'open'?: boolean;
+  }
+
+  interface SuiSelect {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface SuiSelectAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
+  interface SuiTooltip {
+    /**
+    * Text to show within the tooltip
+    */
+    'content': string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position': 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId': string;
+  }
+  interface SuiTooltipAttributes extends StencilHTMLAttributes {
+    /**
+    * Text to show within the tooltip
+    */
+    'content'?: string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position'?: 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId'?: string;
+  }
 
   interface ComboAutocomplete {
     /**
@@ -254,43 +391,6 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
-  interface SuiDisclosure {
-    /**
-    * Optional override to the button's accessible name (using aria-label)
-    */
-    'buttonLabel': string;
-    /**
-    * Optionally set the popup region's accessible name using aria-label (recommended)
-    */
-    'popupLabel': string;
-    /**
-    * Set the position of the disclosure, defaults to left
-    */
-    'position': 'left' | 'right';
-  }
-  interface SuiDisclosureAttributes extends StencilHTMLAttributes {
-    /**
-    * Optional override to the button's accessible name (using aria-label)
-    */
-    'buttonLabel'?: string;
-    /**
-    * Emit a custom close event when the popup closes
-    */
-    'onClose'?: (event: CustomEvent) => void;
-    /**
-    * Emit a custom open event when the popup opens
-    */
-    'onOpen'?: (event: CustomEvent) => void;
-    /**
-    * Optionally set the popup region's accessible name using aria-label (recommended)
-    */
-    'popupLabel'?: string;
-    /**
-    * Set the position of the disclosure, defaults to left
-    */
-    'position'?: 'left' | 'right';
-  }
-
   interface SuiGrid {
     /**
     * Grid data
@@ -440,49 +540,6 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
-  interface SuiModal {
-    'customFocusId': string;
-    /**
-    * Optional id to use as descriptive text for the dialog
-    */
-    'describedBy': string;
-    /**
-    * Properties for Usability test case behaviors:
-    */
-    'focusTarget': 'close' | 'wrapper' | 'custom';
-    /**
-    * Optionally give the modal a header, also used as the accessible name
-    */
-    'heading': string;
-    /**
-    * Whether the modal is open or closed
-    */
-    'open': boolean;
-  }
-  interface SuiModalAttributes extends StencilHTMLAttributes {
-    'customFocusId'?: string;
-    /**
-    * Optional id to use as descriptive text for the dialog
-    */
-    'describedBy'?: string;
-    /**
-    * Properties for Usability test case behaviors:
-    */
-    'focusTarget'?: 'close' | 'wrapper' | 'custom';
-    /**
-    * Optionally give the modal a header, also used as the accessible name
-    */
-    'heading'?: string;
-    /**
-    * Emit a custom close event when the modal closes
-    */
-    'onClose'?: (event: CustomEvent) => void;
-    /**
-    * Whether the modal is open or closed
-    */
-    'open'?: boolean;
-  }
-
   interface MultiselectButtons {
     /**
     * String label
@@ -590,39 +647,14 @@ export namespace Components {
     */
     'required'?: boolean;
   }
-
-  interface SuiTooltip {
-    /**
-    * Text to show within the tooltip
-    */
-    'content': string;
-    /**
-    * Optionally define tooltip position, defaults to "bottom"
-    */
-    'position': 'top' | 'bottom';
-    /**
-    * Give the tooltip an id to reference elsewhere
-    */
-    'tooltipId': string;
-  }
-  interface SuiTooltipAttributes extends StencilHTMLAttributes {
-    /**
-    * Text to show within the tooltip
-    */
-    'content'?: string;
-    /**
-    * Optionally define tooltip position, defaults to "bottom"
-    */
-    'position'?: 'top' | 'bottom';
-    /**
-    * Give the tooltip an id to reference elsewhere
-    */
-    'tooltipId'?: string;
-  }
 }
 
 declare global {
   interface StencilElementInterfaces {
+    'SuiDisclosure': Components.SuiDisclosure;
+    'SuiModal': Components.SuiModal;
+    'SuiSelect': Components.SuiSelect;
+    'SuiTooltip': Components.SuiTooltip;
     'ComboAutocomplete': Components.ComboAutocomplete;
     'ComboAutoselect': Components.ComboAutoselect;
     'ComboEleven': Components.ComboEleven;
@@ -632,19 +664,20 @@ declare global {
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
     'ComboTwelve': Components.ComboTwelve;
-    'SuiDisclosure': Components.SuiDisclosure;
     'SuiGrid': Components.SuiGrid;
     'ListboxButton': Components.ListboxButton;
     'ListboxExpand': Components.ListboxExpand;
-    'SuiModal': Components.SuiModal;
     'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
     'MultiselectInline': Components.MultiselectInline;
     'MultiselectNative': Components.MultiselectNative;
-    'SuiTooltip': Components.SuiTooltip;
   }
 
   interface StencilIntrinsicElements {
+    'sui-disclosure': Components.SuiDisclosureAttributes;
+    'sui-modal': Components.SuiModalAttributes;
+    'sui-select': Components.SuiSelectAttributes;
+    'sui-tooltip': Components.SuiTooltipAttributes;
     'combo-autocomplete': Components.ComboAutocompleteAttributes;
     'combo-autoselect': Components.ComboAutoselectAttributes;
     'combo-eleven': Components.ComboElevenAttributes;
@@ -654,18 +687,39 @@ declare global {
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
     'combo-twelve': Components.ComboTwelveAttributes;
-    'sui-disclosure': Components.SuiDisclosureAttributes;
     'sui-grid': Components.SuiGridAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
     'listbox-expand': Components.ListboxExpandAttributes;
-    'sui-modal': Components.SuiModalAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
     'multiselect-inline': Components.MultiselectInlineAttributes;
     'multiselect-native': Components.MultiselectNativeAttributes;
-    'sui-tooltip': Components.SuiTooltipAttributes;
   }
 
+
+  interface HTMLSuiDisclosureElement extends Components.SuiDisclosure, HTMLStencilElement {}
+  var HTMLSuiDisclosureElement: {
+    prototype: HTMLSuiDisclosureElement;
+    new (): HTMLSuiDisclosureElement;
+  };
+
+  interface HTMLSuiModalElement extends Components.SuiModal, HTMLStencilElement {}
+  var HTMLSuiModalElement: {
+    prototype: HTMLSuiModalElement;
+    new (): HTMLSuiModalElement;
+  };
+
+  interface HTMLSuiSelectElement extends Components.SuiSelect, HTMLStencilElement {}
+  var HTMLSuiSelectElement: {
+    prototype: HTMLSuiSelectElement;
+    new (): HTMLSuiSelectElement;
+  };
+
+  interface HTMLSuiTooltipElement extends Components.SuiTooltip, HTMLStencilElement {}
+  var HTMLSuiTooltipElement: {
+    prototype: HTMLSuiTooltipElement;
+    new (): HTMLSuiTooltipElement;
+  };
 
   interface HTMLComboAutocompleteElement extends Components.ComboAutocomplete, HTMLStencilElement {}
   var HTMLComboAutocompleteElement: {
@@ -721,12 +775,6 @@ declare global {
     new (): HTMLComboTwelveElement;
   };
 
-  interface HTMLSuiDisclosureElement extends Components.SuiDisclosure, HTMLStencilElement {}
-  var HTMLSuiDisclosureElement: {
-    prototype: HTMLSuiDisclosureElement;
-    new (): HTMLSuiDisclosureElement;
-  };
-
   interface HTMLSuiGridElement extends Components.SuiGrid, HTMLStencilElement {}
   var HTMLSuiGridElement: {
     prototype: HTMLSuiGridElement;
@@ -743,12 +791,6 @@ declare global {
   var HTMLListboxExpandElement: {
     prototype: HTMLListboxExpandElement;
     new (): HTMLListboxExpandElement;
-  };
-
-  interface HTMLSuiModalElement extends Components.SuiModal, HTMLStencilElement {}
-  var HTMLSuiModalElement: {
-    prototype: HTMLSuiModalElement;
-    new (): HTMLSuiModalElement;
   };
 
   interface HTMLMultiselectButtonsElement extends Components.MultiselectButtons, HTMLStencilElement {}
@@ -775,13 +817,11 @@ declare global {
     new (): HTMLMultiselectNativeElement;
   };
 
-  interface HTMLSuiTooltipElement extends Components.SuiTooltip, HTMLStencilElement {}
-  var HTMLSuiTooltipElement: {
-    prototype: HTMLSuiTooltipElement;
-    new (): HTMLSuiTooltipElement;
-  };
-
   interface HTMLElementTagNameMap {
+    'sui-disclosure': HTMLSuiDisclosureElement
+    'sui-modal': HTMLSuiModalElement
+    'sui-select': HTMLSuiSelectElement
+    'sui-tooltip': HTMLSuiTooltipElement
     'combo-autocomplete': HTMLComboAutocompleteElement
     'combo-autoselect': HTMLComboAutoselectElement
     'combo-eleven': HTMLComboElevenElement
@@ -791,19 +831,20 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
     'combo-twelve': HTMLComboTwelveElement
-    'sui-disclosure': HTMLSuiDisclosureElement
     'sui-grid': HTMLSuiGridElement
     'listbox-button': HTMLListboxButtonElement
     'listbox-expand': HTMLListboxExpandElement
-    'sui-modal': HTMLSuiModalElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
     'multiselect-inline': HTMLMultiselectInlineElement
     'multiselect-native': HTMLMultiselectNativeElement
-    'sui-tooltip': HTMLSuiTooltipElement
   }
 
   interface ElementTagNameMap {
+    'sui-disclosure': HTMLSuiDisclosureElement;
+    'sui-modal': HTMLSuiModalElement;
+    'sui-select': HTMLSuiSelectElement;
+    'sui-tooltip': HTMLSuiTooltipElement;
     'combo-autocomplete': HTMLComboAutocompleteElement;
     'combo-autoselect': HTMLComboAutoselectElement;
     'combo-eleven': HTMLComboElevenElement;
@@ -813,16 +854,13 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
     'combo-twelve': HTMLComboTwelveElement;
-    'sui-disclosure': HTMLSuiDisclosureElement;
     'sui-grid': HTMLSuiGridElement;
     'listbox-button': HTMLListboxButtonElement;
     'listbox-expand': HTMLListboxExpandElement;
-    'sui-modal': HTMLSuiModalElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;
     'multiselect-inline': HTMLMultiselectInlineElement;
     'multiselect-native': HTMLMultiselectNativeElement;
-    'sui-tooltip': HTMLSuiTooltipElement;
   }
 
 
