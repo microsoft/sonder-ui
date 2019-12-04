@@ -9,7 +9,7 @@ import { getActionFromKey, getIndexByLetter, getUpdatedIndex, MenuActions, uniqu
 
 @Component({
   tag: 'sui-select',
-  styleUrl: '../../shared/combo-base.css',
+  styleUrl: './select.css',
   shadow: false
 })
 export class SuiSelect {
@@ -74,14 +74,15 @@ export class SuiSelect {
           aria-expanded={`${open}`}
           aria-labelledby={`${htmlId} ${htmlId}-value`}
           aria-controls={`${htmlId}-listbox`}
-          class="input-wrapper"
+          class="combo-input"
+          id={`${htmlId}-value`}
           ref={(el) => this.inputRef = el}
           tabindex="0"
           onBlur={this.onComboBlur.bind(this)}
           onClick={() => this.updateMenuState(true)}
           onKeyDown={this.onComboKeyDown.bind(this)}
         >
-          <div id={`${htmlId}-value`} class="combo-input">{value}</div>
+          {value}
         </div>
         <div class="combo-menu" role="listbox" id={`${htmlId}-listbox`}>
           {options.map((option, i) => {

@@ -9,7 +9,7 @@ import { getActionFromKey, getUpdatedIndex, getIndexByLetter, isScrollable, main
 
 @Component({
   tag: 'combo-readonly',
-  styleUrl: '../../shared/combo-base.css',
+  styleUrl: '../shared/combo-base.css',
   shadow: false
 })
 export class ComboReadonly {

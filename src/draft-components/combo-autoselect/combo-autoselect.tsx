@@ -9,7 +9,7 @@ import { getActionFromKey, getUpdatedIndex, isScrollable, maintainScrollVisibili
 
 @Component({
   tag: 'combo-autoselect',
-  styleUrl: '../../shared/combo-base.css',
+  styleUrl: '../shared/combo-base.css',
   shadow: false
 })
 export class ComboAutoselect {

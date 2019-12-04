@@ -9,7 +9,7 @@ import { uniqueId } from '../shared/utils';
 
 @Component({
   tag: 'multiselect-native',
-  styleUrl: '../../shared/combo-base.css',
+  styleUrl: '../shared/combo-base.css',
   shadow: false
 })
 export class MultiselectNative {

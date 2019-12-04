@@ -9,7 +9,7 @@ import { getActionFromKey, getIndexByLetter, getUpdatedIndex, MenuActions, uniqu
 
 @Component({
   tag: 'combo-noinput',
-  styleUrl: '../../shared/combo-base.css',
+  styleUrl: '../shared/combo-base.css',
   shadow: false
 })
 export class ComboNoInput {

@@ -9,7 +9,7 @@ import { uniqueId } from '../shared/utils';
 
 @Component({
   tag: 'combo-native',
-  styleUrl: '../../shared/combo-base.css',
+  styleUrl: '../shared/combo-base.css',
   shadow: false
 })
 export class ComboNative {

@@ -9,7 +9,7 @@ import { getActionFromKey, getIndexByLetter, getUpdatedIndex, isScrollable, main
 
 @Component({
   tag: 'listbox-button',
-  styleUrl: '../../shared/combo-base.css',
+  styleUrl: '../shared/combo-base.css',
   shadow: false
 })
 export class ListboxButton {
