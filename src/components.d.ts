@@ -137,6 +137,31 @@ export namespace Components {
     'open'?: boolean;
   }
 
+  interface SuiMultiselect {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface SuiMultiselectAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
   interface SuiSelect {
     /**
     * String label
@@ -687,6 +712,7 @@ declare global {
     'SuiCombobox': Components.SuiCombobox;
     'SuiDisclosure': Components.SuiDisclosure;
     'SuiModal': Components.SuiModal;
+    'SuiMultiselect': Components.SuiMultiselect;
     'SuiSelect': Components.SuiSelect;
     'SuiTooltip': Components.SuiTooltip;
     'ComboAutocomplete': Components.ComboAutocomplete;
@@ -711,6 +737,7 @@ declare global {
     'sui-combobox': Components.SuiComboboxAttributes;
     'sui-disclosure': Components.SuiDisclosureAttributes;
     'sui-modal': Components.SuiModalAttributes;
+    'sui-multiselect': Components.SuiMultiselectAttributes;
     'sui-select': Components.SuiSelectAttributes;
     'sui-tooltip': Components.SuiTooltipAttributes;
     'combo-autocomplete': Components.ComboAutocompleteAttributes;
@@ -748,6 +775,12 @@ declare global {
   var HTMLSuiModalElement: {
     prototype: HTMLSuiModalElement;
     new (): HTMLSuiModalElement;
+  };
+
+  interface HTMLSuiMultiselectElement extends Components.SuiMultiselect, HTMLStencilElement {}
+  var HTMLSuiMultiselectElement: {
+    prototype: HTMLSuiMultiselectElement;
+    new (): HTMLSuiMultiselectElement;
   };
 
   interface HTMLSuiSelectElement extends Components.SuiSelect, HTMLStencilElement {}
@@ -862,6 +895,7 @@ declare global {
     'sui-combobox': HTMLSuiComboboxElement
     'sui-disclosure': HTMLSuiDisclosureElement
     'sui-modal': HTMLSuiModalElement
+    'sui-multiselect': HTMLSuiMultiselectElement
     'sui-select': HTMLSuiSelectElement
     'sui-tooltip': HTMLSuiTooltipElement
     'combo-autocomplete': HTMLComboAutocompleteElement
@@ -886,6 +920,7 @@ declare global {
     'sui-combobox': HTMLSuiComboboxElement;
     'sui-disclosure': HTMLSuiDisclosureElement;
     'sui-modal': HTMLSuiModalElement;
+    'sui-multiselect': HTMLSuiMultiselectElement;
     'sui-select': HTMLSuiSelectElement;
     'sui-tooltip': HTMLSuiTooltipElement;
     'combo-autocomplete': HTMLComboAutocompleteElement;
