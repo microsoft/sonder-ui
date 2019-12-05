@@ -23,6 +23,8 @@
 
     <sui-select label="Select a Fruit" class="fruit-select"></sui-select>
 
+    <sui-combobox label="Select a State" class="state-select"></sui-combobox>
+
     <h2>Disclosure</h2>
 
     <sui-disclosure>
@@ -94,7 +96,6 @@
     const pageWrapper = document.querySelector('.main');
 
     dialogTrigger.addEventListener('click', () => {
-      console.log('open dialog');
       dialog.open = true;
       pageWrapper.setAttribute('inert', true);
     });
@@ -102,6 +103,7 @@
       dialog.open = false;
       pageWrapper.removeAttribute('inert');
       setTimeout(function() {
+        // setTimeout needed to work around inert polyfill implementation
         dialogTrigger.focus();
       }, 0);
     });

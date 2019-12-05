@@ -24,6 +24,39 @@ import {
 
 export namespace Components {
 
+  interface SuiCombobox {
+    /**
+    * Whether the combobox should filter based on user input. Defaults to false.
+    */
+    'filter': boolean;
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface SuiComboboxAttributes extends StencilHTMLAttributes {
+    /**
+    * Whether the combobox should filter based on user input. Defaults to false.
+    */
+    'filter'?: boolean;
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
   interface SuiDisclosure {
     /**
     * Optional override to the button's accessible name (using aria-label)
@@ -651,6 +684,7 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
+    'SuiCombobox': Components.SuiCombobox;
     'SuiDisclosure': Components.SuiDisclosure;
     'SuiModal': Components.SuiModal;
     'SuiSelect': Components.SuiSelect;
@@ -674,6 +708,7 @@ declare global {
   }
 
   interface StencilIntrinsicElements {
+    'sui-combobox': Components.SuiComboboxAttributes;
     'sui-disclosure': Components.SuiDisclosureAttributes;
     'sui-modal': Components.SuiModalAttributes;
     'sui-select': Components.SuiSelectAttributes;
@@ -696,6 +731,12 @@ declare global {
     'multiselect-native': Components.MultiselectNativeAttributes;
   }
 
+
+  interface HTMLSuiComboboxElement extends Components.SuiCombobox, HTMLStencilElement {}
+  var HTMLSuiComboboxElement: {
+    prototype: HTMLSuiComboboxElement;
+    new (): HTMLSuiComboboxElement;
+  };
 
   interface HTMLSuiDisclosureElement extends Components.SuiDisclosure, HTMLStencilElement {}
   var HTMLSuiDisclosureElement: {
@@ -818,6 +859,7 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'sui-combobox': HTMLSuiComboboxElement
     'sui-disclosure': HTMLSuiDisclosureElement
     'sui-modal': HTMLSuiModalElement
     'sui-select': HTMLSuiSelectElement
@@ -841,6 +883,7 @@ declare global {
   }
 
   interface ElementTagNameMap {
+    'sui-combobox': HTMLSuiComboboxElement;
     'sui-disclosure': HTMLSuiDisclosureElement;
     'sui-modal': HTMLSuiModalElement;
     'sui-select': HTMLSuiSelectElement;
