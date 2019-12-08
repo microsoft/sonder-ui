@@ -1,0 +1,83 @@
+.tooltip-corner-wrapper {
+  position: relative;
+}
+
+.tooltip-corner {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, calc(100% + 10px));
+  padding: 6px calc(10px + 1rem) 6px 10px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  width: 80%;
+  z-index: 2;
+}
+
+.tooltip-corner::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: calc(50% - 10px);
+  border-bottom: 10px solid rgba(0, 0, 0, 0.9);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+
+.tooltip-corner.top {
+  bottom: auto;
+  top: 0;
+  transform: translate(-50%, calc(-100% - 10px));
+}
+
+.tooltip-corner.top::before {
+  bottom: -10px;
+  top: auto;
+  border-bottom: 0;
+  border-top: 10px solid rgba(0, 0, 0, 0.9);
+}
+
+.tooltip-corner.open {
+  display: block;
+}
+
+.tooltip-corner-close {
+  background: transparent;
+  border: transparent;
+  height: 1.5em;
+  right: 0.25em;
+  padding: 0;
+  position: absolute;
+  top: 4px;
+  width: 1.5em;
+}
+
+.tooltip-corner-close::before,
+.tooltip-corner-close::after {
+  content: "";
+  border-top: 1px solid #FFF;
+  position: absolute;
+  right: 0.25em;
+  width: 1em;
+  top: 50%;
+  transform: rotate(45deg);
+}
+
+.tooltip-corner-close::after {
+  transform: rotate(-45deg);
+}
+
+.tooltip-corner-close:focus {
+  box-shadow: 0 0 6px 2px #0067b8;
+  outline: 4px solid transparent;
+}
+
+.visuallyHidden {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
