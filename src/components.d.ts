@@ -705,6 +705,122 @@ export namespace Components {
     */
     'required'?: boolean;
   }
+
+  interface SuiTooltipArrow {
+    /**
+    * Text to show within the tooltip
+    */
+    'content': string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position': 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId': string;
+  }
+  interface SuiTooltipArrowAttributes extends StencilHTMLAttributes {
+    /**
+    * Text to show within the tooltip
+    */
+    'content'?: string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position'?: 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId'?: string;
+  }
+
+  interface SuiTooltipControl {
+    /**
+    * Text to show within the tooltip
+    */
+    'content': string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position': 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId': string;
+  }
+  interface SuiTooltipControlAttributes extends StencilHTMLAttributes {
+    /**
+    * Text to show within the tooltip
+    */
+    'content'?: string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position'?: 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId'?: string;
+  }
+
+  interface SuiTooltipCorner {
+    /**
+    * Text to show within the tooltip
+    */
+    'content': string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position': 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId': string;
+  }
+  interface SuiTooltipCornerAttributes extends StencilHTMLAttributes {
+    /**
+    * Text to show within the tooltip
+    */
+    'content'?: string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position'?: 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId'?: string;
+  }
+
+  interface SuiTooltipEscape {
+    /**
+    * Text to show within the tooltip
+    */
+    'content': string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position': 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId': string;
+  }
+  interface SuiTooltipEscapeAttributes extends StencilHTMLAttributes {
+    /**
+    * Text to show within the tooltip
+    */
+    'content'?: string;
+    /**
+    * Optionally define tooltip position, defaults to "bottom"
+    */
+    'position'?: 'top' | 'bottom';
+    /**
+    * Give the tooltip an id to reference elsewhere
+    */
+    'tooltipId'?: string;
+  }
 }
 
 declare global {
@@ -731,6 +847,10 @@ declare global {
     'MultiselectCsv': Components.MultiselectCsv;
     'MultiselectInline': Components.MultiselectInline;
     'MultiselectNative': Components.MultiselectNative;
+    'SuiTooltipArrow': Components.SuiTooltipArrow;
+    'SuiTooltipControl': Components.SuiTooltipControl;
+    'SuiTooltipCorner': Components.SuiTooltipCorner;
+    'SuiTooltipEscape': Components.SuiTooltipEscape;
   }
 
   interface StencilIntrinsicElements {
@@ -756,6 +876,10 @@ declare global {
     'multiselect-csv': Components.MultiselectCsvAttributes;
     'multiselect-inline': Components.MultiselectInlineAttributes;
     'multiselect-native': Components.MultiselectNativeAttributes;
+    'sui-tooltip-arrow': Components.SuiTooltipArrowAttributes;
+    'sui-tooltip-control': Components.SuiTooltipControlAttributes;
+    'sui-tooltip-corner': Components.SuiTooltipCornerAttributes;
+    'sui-tooltip-escape': Components.SuiTooltipEscapeAttributes;
   }
 
 
@@ -891,6 +1015,30 @@ declare global {
     new (): HTMLMultiselectNativeElement;
   };
 
+  interface HTMLSuiTooltipArrowElement extends Components.SuiTooltipArrow, HTMLStencilElement {}
+  var HTMLSuiTooltipArrowElement: {
+    prototype: HTMLSuiTooltipArrowElement;
+    new (): HTMLSuiTooltipArrowElement;
+  };
+
+  interface HTMLSuiTooltipControlElement extends Components.SuiTooltipControl, HTMLStencilElement {}
+  var HTMLSuiTooltipControlElement: {
+    prototype: HTMLSuiTooltipControlElement;
+    new (): HTMLSuiTooltipControlElement;
+  };
+
+  interface HTMLSuiTooltipCornerElement extends Components.SuiTooltipCorner, HTMLStencilElement {}
+  var HTMLSuiTooltipCornerElement: {
+    prototype: HTMLSuiTooltipCornerElement;
+    new (): HTMLSuiTooltipCornerElement;
+  };
+
+  interface HTMLSuiTooltipEscapeElement extends Components.SuiTooltipEscape, HTMLStencilElement {}
+  var HTMLSuiTooltipEscapeElement: {
+    prototype: HTMLSuiTooltipEscapeElement;
+    new (): HTMLSuiTooltipEscapeElement;
+  };
+
   interface HTMLElementTagNameMap {
     'sui-combobox': HTMLSuiComboboxElement
     'sui-disclosure': HTMLSuiDisclosureElement
@@ -914,6 +1062,10 @@ declare global {
     'multiselect-csv': HTMLMultiselectCsvElement
     'multiselect-inline': HTMLMultiselectInlineElement
     'multiselect-native': HTMLMultiselectNativeElement
+    'sui-tooltip-arrow': HTMLSuiTooltipArrowElement
+    'sui-tooltip-control': HTMLSuiTooltipControlElement
+    'sui-tooltip-corner': HTMLSuiTooltipCornerElement
+    'sui-tooltip-escape': HTMLSuiTooltipEscapeElement
   }
 
   interface ElementTagNameMap {
@@ -939,6 +1091,10 @@ declare global {
     'multiselect-csv': HTMLMultiselectCsvElement;
     'multiselect-inline': HTMLMultiselectInlineElement;
     'multiselect-native': HTMLMultiselectNativeElement;
+    'sui-tooltip-arrow': HTMLSuiTooltipArrowElement;
+    'sui-tooltip-control': HTMLSuiTooltipControlElement;
+    'sui-tooltip-corner': HTMLSuiTooltipCornerElement;
+    'sui-tooltip-escape': HTMLSuiTooltipEscapeElement;
   }
 
 

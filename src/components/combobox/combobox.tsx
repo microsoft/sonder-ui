@@ -92,6 +92,7 @@ export class SuiCombobox {
     const {
       activeIndex,
       htmlId,
+      filter = false,
       label = '',
       open = false,
       filteredOptions = [],
@@ -105,7 +106,7 @@ export class SuiCombobox {
       <div class={{ combo: true, open }}>
         <input
           aria-activedescendant={activeId}
-          aria-autocomplete="list"
+          aria-autocomplete={filter ? "list" : "none"}
           aria-controls={`${htmlId}-listbox`}
           aria-expanded={`${open}`}
           aria-haspopup="listbox"
