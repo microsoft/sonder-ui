@@ -56,7 +56,7 @@ export class SuiTooltipCorner {
     const windowWidth = document.body.clientWidth;
 
     return (
-      <div class="tooltip-corner-wrapper" onKeyDown={this.onKeyDown.bind(this)} onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
+      <div class="tooltip-corner-wrapper" role="presentation" onKeyDown={this.onKeyDown.bind(this)} onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
         <slot />
         <div class={{'tooltip-corner': true, 'open': open, 'top': position === 'top'}} role="tooltip" id={tooltipId ? tooltipId : null}>
           <div style={{'width': textWidth, 'max-width': `${windowWidth * 0.8}px`}}>{content}</div>

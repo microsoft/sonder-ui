@@ -56,7 +56,7 @@ export class SuiTooltipArrow {
     const windowWidth = document.body.clientWidth;
 
     return (
-      <div class="tooltip-arrow-wrapper" onKeyDown={this.onKeyDown.bind(this)} onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
+      <div class="tooltip-arrow-wrapper" role="presentation" onKeyDown={this.onKeyDown.bind(this)} onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
         <slot />
         <div class={{'tooltip-arrow': true, 'open': open, 'top': position === 'top'}} id={tooltipId ? tooltipId : null}>
           <div style={{'width': textWidth, 'max-width': `${windowWidth * 0.8}px`}}>{content}</div>

@@ -70,7 +70,7 @@ export class SuiTooltipEscape {
     const windowWidth = document.body.clientWidth;
 
     return (
-      <div class="tooltip-wrapper" onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
+      <div class="tooltip-wrapper" role="presentation" onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
         <slot />
         <div class={{'tooltip': true, 'open': open, 'top': position === 'top'}} role="tooltip" id={tooltipId ? tooltipId : null}>
           <div style={{'width': textWidth, 'max-width': `${windowWidth * 0.8}px`}}>{content}</div>

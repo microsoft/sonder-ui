@@ -34,10 +34,11 @@ All the usual requirements for form fields apply: label, visible focus state, pe
 
 ## Properties
 
-| Property  | Attribute | Description                 | Type             | Default     |
-| --------- | --------- | --------------------------- | ---------------- | ----------- |
-| `label`   | `label`   | String label                | `string`         | `undefined` |
-| `options` | --        | Array of name/value options | `SelectOption[]` | `undefined` |
+| Property  | Attribute | Description                                                                | Type             | Default     |
+| --------- | --------- | -------------------------------------------------------------------------- | ---------------- | ----------- |
+| `filter`  | `filter`  | Whether the combobox should filter based on user input. Defaults to false. | `boolean`        | `undefined` |
+| `label`   | `label`   | String label                                                               | `string`         | `undefined` |
+| `options` | --        | Array of name/value options                                                | `SelectOption[]` | `undefined` |
 
 
 ## Events

@@ -68,7 +68,7 @@ export class SuiTooltipControl {
     const windowWidth = document.body.clientWidth;
 
     return (
-      <div class="tooltip-wrapper" onKeyUp={this.onTooltipKeyUp.bind(this)} onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
+      <div class="tooltip-wrapper" role="presentation" onKeyUp={this.onTooltipKeyUp.bind(this)} onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
         <slot />
         <div class={{'tooltip': true, 'open': open, 'top': position === 'top'}} id={tooltipId ? tooltipId : null}>
           <div style={{'width': textWidth, 'max-width': `${windowWidth * 0.8}px`}}>{content}</div>

@@ -116,15 +116,16 @@
       </div>
       <label for="textarea1" class="hidden">Text Sample</label><br>
       <textarea id="textarea1" rows="20" cols="80"
-        style="font-family: sans-serif">
-Abraham Lincoln's Gettysburg Address
+        style="font-family: sans-serif">Dr. Jim Thatcher received his PhD from the University of Michigan in 1963, one of the first PhD's in Computer Science. Together with his thesis advisor, Dr. Jesse Wright, Jim then joined the Mathematical Sciences Department of IBM Research, where he stayed until 1996.
 
-Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
+His research area was mathematical computer science, including automata theory, semantics, and data abstraction. Jim began moving away from the abstract and toward the practical when he and Dr. Wright, who is blind, started working on an "audio access system" for the IBM Personal Computer, a system for providing on-screen information to a blind user through synthesized voice.
 
-Now we are engaged in a great civil war, testing whether that nation, or any nation, so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this.
+This work culminated in the development of one of the first screen readers for DOS in 1984-85, called IBM Screen Reader. (Such access systems are now known as "screen readers"!) He later led the development of IBM Screen Reader/2, the first screen reader for a graphical user interface on the PC. Jim was intimately involved in the development of IBM Home Page Reader, a talking web browser for the blind and visually impaired.
 
-But, in a larger sense, we can not dedicate, we can not consecrate, we can not hallow, this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us, that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion, that we here highly resolve that these dead shall not have died in vain, that this nation, under God, shall have a new birth of freedom, and that government of the people, by the people, for the people, shall not perish from the earth.
-</textarea>
+In 1996 Dr. Thatcher joined the IBM Accessibility Center in Austin, TX, where he led the effort to include accessibility in the IBM development process. A key part of that effort was the establishment of the IBM Accessibility Guidelines specifically for use within IBM's development community.
+
+Jim served as Vice-Chair of the Electronic and Information Technology Access Advisory Committee (EITAAC) which was empanelled by the Access Board to propose standards for Section 508; he chaired the subcommittee on software standards. Later he wrote the course on Web Accessibility for Section 508 for ITTATC, the Information Technology Technical Assistance and Training Center, which was funded in support of Section 508.
+      </textarea>
     </div>
 
     <p>A post may be updated as many times as desired, though a sign in is required each time. For information on how to use the controls on this page, take a look at the <button type="button" class="help-button link">accessibility help</button> dialog.</p>
@@ -149,7 +150,7 @@ But, in a larger sense, we can not dedicate, we can not consecrate, we can not h
           <sui-tooltip-escape class="error-tooltip" tooltip-id="password-error" content="" container-selector="form">
             <input id="password" type="password" class="form-input" aria-describedby="password-error password-hint" data-expected="Qwerty123!" data-errormessage="This password is incorrect. Your password hint is 'Qwerty123!'" required>
           </sui-tooltip-escape>
-          <span class="hint" id="username-hint">Your password must be at least eight characters long, and contain an uppercase letter, a lowercase letter, a number and a special character (@$!%*?&)</span>
+          <span class="hint" id="password-hint">Your password must be at least eight characters long, and contain an uppercase letter, a lowercase letter, a number and a special character (@$!%*?&)</span>
         </div>
 
         <button type="submit" class="submit button">Sign in and update post</button>
