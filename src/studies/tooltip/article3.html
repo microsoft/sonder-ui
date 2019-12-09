@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Toolbar Example</title>
+
+<!--  js and css for this example. -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<link href="/studies/tooltip/css/study.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/style.css">
+
+<script src="/studies/tooltip/js/FormatToolbarItem.js" type="text/javascript"></script>
+<script src="/studies/tooltip/js/FormatToolbar.js" type="text/javascript"></script>
+<script src="/studies/tooltip/js/form.js" type="text/javascript"></script>
+<script src="./assets/inert.min.js"></script>
+<script src="/build/caiacc.js"></script>
+
+</head>
+<body>
+  <main style="max-width: 50em">
+  <h1>Edit Post</h1>
+  <p>
+    <button class="update-button button">Update Post</button>
+  </p>
+  <section>
+    <div id="ex1">
+      <div class="format" role="toolbar" aria-label="Text Formatting" aria-controls="textarea1">
+          <div class="group characteristics">
+            <sui-tooltip-arrow tooltip-id="bold-button" content="Bold" style="display:inline-block;">
+              <button
+                  class="item bold popup"
+                  aria-pressed="false"
+                  value="bold"
+                  aria-labelledby="bold-button"
+                  tabindex="0">
+                <span class="fas fa-bold" aria-hidden="true"></span>
+              </button>
+            </sui-tooltip-arrow>
+            <sui-tooltip-arrow tooltip-id="italic-button" content="Italic" style="display:inline-block;">
+              <button
+                  class="item italic popup"
+                  aria-pressed="false"
+                  value="italic"
+                  aria-labelledby="italic-button"
+                  tabindex="-1">
+                <span class="fas fa-italic" aria-hidden="true"></span>
+              </button>
+            </sui-tooltip-arrow>
+            <sui-tooltip-arrow tooltip-id="underline-button" content="Underline" style="display:inline-block;">
+              <button
+                  class="item underline popup"
+                  aria-pressed="false"
+                  value="underline"
+                  aria-labelledby="underline-button"
+                  tabindex="-1">
+                <span class="fas fa-underline" aria-hidden="true"></span>
+              </button>
+            </sui-tooltip-arrow>
+          </div>
+          <div class="group" role="radiogroup" aria-label="Text Alignment">
+            <sui-tooltip-arrow tooltip-id="text-align-left" content="Text Align Left" style="display:inline-block;" role="presentation">
+              <button
+                  role="radio"
+                  class="item align-left popup"
+                  aria-checked="true"
+                  aria-labelledby="text-align-left"
+                  tabindex="-1">
+                <span class="fas fa-align-left" aria-hidden="true"></span>
+              </button>
+            </sui-tooltip-arrow>
+            <sui-tooltip-arrow tooltip-id="text-align-center" content="Text Align Center" style="display:inline-block;" role="presentation">
+              <button
+                  role="radio"
+                  class="item align-center popup"
+                  aria-checked="false"
+                  aria-labelledby="text-align-center"
+                  tabindex="-1">
+                <span class="fas fa-align-center" aria-hidden="true"></span>
+              </button>
+            </sui-tooltip-arrow>
+            <sui-tooltip-arrow tooltip-id="text-align-right" content="Text Align Right" style="display:inline-block;" role="presentation">
+              <button
+                  role="radio"
+                  class="item align-right popup"
+                  aria-checked="false"
+                  aria-labelledby="text-align-right"
+                  tabindex="-1">
+                <span class="fas fa-align-right" aria-hidden="true"></span>
+              </button>
+            </sui-tooltip-arrow>
+          </div>
+          <div class="group">
+            <button
+                class="item copy"
+                aria-disabled="true"
+                tabindex="-1">
+              Copy
+            </button>
+            <button
+                class="item paste"
+                aria-disabled="true"
+                tabindex="-1">
+                Paste
+            </button>
+            <button
+                class="item cut"
+                aria-disabled="true"
+                tabindex="-1">
+                Cut
+            </button>
+          </div>
+
+          <div class="group">
+            <label class="input"><input id="checkbox" class="item nightmode" type="checkbox" tabindex="-1"> Night Mode</label>
+          </div>
+      </div>
+      <label for="textarea1" class="hidden">Text Sample</label><br>
+      <textarea id="textarea1" rows="20" cols="80"
+        style="font-family: sans-serif">
+Abraham Lincoln's Gettysburg Address
+
+Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
+
+Now we are engaged in a great civil war, testing whether that nation, or any nation, so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this.
+
+But, in a larger sense, we can not dedicate, we can not consecrate, we can not hallow, this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us, that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion, that we here highly resolve that these dead shall not have died in vain, that this nation, under God, shall have a new birth of freedom, and that government of the people, by the people, for the people, shall not perish from the earth.
+</textarea>
+    </div>
+
+    <p>A post may be updated as many times as desired, though a sign in is required each time. For information on how to use the controls on this page, take a look at the <button type="button" class="help-button link">accessibility help</button> dialog.</p>
+  </section>
+
+  </main>
+
+  <sui-modal heading="Sign in" focus-target="wrapper" class="dialog update-dialog">
+    <form novalidate tabindex="-1" style="outline:none">
+      <p>Please sign in to update this post.</p>
+      <div class="form-alert" tabindex="-1"></div>
+      <div class="form-content">
+        <div class="input-wrapper">
+          <label for="username">Username <span class="required">*</span></label>
+          <sui-tooltip-arrow class="error-tooltip" tooltip-id="username-error" content="" container-selector="form">
+            <input id="username" type="text" class="form-input" aria-describedby="username-error username-hint" data-expected="^[a-zA-Z0-9]{5,}$" data-errormessage="This does not appear to be a valid username" required>
+          </sui-tooltip-arrow>
+          <span class="hint" id="username-hint">Usernames must be at least 5 characters long and contain only letters and numbers</span>
+        </div>
+        <div class="input-wrapper">
+          <label for="password">Password <span class="required">*</span></label>
+          <sui-tooltip-arrow class="error-tooltip" tooltip-id="password-error" content="" container-selector="form">
+            <input id="password" type="password" class="form-input" aria-describedby="password-error password-hint" data-expected="Qwerty123!" data-errormessage="This password is incorrect. Your password hint is 'Qwerty123!'" required>
+          </sui-tooltip-arrow>
+          <span class="hint" id="username-hint">Your password must be at least eight characters long, and contain an uppercase letter, a lowercase letter, a number and a special character (@$!%*?&)</span>
+        </div>
+
+        <button type="submit" class="submit button">Sign in and update post</button>
+      </div>
+    </form>
+  </sui-modal>
+
+  <sui-modal heading="Help" focus-target="wrapper" class="dialog help-dialog">
+    <p>The buttons in the toolbar that control text formatting are reached with the arrow keys, and the entire toolbar is a single tab stop. It is not possible to format only selected parts of the text; all formatting applies to all of the text. For the purposes of this exercise, that is expected.</p>
+    <p>Tooltips may be dismissed with the escape key when a control is focused with the keyboard, or the close button if using a mouse or other pointer. Tooltips will remain absent for a short while after being closed.</p>
+  </sui-modal>
+  
+  <script type="text/javascript">
+    // update post dialog
+    const trigger = document.querySelector('.update-button');
+    const dialog = document.querySelector('.update-dialog');
+    const pageWrapper = document.querySelector('main');
+
+    trigger.addEventListener('click', function(event) {
+      dialog.open = true;
+      pageWrapper.setAttribute('inert', true);
+    });
+
+    dialog.addEventListener('close', function(event) {
+      dialog.open = false;
+      pageWrapper.removeAttribute('inert');
+      // setTimeout needed, likely due to inert polyfill
+      setTimeout(function() {
+        trigger.focus();
+      }, 0);
+    });
+
+    // update post form
+    const formEl = document.querySelector('form');
+    const form = new UsabilityForm(formEl);
+    form.init();
+
+    // help dialog
+    const helpButton = document.querySelector('.help-button');
+    const helpDialog = document.querySelector('.help-dialog');
+
+    helpButton.addEventListener('click', function(event) {
+      helpDialog.open = true;
+      pageWrapper.setAttribute('inert', true);
+    });
+
+    helpDialog.addEventListener('close', function(event) {
+      helpDialog.open = false;
+      pageWrapper.removeAttribute('inert');
+      // setTimeout needed, likely due to inert polyfill
+      setTimeout(function() {
+        helpButton.focus();
+      }, 0);
+    });
+  </script>
+</body>
+</html>

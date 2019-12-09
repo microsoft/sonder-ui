@@ -67,12 +67,13 @@ export class SuiTooltipEscape {
   render() {
     const { tooltipId, content = '', open, position = 'bottom', width } = this;
     const textWidth = width ? width : `${8 * content.length}px`; // calculated width is a bit hacky for the moment
+    const windowWidth = document.body.clientWidth;
 
     return (
       <div class="tooltip-wrapper" onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
         <slot />
         <div class={{'tooltip': true, 'open': open, 'top': position === 'top'}} role="tooltip" id={tooltipId ? tooltipId : null}>
-          <div style={{'width': textWidth}}>{content}</div>
+          <div style={{'width': textWidth, 'max-width': `${windowWidth * 0.8}px`}}>{content}</div>
         </div>
       </div>
     );

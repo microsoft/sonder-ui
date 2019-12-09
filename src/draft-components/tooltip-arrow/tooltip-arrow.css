@@ -12,7 +12,6 @@
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.9);
   color: #fff;
-  width: 80%;
   z-index: 2;
 }
 
@@ -47,13 +46,18 @@
   background: black;
   border: transparent;
   border-radius: 50%;
-  bottom: 0;
+  top: 0;
   height: 2em;
   left: 50%;
   padding: 0;
   position: absolute;
-  transform: translate(-50% , 70%);
+  transform: translate(-50% , -70%);
   width: 2em;
+}
+
+.tooltip-arrow.top .tooltip-arrow-close {
+  bottom: 0;
+  transform: translate(-50% , 70%);
 }
 
 .tooltip-arrow-close::before,
