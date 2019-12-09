@@ -20,13 +20,13 @@
   <main style="max-width: 50em">
   <h1>Edit Post</h1>
   <p>
-    <button class="action-button button">Update Post</button>
+    <button class="update-button button">Update Post</button>
   </p>
   <section>
     <div id="ex1">
       <div class="format" role="toolbar" aria-label="Text Formatting" aria-controls="textarea1">
           <div class="group characteristics">
-            <sui-tooltip-corner tooltip-id="bold-button" content="Bold" style="display:inline-block;">
+            <sui-tooltip-escape tooltip-id="bold-button" content="Bold" style="display:inline-block;">
               <button
                   class="item bold popup"
                   aria-pressed="false"
@@ -35,8 +35,8 @@
                   tabindex="0">
                 <span class="fas fa-bold" aria-hidden="true"></span>
               </button>
-            </sui-tooltip-corner>
-            <sui-tooltip-corner tooltip-id="italic-button" content="Italic" style="display:inline-block;">
+            </sui-tooltip-escape>
+            <sui-tooltip-escape tooltip-id="italic-button" content="Italic" style="display:inline-block;">
               <button
                   class="item italic popup"
                   aria-pressed="false"
@@ -45,8 +45,8 @@
                   tabindex="-1">
                 <span class="fas fa-italic" aria-hidden="true"></span>
               </button>
-            </sui-tooltip-corner>
-            <sui-tooltip-corner tooltip-id="underline-button" content="Underline" style="display:inline-block;">
+            </sui-tooltip-escape>
+            <sui-tooltip-escape tooltip-id="underline-button" content="Underline" style="display:inline-block;">
               <button
                   class="item underline popup"
                   aria-pressed="false"
@@ -55,10 +55,10 @@
                   tabindex="-1">
                 <span class="fas fa-underline" aria-hidden="true"></span>
               </button>
-            </sui-tooltip-corner>
+            </sui-tooltip-escape>
           </div>
           <div class="group" role="radiogroup" aria-label="Text Alignment">
-            <sui-tooltip-corner tooltip-id="text-align-left" content="Text Align Left" style="display:inline-block;" role="presentation">
+            <sui-tooltip-escape tooltip-id="text-align-left" content="Text Align Left" style="display:inline-block;" role="presentation">
               <button
                   role="radio"
                   class="item align-left popup"
@@ -67,8 +67,8 @@
                   tabindex="-1">
                 <span class="fas fa-align-left" aria-hidden="true"></span>
               </button>
-            </sui-tooltip-corner>
-            <sui-tooltip-corner tooltip-id="text-align-center" content="Text Align Center" style="display:inline-block;" role="presentation">
+            </sui-tooltip-escape>
+            <sui-tooltip-escape tooltip-id="text-align-center" content="Text Align Center" style="display:inline-block;" role="presentation">
               <button
                   role="radio"
                   class="item align-center popup"
@@ -77,8 +77,8 @@
                   tabindex="-1">
                 <span class="fas fa-align-center" aria-hidden="true"></span>
               </button>
-            </sui-tooltip-corner>
-            <sui-tooltip-corner tooltip-id="text-align-right" content="Text Align Right" style="display:inline-block;" role="presentation">
+            </sui-tooltip-escape>
+            <sui-tooltip-escape tooltip-id="text-align-right" content="Text Align Right" style="display:inline-block;" role="presentation">
               <button
                   role="radio"
                   class="item align-right popup"
@@ -87,7 +87,7 @@
                   tabindex="-1">
                 <span class="fas fa-align-right" aria-hidden="true"></span>
               </button>
-            </sui-tooltip-corner>
+            </sui-tooltip-escape>
           </div>
           <div class="group">
             <button
@@ -132,23 +132,23 @@ But, in a larger sense, we can not dedicate, we can not consecrate, we can not h
 
   </main>
 
-  <sui-modal heading="Sign in" focus-target="wrapper" class="dialog" id="others-modal">
-    <form novalidate>
+  <sui-modal heading="Sign in" focus-target="wrapper" class="dialog update-dialog">
+    <form novalidate tabindex="-1" style="outline:none">
       <p>Please sign in to update this post.</p>
       <div class="form-alert" tabindex="-1"></div>
       <div class="form-content">
         <div class="input-wrapper">
           <label for="username">Username <span class="required">*</span></label>
-          <sui-tooltip-corner class="error-tooltip" tooltip-id="username-error" content="">
+          <sui-tooltip-escape class="error-tooltip" tooltip-id="username-error" content="" container-selector="form">
             <input id="username" type="text" class="form-input" aria-describedby="username-error username-hint" data-expected="^[a-zA-Z0-9]{5,}$" data-errormessage="This does not appear to be a valid username" required>
-          </sui-tooltip-corner>
+          </sui-tooltip-escape>
           <span class="hint" id="username-hint">Usernames must be at least 5 characters long and contain only letters and numbers</span>
         </div>
         <div class="input-wrapper">
           <label for="password">Password <span class="required">*</span></label>
-          <sui-tooltip-corner class="error-tooltip" tooltip-id="password-error" content="">
+          <sui-tooltip-escape class="error-tooltip" tooltip-id="password-error" content="" container-selector="form">
             <input id="password" type="password" class="form-input" aria-describedby="password-error password-hint" data-expected="Qwerty123!" data-errormessage="This password is incorrect. Your password hint is 'Qwerty123!'" required>
-          </sui-tooltip-corner>
+          </sui-tooltip-escape>
           <span class="hint" id="username-hint">Your password must be at least eight characters long, and contain an uppercase letter, a lowercase letter, a number and a special character (@$!%*?&)</span>
         </div>
 
@@ -159,12 +159,13 @@ But, in a larger sense, we can not dedicate, we can not consecrate, we can not h
 
   <sui-modal heading="Help" focus-target="wrapper" class="dialog help-dialog">
     <p>The buttons in the toolbar that control text formatting are reached with the arrow keys, and the entire toolbar is a single tab stop. It is not possible to format only selected parts of the text; all formatting applies to all of the text. For the purposes of this exercise, that is expected.</p>
-    <p>Tooltips may be dismissed with the escape key when a control is focused with the keyboard, or the close button if using a mouse or other pointer. Tooltips will not come back once dismissed.</p>
+    <p>Tooltips may be dismissed with the escape key, whether using the keyboard or the pointer to navigate.</p>
   </sui-modal>
   
   <script type="text/javascript">
-    const trigger = document.querySelector('.action-button');
-    const dialog = document.querySelector('sui-modal');
+    // update post dialog
+    const trigger = document.querySelector('.update-button');
+    const dialog = document.querySelector('.update-dialog');
     const pageWrapper = document.querySelector('main');
 
     trigger.addEventListener('click', function(event) {
@@ -181,6 +182,7 @@ But, in a larger sense, we can not dedicate, we can not consecrate, we can not h
       }, 0);
     });
 
+    // update post form
     const formEl = document.querySelector('form');
     const form = new UsabilityForm(formEl);
     form.init();

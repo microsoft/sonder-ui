@@ -26,6 +26,11 @@ export class SuiTooltipControl {
    */
   @Prop() position: 'top' | 'bottom';
 
+  /**
+   * Custom width style, as a string including units
+   */
+  @Prop() width: string;
+
   // whether the tooltip is open or closed
   @State() open = false;
 
@@ -58,13 +63,14 @@ export class SuiTooltipControl {
   }
 
   render() {
-    const { tooltipId, content = '', open, position = 'bottom' } = this;
+    const { tooltipId, content = '', open, position = 'bottom', width } = this;
+    const textWidth = width ? width : `${8 * content.length}px`; // calculated width is a bit hacky for the moment
 
     return (
       <div class="tooltip-wrapper" onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
         <slot />
         <div class={{'tooltip': true, 'open': open, 'top': position === 'top'}} id={tooltipId ? tooltipId : null}>
-          {content}
+          <div style={{'width': textWidth}}>{content}</div>
         </div>
       </div>
     );
@@ -88,11 +94,16 @@ export class SuiTooltipControl {
 
   private onKeyUp(event: KeyboardEvent) {
     if (this.lastKey === 'Control' && event.key === 'Control') {
-      this.closeTooltip(false);
+      this.open ? this.closeTooltip(false) : this.openTooltip();
     }
   }
 
   private openTooltip() {
+    // if tooltip is empty, do not display
+    if (this.content.trim() === '') {
+      return;
+    }
+
     // clear close timeout, if exists
     if (this.timeout) {
       window.clearTimeout(this.timeout);

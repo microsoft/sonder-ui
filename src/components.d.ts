@@ -719,6 +719,10 @@ export namespace Components {
     * Give the tooltip an id to reference elsewhere
     */
     'tooltipId': string;
+    /**
+    * Custom width style, as a string including units
+    */
+    'width': string;
   }
   interface SuiTooltipArrowAttributes extends StencilHTMLAttributes {
     /**
@@ -733,6 +737,10 @@ export namespace Components {
     * Give the tooltip an id to reference elsewhere
     */
     'tooltipId'?: string;
+    /**
+    * Custom width style, as a string including units
+    */
+    'width'?: string;
   }
 
   interface SuiTooltipControl {
@@ -748,6 +756,10 @@ export namespace Components {
     * Give the tooltip an id to reference elsewhere
     */
     'tooltipId': string;
+    /**
+    * Custom width style, as a string including units
+    */
+    'width': string;
   }
   interface SuiTooltipControlAttributes extends StencilHTMLAttributes {
     /**
@@ -762,6 +774,10 @@ export namespace Components {
     * Give the tooltip an id to reference elsewhere
     */
     'tooltipId'?: string;
+    /**
+    * Custom width style, as a string including units
+    */
+    'width'?: string;
   }
 
   interface SuiTooltipCorner {
@@ -803,6 +819,10 @@ export namespace Components {
 
   interface SuiTooltipEscape {
     /**
+    * Optional selector to attach parent key events. Defaults to document
+    */
+    'containerSelector': string;
+    /**
     * Text to show within the tooltip
     */
     'content': string;
@@ -814,8 +834,16 @@ export namespace Components {
     * Give the tooltip an id to reference elsewhere
     */
     'tooltipId': string;
+    /**
+    * Custom width style, as a string including units
+    */
+    'width': string;
   }
   interface SuiTooltipEscapeAttributes extends StencilHTMLAttributes {
+    /**
+    * Optional selector to attach parent key events. Defaults to document
+    */
+    'containerSelector'?: string;
     /**
     * Text to show within the tooltip
     */
@@ -828,6 +856,10 @@ export namespace Components {
     * Give the tooltip an id to reference elsewhere
     */
     'tooltipId'?: string;
+    /**
+    * Custom width style, as a string including units
+    */
+    'width'?: string;
   }
 }
 

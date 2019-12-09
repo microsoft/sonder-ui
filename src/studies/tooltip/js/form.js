@@ -67,7 +67,7 @@ UsabilityForm.prototype.onSubmit = function(formValid) {
     this.form.querySelector('.form-content').innerHTML = '';
     formAlert.classList.remove('error');
     formAlert.classList.add('success');
-    formAlert.innerHTML = 'Success!';
+    formAlert.innerHTML = 'Post successfully updated!';
   }
   else {
     formAlert.classList.add('error');

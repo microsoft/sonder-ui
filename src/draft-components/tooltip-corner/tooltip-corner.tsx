@@ -83,9 +83,9 @@ export class SuiTooltipCorner {
   }
 
   private onKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Escape') {
-      this.dismissed = true;
+    if (this.open && event.key === 'Escape') {
       this.closeTooltip(false);
+      event.stopPropagation();
     }
   }
 
