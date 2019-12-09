@@ -12,14 +12,19 @@ import { Component, Listen, Prop, State } from '@stencil/core';
 })
 export class SuiTooltipCorner {
   /**
+   * Text to show within the tooltip
+   */
+  @Prop() content: string;
+
+  /**
    * Give the tooltip an id to reference elsewhere
    */
   @Prop() tooltipId: string;
 
   /**
-   * Text to show within the tooltip
+   * Custom width style, as a string including units
    */
-  @Prop() content: string;
+  @Prop() width: string;
 
   /**
    * Optionally define tooltip position, defaults to "bottom"
@@ -46,16 +51,15 @@ export class SuiTooltipCorner {
   }
 
   render() {
-    const { tooltipId, content = '', open, position = 'bottom' } = this;
+    const { tooltipId, content = '', open, position = 'bottom', width } = this;
+    const textWidth = width ? width : `${8 * content.length}px`; // calculated width is a bit hacky for the moment
 
     return (
       <div class="tooltip-corner-wrapper" onKeyDown={this.onKeyDown.bind(this)} onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>
         <slot />
         <div class={{'tooltip-corner': true, 'open': open, 'top': position === 'top'}} role="tooltip" id={tooltipId ? tooltipId : null}>
-          {content}
-          <button class="tooltip-corner-close" onClick={this.onCloseClick.bind(this)} tabindex="-1" type="button" aria-hidden="true">
-            <span class="visuallyHidden">close tooltip</span>
-          </button>
+          <div style={{'width': textWidth}}>{content}</div>
+          <button class="tooltip-corner-close" onClick={this.onCloseClick.bind(this)} tabindex="-1" type="button" aria-hidden="true"></button>
         </div>
       </div>
     );
@@ -87,7 +91,8 @@ export class SuiTooltipCorner {
 
   private openTooltip() {
     // once a tooltip is manually dismissed, do not open again
-    if (this.dismissed) {
+    // or if tooltip is empty, do not display
+    if (this.dismissed || this.content.trim() === '') {
       return;
     }
 

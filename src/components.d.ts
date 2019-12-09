@@ -777,6 +777,10 @@ export namespace Components {
     * Give the tooltip an id to reference elsewhere
     */
     'tooltipId': string;
+    /**
+    * Custom width style, as a string including units
+    */
+    'width': string;
   }
   interface SuiTooltipCornerAttributes extends StencilHTMLAttributes {
     /**
@@ -791,6 +795,10 @@ export namespace Components {
     * Give the tooltip an id to reference elsewhere
     */
     'tooltipId'?: string;
+    /**
+    * Custom width style, as a string including units
+    */
+    'width'?: string;
   }
 
   interface SuiTooltipEscape {

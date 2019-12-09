@@ -16,7 +16,7 @@ body {
   padding: 0;
 }
 
-[role=main] {
+main, [role=main] {
   padding: 1em 2em;
 }
 
