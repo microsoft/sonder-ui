@@ -120,6 +120,7 @@ export class SuiSelect {
         return this.onOptionChange(getUpdatedIndex(this.activeIndex, max, action));
       case MenuActions.CloseSelect:
       case MenuActions.Space:
+        event.preventDefault();
         this.selectOption(this.activeIndex);
       case MenuActions.Close:
         event.preventDefault();

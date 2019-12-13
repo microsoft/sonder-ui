@@ -122,8 +122,10 @@ select.combo-input {
   border-radius: 3px;
   color: #fff;
   font-weight: bold;
+  margin-bottom: 6px;
   margin-right: 6px;
-  padding: 4px 8px;
+  padding: 0.25em 1.75em 0.5em 0.25em;
+  position: relative;
 }
 
 .remove-option:focus {
@@ -132,8 +134,21 @@ select.combo-input {
   outline: 3px solid transparent;
 }
 
-.remove-icon {
-  display: inline-block;
-  padding-left: 6px;
-  text-transform: none;
+.remove-option::before,
+.remove-option::after {
+  border-right: 2px solid #fff;
+  content: "";
+  height: 1em;
+  right: 0.75em;
+  position: absolute;
+  top: 50%;
+  width: 0;
+}
+
+.remove-option::before {
+  transform: translate(0, -50%) rotate(45deg);
+}
+
+.remove-option::after {
+  transform: translate(0, -50%) rotate(-45deg);
 }

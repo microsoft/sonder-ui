@@ -104,8 +104,7 @@ export class SuiMultiselect {
           return (
             <li>
               <button class="remove-option" type="button" aria-describedby={`${htmlId}-remove`} onClick={() => { this.removeOption(i); }}>
-                {option.name}
-                <span class="remove-icon" aria-hidden="true">x</span>
+                {option.name} 
               </button>
             </li>
           )
