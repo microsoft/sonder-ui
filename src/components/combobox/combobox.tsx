@@ -16,7 +16,7 @@ export class SuiCombobox {
   /**
    * Whether the combobox should filter based on user input. Defaults to false.
    */
-  @Prop() filter: boolean;
+  @Prop() filter = false;
 
   /**
    * String label

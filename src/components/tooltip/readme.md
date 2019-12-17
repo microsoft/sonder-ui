@@ -1,4 +1,6 @@
-# sui-disclosure
+# Tooltip
+
+Work in progress; do not take this tooltip as a fully accessible implementation. More information on tooltips here: https://sarahmhigley.com/writing/tooltips-in-wcag-21/
 
 
 

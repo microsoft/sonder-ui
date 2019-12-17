@@ -1,4 +1,4 @@
-# sui-modal
+# Modal
 
 
 
