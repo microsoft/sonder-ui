@@ -7,7 +7,7 @@ Each pattern is authored as a web component, and can be dropped directly into a 
 
 Suggestions for additional components to include are very welcome; please file an issue.
 
-## Copmonents
+## Components
 - Combobox (optionally filterable)
 - Disclosure
 - Modal
