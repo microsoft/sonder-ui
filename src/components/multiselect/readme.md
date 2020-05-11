@@ -10,15 +10,31 @@ Another element of confusion comes from the ambiguity of needing to choose betwe
 
 ## Design Guidelines
 
-All the usual requirements for form fields apply: label, visible focus state, perceivable control boundaries, etc.
+All the usual requirements for form fields apply: a persistent label, visible focus state, perceivable control boundaries, and adequate text contrast. The following Web Content Accessibility Guidelines provide more information:
+
+- [3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG21/Understanding/labels-or-instructions.html)
+- [2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html)
+- [1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html)
+- [1.4.3 Contrast (minimum)](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
+
+The buttons for each selected option should be immediately adjacent to the combobox, but not within the input itself. When the buttons were displayed within the input, the overlapping pointer targets and reduced target size of the input caused problems. The buttons themselves should also have adequate text contrast and boundary contrast.
 
 ### Keyboard Interaction
-- Enter expands the dropdown when closed, and toggles selection of the current option when open
-- Up/Down arrows expand the dropdown and move the highlighted option up or down
-- Home/End highlights the first or last option when open
-- Escape closes the dropdown
-- Printable characters change the value of the input, open the dropdown (if closed), and highlight the first matching option
-- Each selected button is in the tab order, and activating one de-selects that option
+**When collapsed**
+
+`Enter`, `Space`, `Up Arrow` or `Down Arrow` will all expand the dropdown, and focus will be on the first option, or the most recently highlighted option. Printable characters will also expand the dropdown, update the value, and move focus to the first matching option.
+
+**When expanded**
+- `Enter` selects the current option, clears the input, and creates a button for that option
+- `Up Arrow` moves focus to the previous option, if one exists. If focus is already on the first option, it will not move.
+- `Down Arrow` moves focus to the next option, if one exists. If focus is already on the last option, it will not move.
+- `Home`/`End` moves focus to the first or last option.
+- `Escape` closes the dropdown without modifying the selected options.
+- `Tab` closes the dropdown, and focus moves to the next focusable item after the combobox.
+- `Alt` + `Up Arrow` closes the dropdown without altering selection.
+- Printable characters will alter the input value and move focus to the first option that starts with the full value string, if one exists
+
+Each button for a selected option is in the tab order, and activating one will de-select that option.
 
 
 

@@ -1,19 +1,19 @@
-# Sonder UI (Work in progress)
+# Sonder UI
 > a collection of tested, accessible components and component pattern documentation.
 
 The purpose of this project is to showcase component patterns that have been thoroughly tested for accessibility. Each component's readme will include a description of how it was tested, bugs found, expected functionality, and design considerations for extension or authoring similar patterns.
 
-Each pattern is authored as a web component, and can be dropped directly into a project. However, since this is primarily intended as accessibility documentation + reference implementation, they may not be as fully featured as a true component library.
+Each pattern is authored as a web component, and can be dropped directly into a project. However, since this is primarily intended as accessibility documentation + reference implementation, they may not be as fully featured or stable as a true component library.
 
 Suggestions for additional components to include are very welcome; please file an issue.
 
 ## Components
-- Combobox (optionally filterable)
-- Disclosure
-- Modal
-- Multiselect
-- Select
-- Tooltip (WIP)
+- [Combobox (optionally filterable)](src/components/combobox)
+- [Disclosure](src/components/disclosure)
+- [Modal](src/components/modal)
+- [Multiselect](src/components/multiselect)
+- [Select](src/components/select)
+- [Tooltip (WIP)](src/components/tooltip)
 
 ## Contributing
 
