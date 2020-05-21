@@ -171,10 +171,9 @@ export class SuiCombobox {
   }
 
   private onInputKeyDown(event: KeyboardEvent) {
-    const { key } = event;
     const max = this.filteredOptions.length - 1;
 
-    const action = getActionFromKey(key, this.open);
+    const action = getActionFromKey(event, this.open);
 
     switch(action) {
       case MenuActions.Next:

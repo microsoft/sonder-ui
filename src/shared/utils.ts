@@ -29,6 +29,8 @@ export enum MenuActions {
   Last,
   Next,
   Open,
+  PageDown,
+  PageUp,
   Previous,
   Select,
   Space,
@@ -55,43 +57,77 @@ export function findMatches(options: SelectOption[], search: string): SelectOpti
 }
 
 // return combobox action from key press
-export function getActionFromKey(key: string, menuOpen: boolean): MenuActions {
+export function getActionFromKey(event: KeyboardEvent, menuOpen: boolean): MenuActions {
+  const { key, altKey, ctrlKey, metaKey } = event;
+  const openKeys = ['ArrowDown', 'ArrowUp', 'Enter', ' ', 'Home', 'End']; // all keys that will open the combo
+
   // handle opening when closed
-  if (!menuOpen && (key === Keys.Down || key === Keys.Enter || key === Keys.Space)) {
+  if (!menuOpen && openKeys.includes(key)) {
     return MenuActions.Open;
   }
 
-  // handle keys when open
-  if (key === Keys.Down) {
-    return MenuActions.Next;
-  }
-  else if (key === Keys.Up) {
-    return MenuActions.Previous;
-  }
-  else if (key === Keys.Home) {
-    return MenuActions.First;
-  }
-  else if (key === Keys.End) {
-    return MenuActions.Last;
-  }
-  else if (key === Keys.Escape) {
-    return MenuActions.Close;
-  }
-  else if (key === Keys.Enter) {
-    return MenuActions.CloseSelect;
-  }
-  else if (key === Keys.Space) {
-    return MenuActions.Space;
-  }
-  else if (key === Keys.Backspace || key === Keys.Clear || key.length === 1) {
+  // handle typing characters when open or closed
+  if (key === Keys.Backspace || key === Keys.Clear || (key.length === 1 && key !== ' ' && !altKey && !ctrlKey && !metaKey)) {
     return MenuActions.Type;
+  }
+
+  // handle keys when open
+  if (menuOpen) {
+    if (key === Keys.Down && !altKey) {
+      return MenuActions.Next;
+    }
+    else if (key === Keys.Up && altKey) {
+      return MenuActions.CloseSelect;
+    }
+    else if (key === Keys.Up) {
+      return MenuActions.Previous;
+    }
+    else if (key === Keys.Home) {
+      return MenuActions.First;
+    }
+    else if (key === Keys.End) {
+      return MenuActions.Last;
+    }
+    else if (key === Keys.PageUp) {
+      return MenuActions.PageUp;
+    }
+    else if (key === Keys.PageDown) {
+      return MenuActions.PageDown;
+    }
+    else if (key === Keys.Escape) {
+      return MenuActions.Close;
+    }
+    else if (key === Keys.Enter) {
+      return MenuActions.CloseSelect;
+    }
+    else if (key === Keys.Space) {
+      return MenuActions.Space;
+    }
   }
 }
 
-// get index of option that matches a string
-export function getIndexByLetter(options: SelectOption[], filter: string): number {
-  const firstMatch = filterOptions(options, filter)[0];
-  return firstMatch ? options.indexOf(firstMatch) : -1;
+// return the index of an option from an array of options, based on a search string
+// if the filter is multiple iterations of the same letter (e.g "aaa"), then cycle through first-letter matches
+export function getIndexByLetter(options: SelectOption[], filter: string, startIndex = 0): number {
+  const orderedOptions = [...options.slice(startIndex), ...options.slice(0, startIndex)];
+  const firstMatch = filterOptions(orderedOptions, filter)[0];
+  const allSameLetter = (array) => array.every((letter) => letter === array[0]);
+  
+  // first check if there is an exact match for the typed string
+  if (firstMatch) {
+    return options.indexOf(firstMatch);
+  }
+
+  // if the same letter is being repeated, cycle through first-letter matches
+  else if (allSameLetter(filter.split(''))) {
+    const matches = filterOptions(orderedOptions, filter[0]);
+    return options.indexOf(matches[0]);
+  }
+
+  // if no matches, return -1
+  else {
+    return -1;
+  }
 }
 
 // get updated option index
