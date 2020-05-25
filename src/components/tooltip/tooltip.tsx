@@ -12,7 +12,7 @@ import { Component, Listen, Prop, State } from '@stencil/core';
 })
 export class SuiTooltip {
   /**
-   * Give the tooltip an id to reference elsewhere
+   * Give the tooltip an id to reference from elsewhere
    */
   @Prop() tooltipId: string;
 
@@ -24,7 +24,7 @@ export class SuiTooltip {
   /**
    * Optionally define tooltip position, defaults to "bottom"
    */
-  @Prop() position: 'top' | 'bottom';
+  @Prop() position: 'top' | 'bottom' = 'bottom';
 
   // whether the tooltip is open or closed
   @State() open = false;
@@ -46,7 +46,7 @@ export class SuiTooltip {
   }
 
   render() {
-    const { tooltipId, content = '', open, position = 'bottom' } = this;
+    const { tooltipId, content = '', open, position } = this;
 
     return (
       <div class="tooltip-wrapper" onKeyDown={this.onKeyDown.bind(this)} onMouseEnter={this.openTooltip.bind(this)} onMouseLeave={this.closeTooltip.bind(this)}>

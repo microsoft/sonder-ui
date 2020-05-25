@@ -76,6 +76,9 @@ The recommended semantic structure is the one detailed in the [ARIA 1.2 combobox
 - [ARIA 1.2 combobox pattern](https://www.w3.org/TR/wai-aria-practices-1.2/#combobox)
 
 ## Stencil JS Component
+
+The `<sui-select>` web component supports the following properties and events:
+
 <!-- Auto Generated Below -->
 
 ### Properties

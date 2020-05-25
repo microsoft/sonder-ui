@@ -197,7 +197,7 @@ export namespace Components {
     */
     'position': 'top' | 'bottom';
     /**
-    * Give the tooltip an id to reference elsewhere
+    * Give the tooltip an id to reference from elsewhere
     */
     'tooltipId': string;
   }
@@ -211,7 +211,7 @@ export namespace Components {
     */
     'position'?: 'top' | 'bottom';
     /**
-    * Give the tooltip an id to reference elsewhere
+    * Give the tooltip an id to reference from elsewhere
     */
     'tooltipId'?: string;
   }
