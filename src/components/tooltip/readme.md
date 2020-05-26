@@ -61,7 +61,7 @@ The `<sui-tooltip>` web component accepts the following properties:
 <!-- Auto Generated Below -->
 
 
-## Properties
+### Properties
 
 | Property    | Attribute    | Description                                              | Type                | Default     |
 | ----------- | ------------ | -------------------------------------------------------- | ------------------- | ----------- |
