@@ -61,10 +61,10 @@ export function getActionFromKey(key: string, menuOpen: boolean): MenuActions {
   }
 
   // handle keys when open
-  if (key === Keys.Down) {
+  if (key === Keys.Down || key === Keys.Right) {
     return MenuActions.Next;
   }
-  else if (key === Keys.Up) {
+  else if (key === Keys.Up || key === Keys.Left) {
     return MenuActions.Previous;
   }
   else if (key === Keys.Home) {

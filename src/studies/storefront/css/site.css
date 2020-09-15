@@ -1,0 +1,138 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 1 auto;
+  overflow-x: auto;
+  padding: 1em 1em 1em 2.5em; 
+}
+
+header {
+  flex: 0 0 260px;
+  background: #d7d7d7;
+  border-right: 3px solid #28164a;
+  min-height: 100%;
+  padding: 1em;
+}
+
+@media screen and (max-width: 800px) {
+  header {
+    border-bottom:3px solid #28164a;
+    border-right:none;
+    margin-bottom:1.5rem
+  }
+
+  .container {
+    display: block;
+  }
+}
+
+.logo {
+  display: block;
+  width: 80%;
+  max-width: 150px;
+  margin: 1em auto;
+}
+
+.site-title {
+  display: block;
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.nav {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.nav a {
+  font-weight: bold;
+  color: #004981;
+}
+
+.feedback {
+  margin-left: 1em;
+  border-left: 5px solid #ccc;
+  padding: 0.5em 0 0.5em 0.75em;
+}
+
+.feedback p {
+  margin: 0 0 1em;
+}
+
+.feedback p:last-child {
+  margin: 0;
+}
+
+#toolbar label {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+#toolbar svg {
+  display: block;
+  height: 1.25em;
+  fill: currentColor;
+}
+
+#toolbar .item {
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,.42);
+  border-radius: 5px;
+  padding: 0.5em;
+  margin-right: 0.25em;
+}
+
+#toolbar .item:last-child {
+  margin-right: 0;
+}
+
+#toolbar .item:hover,
+#toolbar .item:focus {
+  border-color: #005a9c;
+  background: rgb(226, 239, 255);
+}
+
+#toolbar .item:focus {
+  box-shadow: 0 0 0 2px #005a9c;
+  outline: 2px solid transparent;
+}
+
+#toolbar .item[aria-pressed=true],
+#toolbar .item[aria-checked=true] {
+  background: #0067b8;
+  color: #fff;
+}
+
+#toolbar .font-color-icon {
+  display: block;
+  padding: 0 0.25em;
+}
+
+#toolbar .font-color-swatch {
+  display: block;
+  width: 100%;
+  height: 0.25em;
+  background-color: #000;
+}
+
+textarea {
+  width: 100%;
+  padding: 1em;
+  font-size: 1em;
+  line-height: 1.5;
+}

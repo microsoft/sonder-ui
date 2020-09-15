@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Usability study: Pet store</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <link rel="stylesheet" href="css/site.css"></style>
+  <script src="/build/caiacc.js"></script>
+  <script src="./assets/inert.min.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <svg class="logo" viewBox="0 0 32 32">
+        <path d="M28 4v26h-21c-1.657 0-3-1.343-3-3s1.343-3 3-3h19v-24h-20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24v-28h-2z"></path>
+        <path d="M7.002 26v0c-0.001 0-0.001 0-0.002 0-0.552 0-1 0.448-1 1s0.448 1 1 1c0.001 0 0.001-0 0.002-0v0h18.997v-2h-18.997z"></path>
+      </svg>
+      <span class="site-title">Sonder Pet store</span>
+      <ul class="nav">
+        <li><a href="#" aria-current="page">Dashboard</a></li>
+        <li><a href="#">Sales</a></li>
+        <li><a href="#">Account</a></li>
+      </ul>
+    </header>
+    <main>
+      <h1>Dashboard</h1>
+      <p>This is a sample pet store dashboard; all working controls are on this page.</p>
+
+      <h2>Inventory</h2>
+      <split-button style="display:inline-block" id="add-button" button-id="add-focus-stop">Add New</split-button>
+      <sui-grid-new class="grid"></sui-grid-new>
+
+      <h2>Latest Customer Feedback</h2>
+      <article class="feedback" aria-label="feedback">
+        <p>I absolutely love my new pet cat, Lord Meowsworth. I'm so glad this pet store takes the time to really match customers with rescue animals.</p>
+      </article>
+
+      <h3>Respond to feedback</h3>
+
+      <sui-toolbar id="toolbar" toolbar-label="text formatting">
+        <div class="toolbar-group">
+          <button
+              id="button-bold"
+              class="item bold popup"
+              aria-pressed="false"
+              value="bold"
+              tabindex="0">
+            <svg role="img" aria-label="bold" id="icon-bold" viewBox="0 0 32 32">
+              <path d="M22.121 15.145c1.172-1.392 1.879-3.188 1.879-5.145 0-4.411-3.589-8-8-8h-10v28h12c4.411 0 8-3.589 8-8 0-2.905-1.556-5.453-3.879-6.855zM12 6h3.172c1.749 0 3.172 1.794 3.172 4s-1.423 4-3.172 4h-3.172v-8zM16.969 26h-4.969v-8h4.969c1.827 0 3.313 1.794 3.313 4s-1.486 4-3.313 4z"></path>
+            </svg>
+          </button>
+          <button
+              id="button-italic"
+              class="item italic popup"
+              aria-pressed="false"
+              value="italic"
+              tabindex="-1">
+            <svg role="img" aria-label="italic" id="icon-italic" viewBox="0 0 32 32">
+              <path d="M28 2v2h-4l-10 24h4v2h-14v-2h4l10-24h-4v-2z"></path>
+            </svg>
+          </button>
+          <split-button
+            button-id="button-underline"
+            class="underline-popup"
+            pressed="false"
+            in-compound-group="true"
+            custom-tab-index="-1"
+          >
+            <svg role="img" aria-label="underline" id="icon-underline" viewBox="0 0 32 32">
+              <path d="M22 2h4v13c0 4.971-4.477 9-10 9s-10-4.029-10-9v-13h4v13c0 1.255 0.57 2.459 1.605 3.391 1.153 1.038 2.714 1.609 4.395 1.609s3.242-0.572 4.395-1.609c1.035-0.931 1.605-2.136 1.605-3.391v-13zM6 26h20v4h-20z"></path>
+            </svg>
+          </split-button>
+        </div>
+        <div class="toolbar-group"
+             role="radiogroup"
+             aria-label="Text Alignment">
+          <button
+              role="radio"
+              class="item align-left popup"
+              aria-checked="true"
+              tabindex="-1">
+            <svg role="img" aria-label="Text Align Left" id="icon-paragraph-left" viewBox="0 0 32 32">
+              <path d="M0 2h32v4h-32zM0 8h20v4h-20zM0 20h20v4h-20zM0 14h32v4h-32zM0 26h32v4h-32z"></path>
+            </svg>
+          </button>
+          <button
+              role="radio"
+              class="item align-center popup"
+              aria-checked="false"
+              tabindex="-1">
+            <svg role="img" aria-label="Text Align Center" id="icon-paragraph-left" viewBox="0 0 32 32">
+              <path d="M0 2h32v4h-32zM6 8h20v4h-20zM6 20h20v4h-20zM0 14h32v4h-32zM0 26h32v4h-32z"></path>
+            </svg>
+          </button>
+          <button
+              role="radio"
+              class="item align-right popup"
+              aria-checked="false"
+              tabindex="-1">
+            <svg role="img" aria-label="Text Align Right" id="icon-paragraph-left" viewBox="0 0 32 32">
+              <path d="M0 2h32v4h-32zM12 8h20v4h-20zM12 20h20v4h-20zM0 14h32v4h-32zM0 26h32v4h-32z"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="toolbar-group">
+          <split-button
+            button-id="font-color"
+            class="font-color-item"
+            custom-tab-index="-1"
+            in-compound-group="true"
+            menu-button-label="all font colors"
+          >
+            <span class="font-color-icon" aria-hidden="true">A</span>
+            <span class="font-color-swatch"></span>
+            <span id="font-color-name" class="visuallyHidden">Font color: black</span>
+          </split-button>
+        </div>
+
+        <div class="toolbar-group">
+          <split-button
+            button-id="font-size"
+            class="font-size-item"
+            in-compound-group="true"
+            custom-tab-index="-1"
+          >
+            <span>16px</span>
+          </split-button>
+        </div>
+    </sui-toolbar>
+    <textarea id="response" aria-label="Reply to feedback" rows="5" cols="80" style="font-family: sans-serif">Thank you for your feedback! We will get in touch soon.</textarea>
+    <split-button style="display:inline-block" id="send-button">Send</split-button>
+
+    </main>
+  </div>
+
+  <sui-modal heading="Add Book" focus-target="wrapper" class="dialog" id="add-modal">
+    <label for="title">Name</label>
+    <input type="text" id="title" class="form-input">
+
+    <multiselect-buttons label="Tags" class="tags-select"></multiselect-buttons>
+
+    <label for="author">Animal</label>
+    <input type="text" id="author" class="form-input">
+
+    <label for="country">Breed</label>
+    <input type="text" id="country" class="form-input">
+
+    <label for="quantity">Age</label>
+    <input type="text" id="quantity" class="form-input">
+
+    <button type="button" class="submit button" id="add-confirm">Confirm</button>
+    <button type="button" class="button" id="add-cancel">Cancel</button>
+  </sui-modal>
+
+  <script src="./js/store.js"></script>
+  <script type="text/javascript" async>
+  (async () => {
+    const data = await fetch('/assets/pets.json');
+    const gridData = await data.json();
+    gridData.shift();
+    const gridEl = document.querySelector('.grid');
+    let cellData = gridData.map((row) => {
+      row.push('radio, Female, Male', 'button, Edit, Delete');
+      return row;
+    });
+    gridEl.cells = cellData;
+    gridEl.pageLength = 30;
+    gridEl.rowSelection = 'none';
+    gridEl.gridType = 'grid';
+    gridEl.labelledBy = 'grid-heading';
+    gridEl.columns = [
+      {name: 'Name'},
+      {name: 'Animal'},
+      {name: 'Breed'},
+      {name: 'Color'},
+      {name: 'Age'},
+      {name: 'Gender', actionsColumn: true},
+      {name: 'Actions', actionsColumn: true}
+    ];
+
+    gridEl.addEventListener('filter', function(event) {
+      const newData = filterByColumn(event.detail, cellData);
+      gridEl.cells = newData;
+    });
+
+    gridEl.addEventListener('editCell', function(event) {
+      const { value, column, row } = event.detail;
+      cellData[row][column] = value;
+      gridEl.cells = [...cellData];
+    });
+
+  })();
+
+  // add inventory button
+  const addButton = document.getElementById('add-button');
+  addButton.menuItems = ['Add new cat', 'Add new dog', 'Add new bird'];
+
+  // form multiselect
+  function formatOptions(stringArray) {
+    return stringArray.map((option) => ({name: option, value: option}));
+  }
+  const tags = ["Spunky", "Active", "Relaxed", "Shy", "Likes Cuddles", "Must be only pet", "Aggressive", "Playful"];
+  const tagsCombo = document.querySelector('.tags-select');
+  tagsCombo.options = formatOptions(tags);
+  </script>
+</body>
+</html>

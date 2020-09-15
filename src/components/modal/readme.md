@@ -29,7 +29,7 @@ The `<sui-modal>` web component accepts the following properties:
 <!-- Auto Generated Below -->
 
 
-### Properties
+## Properties
 
 | Property        | Attribute         | Description                                                          | Type                               | Default     |
 | --------------- | ----------------- | -------------------------------------------------------------------- | ---------------------------------- | ----------- |
@@ -40,7 +40,7 @@ The `<sui-modal>` web component accepts the following properties:
 | `open`          | `open`            | Whether the modal is open or closed                                  | `boolean`                          | `false`     |
 
 
-### Events
+## Events
 
 | Event   | Description                                     | Type                |
 | ------- | ----------------------------------------------- | ------------------- |

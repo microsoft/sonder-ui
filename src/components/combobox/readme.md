@@ -62,7 +62,8 @@ If you wish to use the combobox component directly, its properties and events ar
 
 <!-- Auto Generated Below -->
 
-### Properties
+
+## Properties
 
 | Property  | Attribute | Description                                                                | Type             | Default     |
 | --------- | --------- | -------------------------------------------------------------------------- | ---------------- | ----------- |
@@ -71,7 +72,7 @@ If you wish to use the combobox component directly, its properties and events ar
 | `options` | --        | Array of name/value options                                                | `SelectOption[]` | `undefined` |
 
 
-### Events
+## Events
 
 | Event    | Description                                | Type                |
 | -------- | ------------------------------------------ | ------------------- |

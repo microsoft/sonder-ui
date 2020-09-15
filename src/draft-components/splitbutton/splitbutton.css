@@ -1,0 +1,89 @@
+.splitbutton {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.splitbutton > button:hover,
+.splitbutton > button:focus {
+  border-color: #005a9c;
+  background: rgb(226, 239, 255);
+}
+
+.splitbutton > button:focus {
+  position: relative;
+  box-shadow: 0 0 0 2px #005a9c;
+  outline: 2px solid transparent;
+  z-index: 1;
+}
+
+.primary {
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,.42);
+  border-radius: 5px 0 0 5px;
+  padding: 0.5em;
+}
+
+.splitbutton .primary[aria-pressed=true] {
+  background: #0067b8;
+  color: #fff;
+}
+
+.menuTrigger {
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,.42);
+  border-left: 0;
+  border-radius: 0 5px 5px 0;
+  padding: 0.5em 0.25em;
+}
+
+.open .menuTrigger {
+  border-radius: 0 5px 0 0;
+}
+
+.menuTrigger::after {
+  border-bottom: 1px solid rgba(0,0,0,.5);
+  border-right: 1px solid rgba(0,0,0,.5);
+  content: '';
+  display: block;
+  height: 8px;
+  transform: translate(0, -20%) rotate(45deg);
+  width: 8px;
+  margin: 0.25em 0;
+}
+
+.menu {
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,.42);
+  display: none;
+  min-width: 100px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 2;
+}
+
+.open .menu {
+  display:  block;
+}
+
+.menuitem {
+  display: block;
+  width: 100%;
+  padding: 0.5em;
+  border: 0;
+  border-bottom: 1px solid rgba(0,0,0,.42);
+}
+
+.menuitem:focus {
+  background: #0067b8;
+  color: #fff;
+}
+
+.visuallyHidden {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}

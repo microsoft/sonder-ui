@@ -37,19 +37,10 @@ The `<sui-disclosure>` web component supports the following properties and event
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                      | Type                | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------------------- | ------------------- | ----------- |
-| `buttonLabel` | `button-label` | Optional override to the button's accessible name (using aria-label)             | `string`            | `undefined` |
-| `popupLabel`  | `popup-label`  | Optionally set the popup region's accessible name using aria-label (recommended) | `string`            | `undefined` |
-| `position`    | `position`     | Set the position of the disclosure, defaults to left                             | `"left" \| "right"` | `undefined` |
-
-
-## Events
-
-| Event   | Description                                     | Type                |
-| ------- | ----------------------------------------------- | ------------------- |
-| `close` | Emit a custom close event when the popup closes | `CustomEvent<void>` |
-| `open`  | Emit a custom open event when the popup opens   | `CustomEvent<void>` |
+| Property       | Attribute       | Description                                                              | Type       | Default     |
+| -------------- | --------------- | ------------------------------------------------------------------------ | ---------- | ----------- |
+| `menuItems`    | --              | Array of CSS selectors for toolbar actions                               | `string[]` | `[]`        |
+| `toolbarLabel` | `toolbar-label` | Set the accessible name for the button that opens the menu (recommended) | `string`   | `undefined` |
 
 
 ----------------------------------------------

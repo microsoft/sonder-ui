@@ -61,13 +61,13 @@ The `<sui-tooltip>` web component accepts the following properties:
 <!-- Auto Generated Below -->
 
 
-### Properties
+## Properties
 
 | Property    | Attribute    | Description                                              | Type                | Default     |
 | ----------- | ------------ | -------------------------------------------------------- | ------------------- | ----------- |
 | `content`   | `content`    | Text to show within the tooltip                          | `string`            | `undefined` |
-| `position`  | `position`   | Optionally define tooltip position, defaults to "bottom" | `"bottom" \| "top"` | `"bottom"` |
-| `tooltipId` | `tooltip-id` | Give the tooltip an id to reference elsewhere            | `string`            | `undefined` |
+| `position`  | `position`   | Optionally define tooltip position, defaults to "bottom" | `"bottom" \| "top"` | `'bottom'`  |
+| `tooltipId` | `tooltip-id` | Give the tooltip an id to reference from elsewhere       | `string`            | `undefined` |
 
 
 ----------------------------------------------

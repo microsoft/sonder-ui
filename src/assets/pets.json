@@ -1,0 +1,13 @@
+[
+  ["Name", "Animal", "Breed", "Color", "Age"],
+  ["Gideon", "Dog", "Hound Mix", "Black", "Puppy"],
+  ["Harrow", "Cat", "Mix", "Orange", "Adult"],
+  ["Firefly", "Cat", "Maine Coon", "Black & brown", "Kitten"],
+  ["Mako & Bolin", "Dog", "Labrador", "Black & white", "Young"],
+  ["Korra", "Dog", "Pit Bull Mix", "Cream", "Young"],
+  ["Catara", "Cat", "Tortoiseshell", "Black & brown", "Adult"],
+  ["Roxy", "Cat", "Siamese", "Cream & brown", "Kitten"],
+  ["Iago", "Bird", "Parrot", "Multicolor", "Adult"],
+  ["Somali", "Bird", "Parrakeet", "Green", "Young"],
+  ["Mango", "Cat", "Mix", "Orange", "Adult"]
+]

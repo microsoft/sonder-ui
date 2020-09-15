@@ -20,6 +20,12 @@ import {
 import {
   RowSelectionPattern,
 } from './draft-components/grid/row';
+import {
+  Column as Column2,
+} from './draft-components/gridv2/grid-helpers';
+import {
+  RowSelectionPattern as RowSelectionPattern2,
+} from './draft-components/gridv2/row';
 
 
 export namespace Components {
@@ -449,6 +455,43 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
+  interface ModalDisclosure {
+    /**
+    * Optional override to the button's accessible name (using aria-label)
+    */
+    'buttonLabel': string;
+    /**
+    * Optionally set the popup region's accessible name using aria-label (recommended)
+    */
+    'popupLabel': string;
+    /**
+    * Set the position of the disclosure, defaults to left
+    */
+    'position': 'left' | 'right';
+  }
+  interface ModalDisclosureAttributes extends StencilHTMLAttributes {
+    /**
+    * Optional override to the button's accessible name (using aria-label)
+    */
+    'buttonLabel'?: string;
+    /**
+    * Emit a custom close event when the popup closes
+    */
+    'onClose'?: (event: CustomEvent) => void;
+    /**
+    * Emit a custom open event when the popup opens
+    */
+    'onOpen'?: (event: CustomEvent) => void;
+    /**
+    * Optionally set the popup region's accessible name using aria-label (recommended)
+    */
+    'popupLabel'?: string;
+    /**
+    * Set the position of the disclosure, defaults to left
+    */
+    'position'?: 'left' | 'right';
+  }
+
   interface SuiGrid {
     /**
     * Grid data
@@ -531,6 +574,109 @@ export namespace Components {
     * Emit a custom row selection event
     */
     'onRowSelect'?: (event: CustomEvent) => void;
+    /**
+    * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
+    */
+    'pageLength'?: number;
+    /**
+    * Custom function to control the render of cell content
+    */
+    'renderCustomCell'?: (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
+    'rowSelection'?: RowSelectionPattern;
+    'simpleEditable'?: boolean;
+    /**
+    * Index of the column that best labels a row
+    */
+    'titleColumn'?: number;
+    'useApplicationRole'?: boolean;
+  }
+
+  interface SuiGridNew {
+    /**
+    * Grid data
+    */
+    'cells': string[][];
+    /**
+    * Column definitions
+    */
+    'columns': Column[];
+    /**
+    * Caption/description for the grid
+    */
+    'description': string;
+    'editOnClick': boolean;
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'editable': boolean;
+    /**
+    * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
+    */
+    'gridType': 'grid' | 'table';
+    'headerActionsMenu': boolean;
+    /**
+    * String ID of labelling element
+    */
+    'labelledBy': string;
+    /**
+    * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
+    */
+    'pageLength': number;
+    /**
+    * Custom function to control the render of cell content
+    */
+    'renderCustomCell': (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
+    'rowSelection': RowSelectionPattern;
+    'simpleEditable': boolean;
+    /**
+    * Index of the column that best labels a row
+    */
+    'titleColumn': number;
+    'useApplicationRole': boolean;
+  }
+  interface SuiGridNewAttributes extends StencilHTMLAttributes {
+    /**
+    * Grid data
+    */
+    'cells'?: string[][];
+    /**
+    * Column definitions
+    */
+    'columns'?: Column[];
+    /**
+    * Caption/description for the grid
+    */
+    'description'?: string;
+    'editOnClick'?: boolean;
+    /**
+    * Properties for Usability test case behaviors: *
+    */
+    'editable'?: boolean;
+    /**
+    * Grid type: grids have controlled focus and fancy behavior, tables are simple static content
+    */
+    'gridType'?: 'grid' | 'table';
+    'headerActionsMenu'?: boolean;
+    /**
+    * String ID of labelling element
+    */
+    'labelledBy'?: string;
+    /**
+    * Emit a custom edit event when cell content change is submitted
+    */
+    'onEditCell'?: (event: CustomEvent<{value: string; column: number; row: number;}>) => void;
+    /**
+    * Emit a custom filter event
+    */
+    'onFilter'?: (event: CustomEvent) => void;
+    /**
+    * Emit a custom row selection event
+    */
+    'onRowSelect'?: (event: CustomEvent) => void;
+    /**
+    * Emit a custom stepper value change event
+    */
+    'onStepperChange'?: (event: CustomEvent<{row: number; value: number}>) => void;
     /**
     * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
     */
@@ -704,6 +850,104 @@ export namespace Components {
     * boolean required
     */
     'required'?: boolean;
+  }
+
+  interface SplitButton {
+    /**
+    * (Optional) pass a string to be the primary button id
+    */
+    'buttonId': string;
+    /**
+    * Optionally override the component's tabindex
+    */
+    'customTabIndex': 0 | 1;
+    /**
+    * Set to true if the button is within a compound widget like a toolbar or menu (changes arrow key behavior)
+    */
+    'inCompoundGroup': boolean;
+    /**
+    * Set the keyboard behavior of the splitbutton to be one tab/arrow stop or two (defaults to 2)
+    */
+    'isCompoundButton': boolean;
+    /**
+    * Set the accessible name for the button that opens the menu (recommended)
+    */
+    'menuButtonLabel': string;
+    /**
+    * Array of menu actions
+    */
+    'menuItems': any[];
+    /**
+    * (Optional) set pressed to make the primary button into a toggle button
+    */
+    'pressed': boolean;
+    /**
+    * Optional custom render function for menu items (defaults to the menuItem string)
+    */
+    'renderMenuItem': (menItem: any) => string;
+  }
+  interface SplitButtonAttributes extends StencilHTMLAttributes {
+    /**
+    * (Optional) pass a string to be the primary button id
+    */
+    'buttonId'?: string;
+    /**
+    * Optionally override the component's tabindex
+    */
+    'customTabIndex'?: 0 | 1;
+    /**
+    * Set to true if the button is within a compound widget like a toolbar or menu (changes arrow key behavior)
+    */
+    'inCompoundGroup'?: boolean;
+    /**
+    * Set the keyboard behavior of the splitbutton to be one tab/arrow stop or two (defaults to 2)
+    */
+    'isCompoundButton'?: boolean;
+    /**
+    * Set the accessible name for the button that opens the menu (recommended)
+    */
+    'menuButtonLabel'?: string;
+    /**
+    * Array of menu actions
+    */
+    'menuItems'?: any[];
+    /**
+    * Emit a custom event when a menu item is clicked
+    */
+    'onMenuAction'?: (event: CustomEvent) => void;
+    /**
+    * Emit a custom event when a menu item is clicked
+    */
+    'onPrimaryAction'?: (event: CustomEvent) => void;
+    /**
+    * (Optional) set pressed to make the primary button into a toggle button
+    */
+    'pressed'?: boolean;
+    /**
+    * Optional custom render function for menu items (defaults to the menuItem string)
+    */
+    'renderMenuItem'?: (menItem: any) => string;
+  }
+
+  interface SuiToolbar {
+    /**
+    * Array of CSS selectors for toolbar actions
+    */
+    'menuItems': string[];
+    /**
+    * Set the accessible name for the button that opens the menu (recommended)
+    */
+    'toolbarLabel': string;
+  }
+  interface SuiToolbarAttributes extends StencilHTMLAttributes {
+    /**
+    * Array of CSS selectors for toolbar actions
+    */
+    'menuItems'?: string[];
+    /**
+    * Set the accessible name for the button that opens the menu (recommended)
+    */
+    'toolbarLabel'?: string;
   }
 
   interface SuiTooltipArrow {
@@ -880,13 +1124,17 @@ declare global {
     'ComboNoinput': Components.ComboNoinput;
     'ComboReadonly': Components.ComboReadonly;
     'ComboTwelve': Components.ComboTwelve;
+    'ModalDisclosure': Components.ModalDisclosure;
     'SuiGrid': Components.SuiGrid;
+    'SuiGridNew': Components.SuiGridNew;
     'ListboxButton': Components.ListboxButton;
     'ListboxExpand': Components.ListboxExpand;
     'MultiselectButtons': Components.MultiselectButtons;
     'MultiselectCsv': Components.MultiselectCsv;
     'MultiselectInline': Components.MultiselectInline;
     'MultiselectNative': Components.MultiselectNative;
+    'SplitButton': Components.SplitButton;
+    'SuiToolbar': Components.SuiToolbar;
     'SuiTooltipArrow': Components.SuiTooltipArrow;
     'SuiTooltipControl': Components.SuiTooltipControl;
     'SuiTooltipCorner': Components.SuiTooltipCorner;
@@ -909,13 +1157,17 @@ declare global {
     'combo-noinput': Components.ComboNoinputAttributes;
     'combo-readonly': Components.ComboReadonlyAttributes;
     'combo-twelve': Components.ComboTwelveAttributes;
+    'modal-disclosure': Components.ModalDisclosureAttributes;
     'sui-grid': Components.SuiGridAttributes;
+    'sui-grid-new': Components.SuiGridNewAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
     'listbox-expand': Components.ListboxExpandAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
     'multiselect-inline': Components.MultiselectInlineAttributes;
     'multiselect-native': Components.MultiselectNativeAttributes;
+    'split-button': Components.SplitButtonAttributes;
+    'sui-toolbar': Components.SuiToolbarAttributes;
     'sui-tooltip-arrow': Components.SuiTooltipArrowAttributes;
     'sui-tooltip-control': Components.SuiTooltipControlAttributes;
     'sui-tooltip-corner': Components.SuiTooltipCornerAttributes;
@@ -1013,10 +1265,22 @@ declare global {
     new (): HTMLComboTwelveElement;
   };
 
+  interface HTMLModalDisclosureElement extends Components.ModalDisclosure, HTMLStencilElement {}
+  var HTMLModalDisclosureElement: {
+    prototype: HTMLModalDisclosureElement;
+    new (): HTMLModalDisclosureElement;
+  };
+
   interface HTMLSuiGridElement extends Components.SuiGrid, HTMLStencilElement {}
   var HTMLSuiGridElement: {
     prototype: HTMLSuiGridElement;
     new (): HTMLSuiGridElement;
+  };
+
+  interface HTMLSuiGridNewElement extends Components.SuiGridNew, HTMLStencilElement {}
+  var HTMLSuiGridNewElement: {
+    prototype: HTMLSuiGridNewElement;
+    new (): HTMLSuiGridNewElement;
   };
 
   interface HTMLListboxButtonElement extends Components.ListboxButton, HTMLStencilElement {}
@@ -1053,6 +1317,18 @@ declare global {
   var HTMLMultiselectNativeElement: {
     prototype: HTMLMultiselectNativeElement;
     new (): HTMLMultiselectNativeElement;
+  };
+
+  interface HTMLSplitButtonElement extends Components.SplitButton, HTMLStencilElement {}
+  var HTMLSplitButtonElement: {
+    prototype: HTMLSplitButtonElement;
+    new (): HTMLSplitButtonElement;
+  };
+
+  interface HTMLSuiToolbarElement extends Components.SuiToolbar, HTMLStencilElement {}
+  var HTMLSuiToolbarElement: {
+    prototype: HTMLSuiToolbarElement;
+    new (): HTMLSuiToolbarElement;
   };
 
   interface HTMLSuiTooltipArrowElement extends Components.SuiTooltipArrow, HTMLStencilElement {}
@@ -1095,13 +1371,17 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement
     'combo-readonly': HTMLComboReadonlyElement
     'combo-twelve': HTMLComboTwelveElement
+    'modal-disclosure': HTMLModalDisclosureElement
     'sui-grid': HTMLSuiGridElement
+    'sui-grid-new': HTMLSuiGridNewElement
     'listbox-button': HTMLListboxButtonElement
     'listbox-expand': HTMLListboxExpandElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
     'multiselect-csv': HTMLMultiselectCsvElement
     'multiselect-inline': HTMLMultiselectInlineElement
     'multiselect-native': HTMLMultiselectNativeElement
+    'split-button': HTMLSplitButtonElement
+    'sui-toolbar': HTMLSuiToolbarElement
     'sui-tooltip-arrow': HTMLSuiTooltipArrowElement
     'sui-tooltip-control': HTMLSuiTooltipControlElement
     'sui-tooltip-corner': HTMLSuiTooltipCornerElement
@@ -1124,13 +1404,17 @@ declare global {
     'combo-noinput': HTMLComboNoinputElement;
     'combo-readonly': HTMLComboReadonlyElement;
     'combo-twelve': HTMLComboTwelveElement;
+    'modal-disclosure': HTMLModalDisclosureElement;
     'sui-grid': HTMLSuiGridElement;
+    'sui-grid-new': HTMLSuiGridNewElement;
     'listbox-button': HTMLListboxButtonElement;
     'listbox-expand': HTMLListboxExpandElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
     'multiselect-csv': HTMLMultiselectCsvElement;
     'multiselect-inline': HTMLMultiselectInlineElement;
     'multiselect-native': HTMLMultiselectNativeElement;
+    'split-button': HTMLSplitButtonElement;
+    'sui-toolbar': HTMLSuiToolbarElement;
     'sui-tooltip-arrow': HTMLSuiTooltipArrowElement;
     'sui-tooltip-control': HTMLSuiTooltipControlElement;
     'sui-tooltip-corner': HTMLSuiTooltipCornerElement;

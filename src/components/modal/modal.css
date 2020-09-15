@@ -1,4 +1,4 @@
-.open .dialog-bg {
+.dialog-open .dialog-bg {
   background: rgba(0, 0, 0, 0.5);
   bottom: 0;
   left: 0;
@@ -29,7 +29,7 @@
   }
 }
 
-.open .dialog-body {
+.dialog-open .dialog-body {
   display:  block;
 }
 

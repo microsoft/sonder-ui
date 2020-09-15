@@ -81,7 +81,8 @@ The `<sui-select>` web component supports the following properties and events:
 
 <!-- Auto Generated Below -->
 
-### Properties
+
+## Properties
 
 | Property  | Attribute | Description                 | Type             | Default     |
 | --------- | --------- | --------------------------- | ---------------- | ----------- |
@@ -89,7 +90,7 @@ The `<sui-select>` web component supports the following properties and events:
 | `options` | --        | Array of name/value options | `SelectOption[]` | `undefined` |
 
 
-### Events
+## Events
 
 | Event    | Description                                | Type                |
 | -------- | ------------------------------------------ | ------------------- |

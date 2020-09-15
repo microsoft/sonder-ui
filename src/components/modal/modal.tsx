@@ -73,7 +73,7 @@ export class SuiModal {
     const { open, heading, describedBy, dialogId, focusTarget = 'close' } = this;
 
     return (
-      <div class={{'dialog-wrapper': true, 'open': open}}>
+      <div class={{'dialog-wrapper': true, 'dialog-open': open}}>
         <div class="dialog-bg" onClick={this.onCloseClick.bind(this)}></div>
         <div
           aria-labelledby={heading ? dialogId : null}
