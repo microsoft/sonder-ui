@@ -3,7 +3,7 @@
 *  Licensed under the MIT license. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { Component, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
+import { Component, Event, EventEmitter, Prop, State, Watch } from '@stencil/core';
 import { Column } from './grid-helpers';
 import { renderRow, RowOptions, RowSelectionPattern } from './row';
 import { renderHeaderCell, Sort } from './header-cell';
@@ -58,7 +58,6 @@ export class SuiGridv2 {
   @Prop() editOnClick: boolean;
   @Prop() headerActionsMenu: boolean;
   @Prop() rowSelection: RowSelectionPattern;
-  @Prop() simpleEditable = false;
   @Prop() useApplicationRole = false;
 
   /**
@@ -152,6 +151,7 @@ export class SuiGridv2 {
   }
 
   componentDidUpdate() {
+    this.callFocus && console.log('calling focus on', this.focusRef);
     // handle focus
     this.callFocus && this.focusRef && this.focusRef.focus();
     this.callFocus = false;
@@ -159,13 +159,6 @@ export class SuiGridv2 {
     // handle input text selection
     this.callInputSelection && this.focusRef && (this.focusRef as HTMLInputElement).select();
     this.callInputSelection = false;
-  }
-
-  @Listen('focusout')
-  onBlur(event: FocusEvent) {
-    if (this.isEditing && event.relatedTarget && event.relatedTarget !== this.focusRef && !this.simpleEditable) {
-      this.updateEditing(false, false);
-    }
   }
 
   render() {
@@ -185,17 +178,22 @@ export class SuiGridv2 {
     const rowSelectionState = this.getSelectionState();
     const tableRole = useApplicationRole ? 'application' : gridType;
 
-    return <table role={tableRole} aria-roledescription={useApplicationRole ? 'editable data grid' : null} class="grid" aria-labelledby={this.labelledBy} aria-readonly={editable ? null : 'true'}>
+    return <table role={tableRole} aria-roledescription={useApplicationRole ? 'editable data grid' : null} class="grid" aria-labelledby={this.labelledBy} aria-readonly={editable ? null : 'true'} onKeyDown={this.onCellKeydown.bind(this)}>
       {description ? <caption>{description}</caption> : null}
       <thead role="rowgroup" class="grid-header">
         <tr role="row" class="row">
           {rowSelection !== RowSelectionPattern.None ?
-            <th role="columnheader" aria-labelledby="select-all-header" class={{'checkbox-cell': true, 'indeterminate': rowSelectionState === 'indeterminate'}}>
+            <th
+              role="columnheader"
+              aria-labelledby="select-all-header"
+              class={{'checkbox-cell': true, 'indeterminate': rowSelectionState === 'indeterminate'}}
+            >
               <span class="visuallyHidden" id="select-all-header">select row</span>
               <input
                 type="checkbox"
                 aria-label="select all rows"
                 checked={!!rowSelectionState}
+                tabIndex={this.gridType === 'grid' ? this.activeCell.join('-') === '0-0' ? 0 : -1 : null}
                 ref={(el) => {
                   if (rowSelectionState === 'indeterminate') {
                     el.indeterminate = true;
@@ -210,7 +208,9 @@ export class SuiGridv2 {
               column,
               colIndex: index,
               actionsMenu: headerActionsMenu,
+              isActiveCell: this.activeCell.join('-') === `${index}-0`,
               isSortedColumn: sortedColumn === index,
+              setFocusRef: (el) => this.focusRef = el,
               sortDirection: sortState,
               onSort: this.onSortColumn.bind(this),
               onFilter: this.onFilterInput.bind(this)
@@ -218,12 +218,12 @@ export class SuiGridv2 {
           })}
         </tr>
       </thead>
-      <tbody role="rowgroup" class="grid-body" onKeyDown={this.onCellKeydown.bind(this)}>
+      <tbody role="rowgroup" class="grid-body">
         {sortedCells.map((cells = [], index) => {
           const isSelected = !!selectedRows.get(cells);
           let rowOptions: RowOptions = {
             cells,
-            index,
+            index: index + 1,
             isSelected,
             selection: rowSelection,
             renderCell: this.renderCell.bind(this),
@@ -232,7 +232,7 @@ export class SuiGridv2 {
           };
 
           if (this.rowSelection === RowSelectionPattern.Aria) {
-            const isActiveRow = this.activeCell[1] === index;
+            const isActiveRow = this.activeCell[1] === index + 1;
             rowOptions = {
               ...rowOptions,
               isActiveRow,
@@ -275,17 +275,20 @@ export class SuiGridv2 {
   }
 
   private onCellClick(row, column) {
-    if (this.simpleEditable || this.columns[column].actionsColumn) return;
-    // always edit on click if clicking the active cell
-    if (this.editOnClick || (this.activeCell[0] === column && this.activeCell[1] === row)) {
-      this.updateEditing(true, true);
-    }
-
+    const previousCell = this.activeCell;
     this.activeCell = [column, row];
+    const isActiveCellClick = previousCell[0] === column && previousCell[1] === row;
+
+    // exit editing if not clicking on active cell
+    if (!isActiveCellClick && !this.editOnClick && this.isEditing) {
+      this.saveCell(previousCell[0], previousCell[1], (this.focusRef as HTMLInputElement).value);
+      this.updateEditing(false, false);
+    }
   }
 
   private onCellDoubleClick(column) {
-    if (!this.editOnClick && !this.simpleEditable && !this.columns[column].actionsColumn) {
+    if (!this.editOnClick && !this.columns[column].actionsColumn) {
+      console.log('double click, editing')
       this.updateEditing(true, true);
       event.preventDefault();
     }
@@ -325,7 +328,7 @@ export class SuiGridv2 {
         break;
       case 'Enter':
       case ' ':
-        if (this.simpleEditable || this.columns[colIndex].actionsColumn) return;
+        if (this.columns[colIndex].actionsColumn) return;
         event.preventDefault();
         this.updateEditing(true, true);
         break;
@@ -365,13 +368,6 @@ export class SuiGridv2 {
     });
 
     this.filterEvent.emit(filters);
-  }
-
-  private onInputBlur(event: FocusEvent) {
-    if (!this.simpleEditable) {
-      const cellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.activeCell[0] - 1 : this.activeCell[0];
-      this.saveCell(cellIndex, this.activeCell[1], (event.target as HTMLInputElement).value);
-    }
   }
 
   private onInputKeyDown(event: KeyboardEvent) {
@@ -482,22 +478,33 @@ export class SuiGridv2 {
       onMouseDown={() => { this.mouseDown = true; }}
     >
       {this.isEditing && isActiveCell && !isActionsColumn
-        ? <input type="text" value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} onBlur={this.onInputBlur.bind(this)} ref={(el) => this.focusRef = el} />
+        ? <input type="text" value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} ref={(el) => this.focusRef = el} />
         : <span class="cell-content">{this.renderCellContent(content, cellIndex, rowIndex)}</span>
       }
-      {this.simpleEditable && !cellColumn.actionsColumn ?
+      {!cellColumn.actionsColumn ?
         this.isEditing && isActiveCell ?
           [
-            <button class="grid-button" key={`${currentCellKey}-save`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false, true) }}><img src="/assets/ok.svg" alt="Save" role="img" /></button>,
-            <button class="grid-button" key={`${currentCellKey}-cancel`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false) }}><img src="/assets/cancel.svg" alt="Cancel" role="img" /></button>
+            <button class="confirm-button" key={`${currentCellKey}-save`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false, true) }}>
+              <svg role="img" aria-label="Save" width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>
+              </svg>
+            </button>,
+            <button class="confirm-button" key={`${currentCellKey}-cancel`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false) }}>
+              <svg role="img" aria-label="Cancel" width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M31.708 25.708c-0-0-0-0-0-0l-9.708-9.708 9.708-9.708c0-0 0-0 0-0 0.105-0.105 0.18-0.227 0.229-0.357 0.133-0.356 0.057-0.771-0.229-1.057l-4.586-4.586c-0.286-0.286-0.702-0.361-1.057-0.229-0.13 0.048-0.252 0.124-0.357 0.228 0 0-0 0-0 0l-9.708 9.708-9.708-9.708c-0-0-0-0-0-0-0.105-0.104-0.227-0.18-0.357-0.228-0.356-0.133-0.771-0.057-1.057 0.229l-4.586 4.586c-0.286 0.286-0.361 0.702-0.229 1.057 0.049 0.13 0.124 0.252 0.229 0.357 0 0 0 0 0 0l9.708 9.708-9.708 9.708c-0 0-0 0-0 0-0.104 0.105-0.18 0.227-0.229 0.357-0.133 0.355-0.057 0.771 0.229 1.057l4.586 4.586c0.286 0.286 0.702 0.361 1.057 0.229 0.13-0.049 0.252-0.124 0.357-0.229 0-0 0-0 0-0l9.708-9.708 9.708 9.708c0 0 0 0 0 0 0.105 0.105 0.227 0.18 0.357 0.229 0.356 0.133 0.771 0.057 1.057-0.229l4.586-4.586c0.286-0.286 0.362-0.702 0.229-1.057-0.049-0.13-0.124-0.252-0.229-0.357z"></path>
+              </svg>
+            </button>
           ]
           : <button
-              class="grid-button"
+              class="edit-button"
               key={`${currentCellKey}-edit`}
               type="button"
-              ref={isActiveCell ? (el) => { this.focusRef = el; } : null}
+              tabIndex={isActiveCell ? null : -1}
+              // ref={isActiveCell ? (el) => { this.focusRef = el; } : null}
               onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, true) }}>
-                <img src="/assets/edit.svg" alt="Edit" role="img" />
+                <svg role="img" aria-label="Edit" width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                  <path d="M27 0c2.761 0 5 2.239 5 5 0 1.126-0.372 2.164-1 3l-2 2-7-7 2-2c0.836-0.628 1.874-1 3-1zM2 23l-2 9 9-2 18.5-18.5-7-7-18.5 18.5zM22.362 11.362l-14 14-1.724-1.724 14-14 1.724 1.724z"></path>
+                </svg>
               </button>
         : null
       }
@@ -535,7 +542,7 @@ export class SuiGridv2 {
         id={`action-${rowIndex}-${colIndex}`}
         aria-labelledby={`action-${rowIndex}-${colIndex} cell-${rowIndex}-${this.titleColumn}`}
         tabIndex={this.gridType === 'grid' ? isActiveCell ? 0 : -1 : null}
-        onClick={(() => alert(`This is just a test, you successfully activated the ${content} button`))}
+        onClick={(() => alert(`This is just a test, you successfully activated the ${button} button`))}
       >{button}</button>
     ));
   }
@@ -614,7 +621,7 @@ export class SuiGridv2 {
   }
 
   private updateEditing(editing: boolean, callFocus: boolean) {
-    if (!this.editable && !this.simpleEditable) {
+    if (!this.editable) {
       return
     };
 

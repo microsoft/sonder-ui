@@ -130,16 +130,25 @@ input:checked ~ .selection-indicator::after,
   white-space: nowrap;
 }
 
+.cell .edit-button,
+.cell .confirm-button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: inherit;
+  padding: 0.25em;
+  margin-right: 0.5em;
+}
+
+.cell .confirm-button {
+  margin: 0;
+}
+
 .cell .grid-button {
   margin: 0.2em;
   background-color: #fff;
   border: 1px solid rgba(0,0,0,.42);
   border-radius: 5px;
   padding: 0.5em;
-}
-
-.cell .grid-button + .grid-button {
-  margin-left: 0;
 }
 
 .cell .grid-stepper {
@@ -150,9 +159,15 @@ input:checked ~ .selection-indicator::after,
   padding: 0.5em;
 }
 
-.grid-button img {
-  width: 1.75em;
-  height: 1.75em;
+.grid-button svg,
+.edit-button svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+.confirm-button svg {
+  width: 1em;
+  height: 1em;
 }
 
 .heading-cell {
@@ -191,6 +206,8 @@ input:checked ~ .selection-indicator::after,
 }
 
 .grid-button:focus,
+.edit-button:focus,
+.confirm-button:focus,
 .cell input:focus {
   box-shadow: 0 0 1px 3px #0067b8;
   outline: 4px solid transparent;

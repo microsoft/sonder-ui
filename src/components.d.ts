@@ -627,7 +627,6 @@ export namespace Components {
     */
     'renderCustomCell': (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
     'rowSelection': RowSelectionPattern;
-    'simpleEditable': boolean;
     /**
     * Index of the column that best labels a row
     */
@@ -686,7 +685,6 @@ export namespace Components {
     */
     'renderCustomCell'?: (content: string, colIndex: number, rowIndex: number) => string | HTMLElement;
     'rowSelection'?: RowSelectionPattern;
-    'simpleEditable'?: boolean;
     /**
     * Index of the column that best labels a row
     */

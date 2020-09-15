@@ -14,17 +14,19 @@ export interface HeaderOptions {
   actionsMenu?: boolean;
   column: Column;
   colIndex: number;
+  isActiveCell: boolean;
   isSortedColumn: boolean;
+  setFocusRef?: (elem: HTMLElement) => void;
   sortDirection: Sort;
   onSort: (index: number) => void;
   onFilter: (value: string, column: Column) => void;
 }
 
 export function renderHeaderCell(options: HeaderOptions): JSX.Element {
-  const { actionsMenu = false, colIndex, column, isSortedColumn = false, sortDirection } = options;
+  const { actionsMenu = false, colIndex, column, isActiveCell = false, isSortedColumn = false, setFocusRef, sortDirection } = options;
   const idBase = `col-${colIndex}`;
   // @ts-ignore
-  return <th role="columnheader" abbr={column.name} class="cell heading-cell" aria-labelledby={idBase} aria-sort={column.sortable ? isSortedColumn ? sortDirection : 'none' : null}>
+  return <th role="columnheader" abbr={column.name} class="cell heading-cell" aria-labelledby={idBase} aria-sort={column.sortable ? isSortedColumn ? sortDirection : 'none' : null} tabIndex={isActiveCell ? 0 : -1} ref={isActiveCell ? (el) => { setFocusRef(el); } : null}>
     <span id={idBase} class="column-title">{column.name}</span>
     {actionsMenu ? renderActionsMenu(options, idBase) : renderStaticActions(options, idBase)}
   </th>
