@@ -29,7 +29,7 @@
       <p>This is a sample store dashboard; all working controls are on this page.</p>
 
       <h2>Inventory</h2>
-      <split-button style="display:inline-block" id="add-button" button-id="add-focus-stop" menu-button-label="more add options">Add New</split-button>
+      <split-button style="display:inline-block" id="add-button" button-id="add-focus-stop" menu-button-label="more add options" is-compound-button="true">Add New</split-button>
       <sui-grid-new class="grid"></sui-grid-new>
 
       <h2>Latest Customer Feedback</h2>
@@ -66,6 +66,7 @@
             class="underline-popup"
             pressed="false"
             in-compound-group="true"
+            is-compound-button="true"
             custom-tab-index="-1"
             menu-button-label="underline styles"
           >
@@ -112,6 +113,7 @@
             class="font-color-item"
             custom-tab-index="-1"
             in-compound-group="true"
+            is-compound-button="true"
             menu-button-label="all font colors"
           >
             <span class="font-color-icon" aria-hidden="true">A</span>
@@ -125,6 +127,7 @@
             button-id="font-size"
             class="font-size-item"
             in-compound-group="true"
+            is-compound-button="true"
             custom-tab-index="-1"
             menu-button-label="all font sizes"
           >
@@ -133,7 +136,7 @@
         </div>
     </sui-toolbar>
     <textarea id="response" aria-label="Reply to feedback" rows="5" cols="80" style="font-family: sans-serif">Thank you for your feedback! We will get in touch soon.</textarea>
-    <split-button id="send-button" style="display: inline-block;" menu-button-label="more message actions">Send</split-button>
+    <split-button id="send-button" style="display: inline-block;" menu-button-label="more message actions"  is-compound-button="true">Send</split-button>
 
     </main>
   </div>

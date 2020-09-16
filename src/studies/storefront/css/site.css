@@ -13,7 +13,7 @@ body {
 main {
   flex: 1 1 auto;
   overflow-x: auto;
-  padding: 1em 1em 1em 2.5em; 
+  padding: 1em 1em 3em 2.5em; 
 }
 
 header {

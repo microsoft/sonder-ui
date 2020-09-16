@@ -72,7 +72,7 @@ export class SuiSplitbutton {
   // menu index
   @State() activeMenuItem = 0;
 
-  @State() focusKey: 'menu' | 'menuButton' | 'primary';
+  @State() focusKey: 'menu' | 'menuButton' | 'primary' = 'primary';
 
   // Flag to set focus to a specific element on next render completion
   private callFocus: boolean;
@@ -128,6 +128,7 @@ export class SuiSplitbutton {
           type="button"
           id={buttonId || null}
           aria-pressed={typeof pressed === 'boolean' ? `${pressed}` : null}
+          aria-haspopup={isCompoundButton ? 'menu' : null}
           ref={(el) => focusKey === 'primary' ? this.focusRef = el : null}
           tabIndex={(isCompoundButton && focusKey !== 'primary') ? -1 : customTabIndex}
           onKeyDown={(event) => this.onButtonKeyDown(event, 0)}

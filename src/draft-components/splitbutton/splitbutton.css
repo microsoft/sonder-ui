@@ -2,39 +2,70 @@
   position: relative;
   display: flex;
   align-items: stretch;
+  margin: 1em 0;
 }
 
-.splitbutton > button:hover,
-.splitbutton > button:focus {
+.in-group {
+  margin: 0;
+}
+
+.splitbutton > button:hover {
+  background: #3a89c8;
+}
+
+.in-group > button:hover,
+.in-group > button:focus {
   border-color: #005a9c;
   background: rgb(226, 239, 255);
+  color: #000;
 }
 
 .splitbutton > button:focus {
   position: relative;
-  box-shadow: 0 0 0 2px #005a9c;
+  box-shadow: 0 0 3px 3px #005a9c;
   outline: 2px solid transparent;
   z-index: 1;
 }
 
 .primary {
+  background-color: #0067b8;
+  border: 1px solid #fff;
+  border-radius: 5px 0 0 5px;
+  color: #fff;
+  padding: 0.75em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.menuTrigger {
+  background-color: #0067b8;
+  border: 1px solid #fff;
+  border-left: 0;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  font-size: 1em;
+  padding: 0.75em 0.5em;
+}
+
+.in-group .primary {
   background-color: #fff;
   border: 1px solid rgba(0,0,0,.42);
-  border-radius: 5px 0 0 5px;
+  color: #000;
+  font-size: 0.75em;
   padding: 0.5em;
 }
 
-.splitbutton .primary[aria-pressed=true] {
+.in-group .primary[aria-pressed=true] {
   background: #0067b8;
   color: #fff;
 }
 
-.menuTrigger {
+.in-group .menuTrigger {
   background-color: #fff;
   border: 1px solid rgba(0,0,0,.42);
   border-left: 0;
-  border-radius: 0 5px 5px 0;
-  padding: 0.5em 0.25em;
+  color: #000;
+  font-size: 0.75em;
 }
 
 .open .menuTrigger {
@@ -42,13 +73,13 @@
 }
 
 .menuTrigger::after {
-  border-bottom: 1px solid rgba(0,0,0,.5);
-  border-right: 1px solid rgba(0,0,0,.5);
+  border-bottom: 1px solid currentColor;
+  border-right: 1px solid currentColor;
   content: '';
   display: block;
-  height: 8px;
+  height: 0.5em;
   transform: translate(0, -20%) rotate(45deg);
-  width: 8px;
+  width: 0.5em;
   margin: 0.25em 0;
 }
 
