@@ -604,7 +604,6 @@ export namespace Components {
     * Caption/description for the grid
     */
     'description': string;
-    'editOnClick': boolean;
     /**
     * Properties for Usability test case behaviors: *
     */
@@ -618,6 +617,7 @@ export namespace Components {
     * String ID of labelling element
     */
     'labelledBy': string;
+    'modalCell': boolean;
     /**
     * Number of rows in one "page": used to compute pageUp/pageDown key behavior, and when paging is used
     */
@@ -631,7 +631,6 @@ export namespace Components {
     * Index of the column that best labels a row
     */
     'titleColumn': number;
-    'useApplicationRole': boolean;
   }
   interface SuiGridNewAttributes extends StencilHTMLAttributes {
     /**
@@ -646,7 +645,6 @@ export namespace Components {
     * Caption/description for the grid
     */
     'description'?: string;
-    'editOnClick'?: boolean;
     /**
     * Properties for Usability test case behaviors: *
     */
@@ -660,6 +658,7 @@ export namespace Components {
     * String ID of labelling element
     */
     'labelledBy'?: string;
+    'modalCell'?: boolean;
     /**
     * Emit a custom edit event when cell content change is submitted
     */
@@ -689,7 +688,6 @@ export namespace Components {
     * Index of the column that best labels a row
     */
     'titleColumn'?: number;
-    'useApplicationRole'?: boolean;
   }
 
   interface ListboxButton {

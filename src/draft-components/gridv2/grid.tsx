@@ -55,10 +55,9 @@ export class SuiGridv2 {
 
   /** Properties for Usability test case behaviors: **/
   @Prop() editable: boolean = true;
-  @Prop() editOnClick: boolean;
   @Prop() headerActionsMenu: boolean;
   @Prop() rowSelection: RowSelectionPattern;
-  @Prop() useApplicationRole = false;
+  @Prop() modalCell: boolean = false;
 
   /**
    * Emit a custom filter event
@@ -126,6 +125,9 @@ export class SuiGridv2 {
   // Save a reference to whatever element should receive focus
   private focusRef: HTMLElement;
 
+  // Save a reference to whatever the current cell is
+  private activeCellRef: HTMLElement;
+
   /*
    * Private properties used to trigger DOM methods in the correct lifecycle callback
    */
@@ -151,13 +153,16 @@ export class SuiGridv2 {
   }
 
   componentDidUpdate() {
+    if (!this.focusRef) return;
     this.callFocus && console.log('calling focus on', this.focusRef);
+    
     // handle focus
-    this.callFocus && this.focusRef && this.focusRef.focus();
+    console.log('calling focus on', this.focusRef);
+    this.callFocus && this.focusRef.focus();
     this.callFocus = false;
 
     // handle input text selection
-    this.callInputSelection && this.focusRef && (this.focusRef as HTMLInputElement).select();
+    this.callInputSelection && (this.focusRef as HTMLInputElement).select && (this.focusRef as HTMLInputElement).select();
     this.callInputSelection = false;
   }
 
@@ -172,13 +177,11 @@ export class SuiGridv2 {
       selectedRows,
       sortedCells = [],
       sortedColumn,
-      sortState,
-      useApplicationRole
+      sortState
     } = this;
     const rowSelectionState = this.getSelectionState();
-    const tableRole = useApplicationRole ? 'application' : gridType;
 
-    return <table role={tableRole} aria-roledescription={useApplicationRole ? 'editable data grid' : null} class="grid" aria-labelledby={this.labelledBy} aria-readonly={editable ? null : 'true'} onKeyDown={this.onCellKeydown.bind(this)}>
+    return <table role={gridType} class="grid" aria-labelledby={this.labelledBy} aria-readonly={editable ? null : 'true'} onKeyDown={this.onCellKeydown.bind(this)}>
       {description ? <caption>{description}</caption> : null}
       <thead role="rowgroup" class="grid-header">
         <tr role="row" class="row">
@@ -280,14 +283,14 @@ export class SuiGridv2 {
     const isActiveCellClick = previousCell[0] === column && previousCell[1] === row;
 
     // exit editing if not clicking on active cell
-    if (!isActiveCellClick && !this.editOnClick && this.isEditing) {
+    if (!isActiveCellClick && this.isEditing) {
       this.saveCell(previousCell[0], previousCell[1], (this.focusRef as HTMLInputElement).value);
       this.updateEditing(false, false);
     }
   }
 
   private onCellDoubleClick(column) {
-    if (!this.editOnClick && !this.columns[column].actionsColumn) {
+    if (!this.columns[column].actionsColumn) {
       console.log('double click, editing')
       this.updateEditing(true, true);
       event.preventDefault();
@@ -326,11 +329,19 @@ export class SuiGridv2 {
       case 'End':
         colIndex = maxCellIndex;
         break;
-      case 'Enter':
       case ' ':
+        // space never enters into actions column
         if (this.columns[colIndex].actionsColumn) return;
+      case 'Enter':
+        // enter also doesn't enter into actions column unless the keyboard modal variant is true
+        if (this.columns[colIndex].actionsColumn && !this.modalCell) return;
+        console.log('go into editing mode', this.modalCell);
         event.preventDefault();
         this.updateEditing(true, true);
+        break;
+      case 'Escape':
+        this.updateEditing(false, true);
+        event.stopPropagation();
         break;
       case 'PageUp':
         rowIndex = Math.max(0, rowIndex - pageLength);
@@ -338,6 +349,9 @@ export class SuiGridv2 {
       case 'PageDown':
         rowIndex = Math.min(this.cells.length - 1, rowIndex + pageLength);
         break;
+      case 'Tab':
+        // prevent tabbing outside cell if modal
+        this.modalCell && this.isEditing && this.trapCellFocus(event);
     }
 
     if (this.updateActiveCell(colIndex, rowIndex)) {
@@ -374,7 +388,7 @@ export class SuiGridv2 {
     // allow input to handle its own keystrokes
     event.stopPropagation();
 
-    const { key, shiftKey } = event;
+    const { key } = event;
 
     if (key === 'Escape') {
       this.preventSave = true;
@@ -391,21 +405,9 @@ export class SuiGridv2 {
       this.saveCell(cellIndex, this.activeCell[1], (event.target as HTMLInputElement).value);
     }
 
-    // allow tab and shift+tab to move through cells in a row for edit on click grid
-    else if (key === 'Tab' && this.editOnClick) {
-      const maxCellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.columns.length : this.columns.length - 1;
-      if (shiftKey && this.activeCell[0] > 0) {
-        this.saveCell(this.activeCell[0], this.activeCell[1], (event.target as HTMLInputElement).value);
-        this.updateActiveCell(this.activeCell[0] - 1, this.activeCell[1]);
-        this.preventSave = true;
-        event.preventDefault();
-      }
-      else if (!shiftKey && this.activeCell[0] < maxCellIndex) {
-        this.saveCell(this.activeCell[0], this.activeCell[1], (event.target as HTMLInputElement).value);
-        this.updateActiveCell(this.activeCell[0] + 1, this.activeCell[1]);
-        this.preventSave = true;
-        event.preventDefault();
-      }
+    // trap focus on tab
+    if (this.modalCell && key === 'Tab') {
+      this.trapCellFocus(event);
     }
   }
 
@@ -467,11 +469,14 @@ export class SuiGridv2 {
     return <td
       role={isGrid ? 'gridcell' : 'cell'}
       id={`cell-${rowIndex}-${cellIndex}`}
-      class={{'cell': true, 'editing': this.isEditing && isActiveCell }}
-      aria-label={this.useApplicationRole ? `${cellColumn.name} ${content}` : null}
+      class={{'cell': true, 'editing': this.isEditing && isActiveCell, 'hover-icon': this.modalCell }}
       aria-readonly={!this.editable || cellColumn.actionsColumn ? 'true' : null}
-      tabIndex={isGrid && this.rowSelection !== RowSelectionPattern.Aria ? isActiveCell ? 0 : -1 : null}
-      ref={isActiveCell && !this.isEditing && this.rowSelection !== RowSelectionPattern.Aria ? (el) => { this.focusRef = el; } : null}
+      aria-labelledby={!this.isEditing ? `cell-${rowIndex}-${cellIndex}-content` : null}
+      tabIndex={isGrid && this.rowSelection !== RowSelectionPattern.Aria ? isActiveCell && (!this.isEditing || !this.modalCell) ? 0 : -1 : null}
+      ref={isActiveCell ? (el) => {
+        this.activeCellRef = el;
+        if (!this.isEditing && this.rowSelection !== RowSelectionPattern.Aria) this.focusRef = el;
+      } : null}
       onFocus={() => { this.onCellFocus(rowIndex, cellIndex)}}
       onClick={this.editable ? () => { this.onCellClick(rowIndex, cellIndex); } : null}
       onDblClick={this.editable ? () => { this.onCellDoubleClick(cellIndex); } : null}
@@ -479,17 +484,17 @@ export class SuiGridv2 {
     >
       {this.isEditing && isActiveCell && !isActionsColumn
         ? <input type="text" value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} ref={(el) => this.focusRef = el} />
-        : <span class="cell-content">{this.renderCellContent(content, cellIndex, rowIndex)}</span>
+        : <span class="cell-content" id={`cell-${rowIndex}-${cellIndex}-content`}>{this.renderCellContent(content, cellIndex, rowIndex)}</span>
       }
-      {!cellColumn.actionsColumn ?
+      {!isActionsColumn ?
         this.isEditing && isActiveCell ?
           [
-            <button class="confirm-button" key={`${currentCellKey}-save`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false, true) }}>
+            <button class="confirm-button" key={`${currentCellKey}-save`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false, true) }} onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && event.stopPropagation()}>
               <svg role="img" aria-label="Save" width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
                 <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>
               </svg>
             </button>,
-            <button class="confirm-button" key={`${currentCellKey}-cancel`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false) }}>
+            <button class="confirm-button" key={`${currentCellKey}-cancel`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false) }} onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && event.stopPropagation()}>
               <svg role="img" aria-label="Cancel" width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
                 <path d="M31.708 25.708c-0-0-0-0-0-0l-9.708-9.708 9.708-9.708c0-0 0-0 0-0 0.105-0.105 0.18-0.227 0.229-0.357 0.133-0.356 0.057-0.771-0.229-1.057l-4.586-4.586c-0.286-0.286-0.702-0.361-1.057-0.229-0.13 0.048-0.252 0.124-0.357 0.228 0 0-0 0-0 0l-9.708 9.708-9.708-9.708c-0-0-0-0-0-0-0.105-0.104-0.227-0.18-0.357-0.228-0.356-0.133-0.771-0.057-1.057 0.229l-4.586 4.586c-0.286 0.286-0.361 0.702-0.229 1.057 0.049 0.13 0.124 0.252 0.229 0.357 0 0 0 0 0 0l9.708 9.708-9.708 9.708c-0 0-0 0-0 0-0.104 0.105-0.18 0.227-0.229 0.357-0.133 0.355-0.057 0.771 0.229 1.057l4.586 4.586c0.286 0.286 0.702 0.361 1.057 0.229 0.13-0.049 0.252-0.124 0.357-0.229 0-0 0-0 0-0l9.708-9.708 9.708 9.708c0 0 0 0 0 0 0.105 0.105 0.227 0.18 0.357 0.229 0.356 0.133 0.771 0.057 1.057-0.229l4.586-4.586c0.286-0.286 0.362-0.702 0.229-1.057-0.049-0.13-0.124-0.252-0.229-0.357z"></path>
               </svg>
@@ -499,8 +504,8 @@ export class SuiGridv2 {
               class="edit-button"
               key={`${currentCellKey}-edit`}
               type="button"
-              tabIndex={isActiveCell ? null : -1}
-              // ref={isActiveCell ? (el) => { this.focusRef = el; } : null}
+              tabIndex={isActiveCell && !this.modalCell ? null : -1}
+              onFocus={() => { this.onCellFocus(rowIndex, cellIndex)}}
               onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, true) }}>
                 <svg role="img" aria-label="Edit" width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
                   <path d="M27 0c2.761 0 5 2.239 5 5 0 1.126-0.372 2.164-1 3l-2 2-7-7 2-2c0.836-0.628 1.874-1 3-1zM2 23l-2 9 9-2 18.5-18.5-7-7-18.5 18.5zM22.362 11.362l-14 14-1.724-1.724 14-14 1.724 1.724z"></path>
@@ -536,13 +541,15 @@ export class SuiGridv2 {
     const buttons = content.split(', ');
     buttons.shift();
 
-    return buttons.map((button) => (
+    return buttons.map((button, i) => (
       <button
         class="test-actions grid-button"
         id={`action-${rowIndex}-${colIndex}`}
-        aria-labelledby={`action-${rowIndex}-${colIndex} cell-${rowIndex}-${this.titleColumn}`}
-        tabIndex={this.gridType === 'grid' ? isActiveCell ? 0 : -1 : null}
+        ref={isActiveCell && this.isEditing && i === 0 ? (el) => { this.focusRef = el; } : null}
+        tabIndex={this.gridType === 'grid' ? isActiveCell && (this.isEditing || !this.modalCell) ? 0 : -1 : null}
         onClick={(() => alert(`This is just a test, you successfully activated the ${button} button`))}
+        onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && event.stopPropagation()}
+        onFocus={() => { this.onCellFocus(rowIndex, colIndex)}}
       >{button}</button>
     ));
   }
@@ -553,13 +560,22 @@ export class SuiGridv2 {
     const label = data[1];
     const value = Number(data[2]);
 
-    const add = () => { this.stepperChangeEvent.emit({row: rowIndex, value: value + 1}); };
-    const subtract = () => { this.stepperChangeEvent.emit({row: rowIndex, value: value - 1}); };
+    const add = () => { this.stepperChangeEvent.emit({row: rowIndex - 1, value: value + 1}); };
+    const subtract = () => { this.stepperChangeEvent.emit({row: rowIndex - 1, value: value - 1}); };
 
     return ([
-      <input type="tel" class="test-actions grid-stepper" aria-label={label} value={value || 0} tabIndex={isActiveCell ? null : -1} onChange={(event) => this.stepperChangeEvent.emit({row: rowIndex, value: Number((event.target as HTMLInputElement).value) })} />,
-      <button type="button" aria-label="add" class="test-actions grid-button" tabIndex={isActiveCell ? null : -1} onClick={add}>+</button>,
-      <button type="button" aria-label="subtract" class="test-actions grid-button" tabIndex={isActiveCell ? null : -1} onClick={subtract}>-</button>
+      <input
+        type="tel"
+        class="test-actions grid-stepper"
+        aria-label={label}
+        value={value || 0}
+        ref={isActiveCell && this.isEditing ? (el) => { this.focusRef = el; } : null}
+        tabIndex={isActiveCell && (this.isEditing || !this.modalCell) ? null : -1}
+        onChange={(event) => this.stepperChangeEvent.emit({row: rowIndex-1, value: Number((event.target as HTMLInputElement).value) })}
+        onFocus={() => { this.onCellFocus(rowIndex, colIndex)}}
+        onKeyDown={this.onInputKeyDown.bind(this)} />,
+      <button type="button" aria-label="add" class="test-actions grid-button" tabIndex={isActiveCell && (this.isEditing || !this.modalCell) ? null : -1} onClick={add} onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && event.stopPropagation()}>+</button>,
+      <button type="button" aria-label="subtract" class="test-actions grid-button" tabIndex={isActiveCell && (this.isEditing || !this.modalCell) ? null : -1} onClick={subtract} onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && event.stopPropagation()}>-</button>
     ])
   }
 
@@ -576,9 +592,11 @@ export class SuiGridv2 {
       >
         <input
           type="radio"
-          name={name} 
-          tabIndex={this.gridType === 'grid' ? isActiveCell ? 0 : -1 : null}
+          name={name}
+          ref={isActiveCell && this.isEditing ? (el) => { this.focusRef = el; } : null}
+          tabIndex={this.gridType === 'grid' ? isActiveCell && (this.isEditing || !this.modalCell) ? 0 : -1 : null}
           onKeyDown={(event) => { (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight') && event.stopPropagation(); }}
+          onFocus={() => { this.onCellFocus(rowIndex, colIndex)}}
           />
         {radio}
       </label>
@@ -607,7 +625,25 @@ export class SuiGridv2 {
       return;
     }
 
-    this.editCellEvent.emit({ column, row, value });
+    if (this.columns[column].actionsColumn) {
+      return;
+    }
+
+    this.editCellEvent.emit({ column, row: row - 1, value });
+  }
+
+  private trapCellFocus(event: KeyboardEvent) {
+    const cell = this.activeCellRef;
+    const focusableSelector = 'button, [href], input, select, textarea, [tabindex]';
+    const focusables = cell.querySelectorAll(focusableSelector) as NodeListOf<HTMLElement>;
+    if (!event.shiftKey && event.target === focusables[focusables.length - 1]) {
+      event.preventDefault();
+      focusables[0].focus();
+    }
+    else if (event.shiftKey && event.target === focusables[0]) {
+      event.preventDefault();
+      focusables[focusables.length - 1].focus();
+    }
   }
 
   private updateActiveCell(colIndex, rowIndex): boolean {

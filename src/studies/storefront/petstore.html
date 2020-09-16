@@ -29,7 +29,7 @@
       <p>This is a sample pet store dashboard; all working controls are on this page.</p>
 
       <h2>Inventory</h2>
-      <split-button style="display:inline-block" id="add-button" button-id="add-focus-stop">Add New</split-button>
+      <split-button style="display:inline-block" id="add-button" button-id="add-focus-stop" menu-button-label="more add options">Add New</split-button>
       <sui-grid-new class="grid"></sui-grid-new>
 
       <h2>Latest Customer Feedback</h2>
@@ -67,6 +67,7 @@
             pressed="false"
             in-compound-group="true"
             custom-tab-index="-1"
+            menu-button-label="underline styles"
           >
             <svg role="img" aria-label="underline" id="icon-underline" viewBox="0 0 32 32">
               <path d="M22 2h4v13c0 4.971-4.477 9-10 9s-10-4.029-10-9v-13h4v13c0 1.255 0.57 2.459 1.605 3.391 1.153 1.038 2.714 1.609 4.395 1.609s3.242-0.572 4.395-1.609c1.035-0.931 1.605-2.136 1.605-3.391v-13zM6 26h20v4h-20z"></path>
@@ -125,13 +126,14 @@
             class="font-size-item"
             in-compound-group="true"
             custom-tab-index="-1"
+            menu-button-label="all font sizes"
           >
             <span>16px</span>
           </split-button>
         </div>
     </sui-toolbar>
     <textarea id="response" aria-label="Reply to feedback" rows="5" cols="80" style="font-family: sans-serif">Thank you for your feedback! We will get in touch soon.</textarea>
-    <split-button style="display:inline-block" id="send-button">Send</split-button>
+    <split-button style="display:inline-block" id="send-button" menu-button-label="more message actions">Send</split-button>
 
     </main>
   </div>

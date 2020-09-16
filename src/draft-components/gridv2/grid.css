@@ -139,6 +139,15 @@ input:checked ~ .selection-indicator::after,
   margin-right: 0.5em;
 }
 
+.hover-icon .edit-button {
+  opacity: 0;
+}
+
+.hover-icon:hover .edit-button,
+.hover-icon:focus .edit-button {
+  opacity: 1;
+}
+
 .cell .confirm-button {
   margin: 0;
 }
