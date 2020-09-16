@@ -40,8 +40,9 @@ export enum MenuActions {
 // filter an array of options against an input string
 // returns an array of options that begin with the filter string, case-independent
 export function filterOptions(options: SelectOption[] = [], filter: string, exclude: SelectOption[] = []): SelectOption[] {
+  let filterString = filter.toLowerCase().trim();
   return options.filter((option) => {
-    const matches = option.name.toLowerCase().indexOf(filter.toLowerCase()) === 0;
+    const matches = option.name.toLowerCase().indexOf(filterString) === 0;
     return matches && exclude.indexOf(option) < 0;
   });
 }

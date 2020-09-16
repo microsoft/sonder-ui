@@ -115,7 +115,7 @@ export class MultiselectListbox {
       <label id={htmlId} class="combo-label">{label}</label>,
       <div
         class="selected-options"
-        role="menu"
+        role="listbox"
         id={`${this.htmlId}-selected`}
         aria-label={`Modify selection for ${label}`}
         onKeyDown={this.onRemoveKeyDown.bind(this)}
@@ -126,7 +126,7 @@ export class MultiselectListbox {
             <button
               class={{'remove-option': true, 'remove-current': this.activeRemoveIndex === i}}
               type="button"
-              role="menuitem"
+              role="option"
               tabindex={activeRemoveIndex === i ? '0' : '-1'}
               ref={activeRemoveIndex === i ? (el) => this.removeFocusRef = el : null}
               id={`${htmlId}-remove-${i}`}
@@ -199,6 +199,11 @@ export class MultiselectListbox {
 
     const action = getActionFromKey(event, this.open);
 
+    if (this.open && event.key === ' ') {
+      event.preventDefault();
+      return this.updateOption(this.activeIndex);
+    }
+
     switch(action) {
       case MenuActions.Next:
       case MenuActions.Last:
@@ -210,7 +215,8 @@ export class MultiselectListbox {
       case MenuActions.CloseSelect:
         event.preventDefault();
         event.stopPropagation();
-        return this.updateOption(this.activeIndex);
+        this.updateOption(this.activeIndex);
+        return this.updateMenuState(false);
       case MenuActions.Close:
         event.preventDefault();
         event.stopPropagation();

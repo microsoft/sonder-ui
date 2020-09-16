@@ -195,6 +195,11 @@ export class MultiselectButtonsV2 {
 
     const action = getActionFromKey(event, this.open);
 
+    if (this.open && event.key === ' ') {
+      event.preventDefault();
+      return this.updateOption(this.activeIndex);
+    }
+
     switch(action) {
       case MenuActions.Next:
       case MenuActions.Last:
