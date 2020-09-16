@@ -765,6 +765,31 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
+  interface MultiselectButtonsTwo {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface MultiselectButtonsTwoAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
   interface MultiselectCsv {
     /**
     * String label
@@ -801,6 +826,31 @@ export namespace Components {
     'options': SelectOption[];
   }
   interface MultiselectInlineAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+  }
+
+  interface MultiselectListbox {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+  }
+  interface MultiselectListboxAttributes extends StencilHTMLAttributes {
     /**
     * String label
     */
@@ -1126,8 +1176,10 @@ declare global {
     'ListboxButton': Components.ListboxButton;
     'ListboxExpand': Components.ListboxExpand;
     'MultiselectButtons': Components.MultiselectButtons;
+    'MultiselectButtonsTwo': Components.MultiselectButtonsTwo;
     'MultiselectCsv': Components.MultiselectCsv;
     'MultiselectInline': Components.MultiselectInline;
+    'MultiselectListbox': Components.MultiselectListbox;
     'MultiselectNative': Components.MultiselectNative;
     'SplitButton': Components.SplitButton;
     'SuiToolbar': Components.SuiToolbar;
@@ -1159,8 +1211,10 @@ declare global {
     'listbox-button': Components.ListboxButtonAttributes;
     'listbox-expand': Components.ListboxExpandAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
+    'multiselect-buttons-two': Components.MultiselectButtonsTwoAttributes;
     'multiselect-csv': Components.MultiselectCsvAttributes;
     'multiselect-inline': Components.MultiselectInlineAttributes;
+    'multiselect-listbox': Components.MultiselectListboxAttributes;
     'multiselect-native': Components.MultiselectNativeAttributes;
     'split-button': Components.SplitButtonAttributes;
     'sui-toolbar': Components.SuiToolbarAttributes;
@@ -1297,6 +1351,12 @@ declare global {
     new (): HTMLMultiselectButtonsElement;
   };
 
+  interface HTMLMultiselectButtonsTwoElement extends Components.MultiselectButtonsTwo, HTMLStencilElement {}
+  var HTMLMultiselectButtonsTwoElement: {
+    prototype: HTMLMultiselectButtonsTwoElement;
+    new (): HTMLMultiselectButtonsTwoElement;
+  };
+
   interface HTMLMultiselectCsvElement extends Components.MultiselectCsv, HTMLStencilElement {}
   var HTMLMultiselectCsvElement: {
     prototype: HTMLMultiselectCsvElement;
@@ -1307,6 +1367,12 @@ declare global {
   var HTMLMultiselectInlineElement: {
     prototype: HTMLMultiselectInlineElement;
     new (): HTMLMultiselectInlineElement;
+  };
+
+  interface HTMLMultiselectListboxElement extends Components.MultiselectListbox, HTMLStencilElement {}
+  var HTMLMultiselectListboxElement: {
+    prototype: HTMLMultiselectListboxElement;
+    new (): HTMLMultiselectListboxElement;
   };
 
   interface HTMLMultiselectNativeElement extends Components.MultiselectNative, HTMLStencilElement {}
@@ -1373,8 +1439,10 @@ declare global {
     'listbox-button': HTMLListboxButtonElement
     'listbox-expand': HTMLListboxExpandElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
+    'multiselect-buttons-two': HTMLMultiselectButtonsTwoElement
     'multiselect-csv': HTMLMultiselectCsvElement
     'multiselect-inline': HTMLMultiselectInlineElement
+    'multiselect-listbox': HTMLMultiselectListboxElement
     'multiselect-native': HTMLMultiselectNativeElement
     'split-button': HTMLSplitButtonElement
     'sui-toolbar': HTMLSuiToolbarElement
@@ -1406,8 +1474,10 @@ declare global {
     'listbox-button': HTMLListboxButtonElement;
     'listbox-expand': HTMLListboxExpandElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
+    'multiselect-buttons-two': HTMLMultiselectButtonsTwoElement;
     'multiselect-csv': HTMLMultiselectCsvElement;
     'multiselect-inline': HTMLMultiselectInlineElement;
+    'multiselect-listbox': HTMLMultiselectListboxElement;
     'multiselect-native': HTMLMultiselectNativeElement;
     'split-button': HTMLSplitButtonElement;
     'sui-toolbar': HTMLSuiToolbarElement;

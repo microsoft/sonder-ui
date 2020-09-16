@@ -129,6 +129,7 @@ export class SuiSplitbutton {
           id={buttonId || null}
           aria-pressed={typeof pressed === 'boolean' ? `${pressed}` : null}
           aria-haspopup={isCompoundButton ? 'menu' : null}
+          aria-roledescription={isCompoundButton ? 'split button' : null}
           ref={(el) => focusKey === 'primary' ? this.focusRef = el : null}
           tabIndex={(isCompoundButton && focusKey !== 'primary') ? -1 : customTabIndex}
           onKeyDown={(event) => this.onButtonKeyDown(event, 0)}
@@ -164,7 +165,7 @@ export class SuiSplitbutton {
   private closeMenu() {
     this.open = false;
     this.callFocus = true;
-    this.focusKey = 'menuButton';
+    this.focusKey = this.isCompoundButton ? 'primary' : 'menuButton';
   }
 
   private onButtonKeyDown(event: KeyboardEvent, index: number) {
@@ -179,9 +180,8 @@ export class SuiSplitbutton {
       return;
     }
 
-    // handle arrow keys if compoundButton is true and not in group
-    // or if it is in a group and is not a compoundButton
-    if ((isCompoundButton && !inCompoundGroup) || (!isCompoundButton && inCompoundGroup)) {
+    // handle arrow keys if in a group and is not a compoundButton
+    if (!isCompoundButton && inCompoundGroup) {
       const action = getActionFromKey(event.key, true);
 
       if (action === MenuActions.Next && index === 0) {
