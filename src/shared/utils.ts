@@ -74,13 +74,13 @@ export function getActionFromKey(event: KeyboardEvent, menuOpen: boolean): MenuA
 
   // handle keys when open
   if (menuOpen) {
-    if (key === Keys.Down && !altKey) {
+    if (key === Keys.Down && !altKey || key === Keys.Right) {
       return MenuActions.Next;
     }
     else if (key === Keys.Up && altKey) {
       return MenuActions.CloseSelect;
     }
-    else if (key === Keys.Up) {
+    else if (key === Keys.Up || key === Keys.Left) {
       return MenuActions.Previous;
     }
     else if (key === Keys.Home) {

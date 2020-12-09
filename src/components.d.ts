@@ -193,6 +193,39 @@ export namespace Components {
     'options'?: SelectOption[];
   }
 
+  interface SuiTabs {
+    /**
+    * Array of ids that point to tab content. These should correspond to the array of tabs.
+    */
+    'contentIds': string[];
+    /**
+    * Optionally control which tab should be displayed on load (defaults to the first tab)
+    */
+    'initialTab': number;
+    /**
+    * Array of tabs
+    */
+    'tabs': string[];
+  }
+  interface SuiTabsAttributes extends StencilHTMLAttributes {
+    /**
+    * Array of ids that point to tab content. These should correspond to the array of tabs.
+    */
+    'contentIds'?: string[];
+    /**
+    * Optionally control which tab should be displayed on load (defaults to the first tab)
+    */
+    'initialTab'?: number;
+    /**
+    * Emit a custom open event when the popup opens
+    */
+    'onTabChange'?: (event: CustomEvent) => void;
+    /**
+    * Array of tabs
+    */
+    'tabs'?: string[];
+  }
+
   interface SuiTooltip {
     /**
     * Text to show within the tooltip
@@ -1160,6 +1193,7 @@ declare global {
     'SuiModal': Components.SuiModal;
     'SuiMultiselect': Components.SuiMultiselect;
     'SuiSelect': Components.SuiSelect;
+    'SuiTabs': Components.SuiTabs;
     'SuiTooltip': Components.SuiTooltip;
     'ComboAutocomplete': Components.ComboAutocomplete;
     'ComboAutoselect': Components.ComboAutoselect;
@@ -1195,6 +1229,7 @@ declare global {
     'sui-modal': Components.SuiModalAttributes;
     'sui-multiselect': Components.SuiMultiselectAttributes;
     'sui-select': Components.SuiSelectAttributes;
+    'sui-tabs': Components.SuiTabsAttributes;
     'sui-tooltip': Components.SuiTooltipAttributes;
     'combo-autocomplete': Components.ComboAutocompleteAttributes;
     'combo-autoselect': Components.ComboAutoselectAttributes;
@@ -1253,6 +1288,12 @@ declare global {
   var HTMLSuiSelectElement: {
     prototype: HTMLSuiSelectElement;
     new (): HTMLSuiSelectElement;
+  };
+
+  interface HTMLSuiTabsElement extends Components.SuiTabs, HTMLStencilElement {}
+  var HTMLSuiTabsElement: {
+    prototype: HTMLSuiTabsElement;
+    new (): HTMLSuiTabsElement;
   };
 
   interface HTMLSuiTooltipElement extends Components.SuiTooltip, HTMLStencilElement {}
@@ -1423,6 +1464,7 @@ declare global {
     'sui-modal': HTMLSuiModalElement
     'sui-multiselect': HTMLSuiMultiselectElement
     'sui-select': HTMLSuiSelectElement
+    'sui-tabs': HTMLSuiTabsElement
     'sui-tooltip': HTMLSuiTooltipElement
     'combo-autocomplete': HTMLComboAutocompleteElement
     'combo-autoselect': HTMLComboAutoselectElement
@@ -1458,6 +1500,7 @@ declare global {
     'sui-modal': HTMLSuiModalElement;
     'sui-multiselect': HTMLSuiMultiselectElement;
     'sui-select': HTMLSuiSelectElement;
+    'sui-tabs': HTMLSuiTabsElement;
     'sui-tooltip': HTMLSuiTooltipElement;
     'combo-autocomplete': HTMLComboAutocompleteElement;
     'combo-autoselect': HTMLComboAutoselectElement;
