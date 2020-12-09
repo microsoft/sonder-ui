@@ -23,6 +23,22 @@ Suggestions for additional components to include are very welcome; please file a
 - `src/shared`: Shared utils used by components in `src/components`.
 - `src/studies`: Environments and sample pages used for running usability tests.
 
+## Try it out
+
+To try out the components and usability study environments in this repository, clone it and run the following:
+
+```
+npm install
+```
+
+then:
+
+```
+npm start
+```
+
+You should then be able to access the main index at `localhost:3333`, and the usability studies at `localhost:3333/studies`.
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
