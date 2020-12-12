@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Houston Disaster Management</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <link rel="stylesheet" href="css/site.css"></style>
+  <script src="/build/caiacc.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <header>
+      <svg class="logo" viewBox="0 0 32 32" role="img" aria-label="Hurricane logo">
+        <path d="M28 4v26h-21c-1.657 0-3-1.343-3-3s1.343-3 3-3h19v-24h-20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24v-28h-2z"></path>
+        <path d="M7.002 26v0c-0.001 0-0.001 0-0.002 0-0.552 0-1 0.448-1 1s0.448 1 1 1c0.001 0 0.001-0 0.002-0v0h18.997v-2h-18.997z"></path>
+      </svg>
+      <span class="site-title">Gulf Disaster Monitoring</span>
+      <ul class="nav">
+        <li><a href="houston.html" aria-current="page">Houston</a></li>
+        <li><a href="galveston.html">Galveston</a></li>
+        <li><a href="new-orleans.html">New Orleans</a></li>
+      </ul>
+    </header>
+    <main>
+      <sui-tabs>
+        <div id="news" class="panel">
+          <div data-loading-delay="6000" data-loading-verbosity="low">
+            <h1>Current news for Houston</h1>
+            <filter-list label="Filter news articles" list-title="News articles" verbosity="low"></filter-list>
+          </div>
+        </div>
+        <div id="alerts" class="panel">
+          <div data-loading-delay="2000" data-loading-verbosity="low">
+            <h1>Manage public alerts for New Orleans</h1>
+
+            <form>
+              <textarea-charcount label="New public alert message" max-length="100"></textarea-charcount>
+              <div class="form-announcement" aria-live="assertive"></div>
+              <button type="submit" class="button" >Send</button>
+            </form>
+
+            <h2>Previous alerts</h2>
+            <ul class="alert-list">
+              <li>Hurricane Aria is approaching, please make plans to leave quickly if an evacuation is necessary.</li>
+              <li>Hurricane warning for the next 5 days.</li>
+            </ul>
+          </div>
+        </div>
+      </sui-tabs>
+      
+      <div role="region" aria-label="Current water level." class="water-level">
+        <strong>Water level:</strong> <span id="cur-water-level"></span>"
+      </div>
+
+      <div id="site-announcer" aria-live="polite" class="visuallyHidden"></div>
+      <batch-announcer batch-delay="0"></batch-announcer>
+    </main>
+  </div>
+
+  <script src="./js/site.js"></script>
+  <script type="text/javascript">
+    // top-level tabs
+    const tabEl = document.querySelector('sui-tabs');
+    const panelIds = ['news', 'alerts'];
+    tabEl.tabs = ['News', 'Public Alerts'];
+    tabEl.contentIds = panelIds;
+    tabEl.addEventListener('tabChange', (event) => {
+      const targetEl = document.getElementById(panelIds[event.detail]);
+      initiateLoading(targetEl);
+
+      // set first tab to only 1s after first load
+      const initialTab = document.querySelector('[data-loading-delay="8000"]');
+      initialTab && initialTab.setAttribute('data-loading-delay', '4000');
+    });
+
+    // function defined in js/site.js
+    initNews('Houston');
+  </script>
+</body>
+</html>
