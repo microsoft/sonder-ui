@@ -13,19 +13,18 @@ The `<sui-tabs>` web component supports the following properties and events:
 
 ## Properties
 
-| Property      | Attribute      | Description                                                                      | Type                | Default     |
-| ------------- | -------------- | -------------------------------------------------------------------------------- | ------------------- | ----------- |
-| `buttonLabel` | `button-label` | Optional override to the button's accessible name (using aria-label)             | `string`            | `undefined` |
-| `popupLabel`  | `popup-label`  | Optionally set the popup region's accessible name using aria-label (recommended) | `string`            | `undefined` |
-| `position`    | `position`     | Set the position of the disclosure, defaults to left                             | `"left" \| "right"` | `undefined` |
+| Property     | Attribute     | Description                                                                           | Type       | Default     |
+| ------------ | ------------- | ------------------------------------------------------------------------------------- | ---------- | ----------- |
+| `contentIds` | --            | Array of ids that point to tab content. These should correspond to the array of tabs. | `string[]` | `undefined` |
+| `initialTab` | `initial-tab` | Optionally control which tab should be displayed on load (defaults to the first tab)  | `number`   | `undefined` |
+| `tabs`       | --            | Array of tabs                                                                         | `string[]` | `undefined` |
 
 
 ## Events
 
-| Event   | Description                                     | Type                |
-| ------- | ----------------------------------------------- | ------------------- |
-| `close` | Emit a custom close event when the popup closes | `CustomEvent<void>` |
-| `open`  | Emit a custom open event when the popup opens   | `CustomEvent<void>` |
+| Event       | Description                                   | Type                |
+| ----------- | --------------------------------------------- | ------------------- |
+| `tabChange` | Emit a custom open event when the popup opens | `CustomEvent<void>` |
 
 
 ----------------------------------------------

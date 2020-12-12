@@ -255,6 +255,27 @@ export namespace Components {
     'tooltipId'?: string;
   }
 
+  interface BatchAnnouncer {
+    /**
+    * Desired announcement
+    */
+    'announcement': string;
+    /**
+    * Desired batch time in milliseconds, defaults to 5000ms. If set to 0, it will never announce
+    */
+    'batchDelay': number;
+  }
+  interface BatchAnnouncerAttributes extends StencilHTMLAttributes {
+    /**
+    * Desired announcement
+    */
+    'announcement'?: string;
+    /**
+    * Desired batch time in milliseconds, defaults to 5000ms. If set to 0, it will never announce
+    */
+    'batchDelay'?: number;
+  }
+
   interface ComboAutocomplete {
     /**
     * String label
@@ -523,6 +544,55 @@ export namespace Components {
     * Set the position of the disclosure, defaults to left
     */
     'position'?: 'left' | 'right';
+  }
+
+  interface FilterList {
+    /**
+    * Data for the filterable items
+    */
+    'items': string[];
+    /**
+    * Label for the filter input
+    */
+    'label': string;
+    /**
+    * Optional heading for list of items
+    */
+    'listTitle': string;
+    /**
+    * Custom render function for
+    */
+    'renderItem': (item: string) => JSX.Element;
+    /**
+    * Control frequency of live region announcements
+    */
+    'verbosity': 'high' | 'medium' | 'low';
+  }
+  interface FilterListAttributes extends StencilHTMLAttributes {
+    /**
+    * Data for the filterable items
+    */
+    'items'?: string[];
+    /**
+    * Label for the filter input
+    */
+    'label'?: string;
+    /**
+    * Optional heading for list of items
+    */
+    'listTitle'?: string;
+    /**
+    * Emit a custom event when the list updates
+    */
+    'onUpdate'?: (event: CustomEvent) => void;
+    /**
+    * Custom render function for
+    */
+    'renderItem'?: (item: string) => JSX.Element;
+    /**
+    * Control frequency of live region announcements
+    */
+    'verbosity'?: 'high' | 'medium' | 'low';
   }
 
   interface SuiGrid {
@@ -1008,6 +1078,39 @@ export namespace Components {
     'renderMenuItem'?: (menItem: any) => string;
   }
 
+  interface TextareaCharcount {
+    /**
+    * Label for the textarea
+    */
+    'label': string;
+    /**
+    * Max number of characters
+    */
+    'maxLength': number;
+    /**
+    * Verbosity setting for screen reader behavior, defaults to medium
+    */
+    'verbosity': 'high' | 'medium' | 'low';
+  }
+  interface TextareaCharcountAttributes extends StencilHTMLAttributes {
+    /**
+    * Label for the textarea
+    */
+    'label'?: string;
+    /**
+    * Max number of characters
+    */
+    'maxLength'?: number;
+    /**
+    * Emit a custom event when textarea's value exceeds the max length
+    */
+    'onError'?: (event: CustomEvent) => void;
+    /**
+    * Verbosity setting for screen reader behavior, defaults to medium
+    */
+    'verbosity'?: 'high' | 'medium' | 'low';
+  }
+
   interface SuiToolbar {
     /**
     * Array of CSS selectors for toolbar actions
@@ -1195,6 +1298,7 @@ declare global {
     'SuiSelect': Components.SuiSelect;
     'SuiTabs': Components.SuiTabs;
     'SuiTooltip': Components.SuiTooltip;
+    'BatchAnnouncer': Components.BatchAnnouncer;
     'ComboAutocomplete': Components.ComboAutocomplete;
     'ComboAutoselect': Components.ComboAutoselect;
     'ComboEleven': Components.ComboEleven;
@@ -1205,6 +1309,7 @@ declare global {
     'ComboReadonly': Components.ComboReadonly;
     'ComboTwelve': Components.ComboTwelve;
     'ModalDisclosure': Components.ModalDisclosure;
+    'FilterList': Components.FilterList;
     'SuiGrid': Components.SuiGrid;
     'SuiGridNew': Components.SuiGridNew;
     'ListboxButton': Components.ListboxButton;
@@ -1216,6 +1321,7 @@ declare global {
     'MultiselectListbox': Components.MultiselectListbox;
     'MultiselectNative': Components.MultiselectNative;
     'SplitButton': Components.SplitButton;
+    'TextareaCharcount': Components.TextareaCharcount;
     'SuiToolbar': Components.SuiToolbar;
     'SuiTooltipArrow': Components.SuiTooltipArrow;
     'SuiTooltipControl': Components.SuiTooltipControl;
@@ -1231,6 +1337,7 @@ declare global {
     'sui-select': Components.SuiSelectAttributes;
     'sui-tabs': Components.SuiTabsAttributes;
     'sui-tooltip': Components.SuiTooltipAttributes;
+    'batch-announcer': Components.BatchAnnouncerAttributes;
     'combo-autocomplete': Components.ComboAutocompleteAttributes;
     'combo-autoselect': Components.ComboAutoselectAttributes;
     'combo-eleven': Components.ComboElevenAttributes;
@@ -1241,6 +1348,7 @@ declare global {
     'combo-readonly': Components.ComboReadonlyAttributes;
     'combo-twelve': Components.ComboTwelveAttributes;
     'modal-disclosure': Components.ModalDisclosureAttributes;
+    'filter-list': Components.FilterListAttributes;
     'sui-grid': Components.SuiGridAttributes;
     'sui-grid-new': Components.SuiGridNewAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
@@ -1252,6 +1360,7 @@ declare global {
     'multiselect-listbox': Components.MultiselectListboxAttributes;
     'multiselect-native': Components.MultiselectNativeAttributes;
     'split-button': Components.SplitButtonAttributes;
+    'textarea-charcount': Components.TextareaCharcountAttributes;
     'sui-toolbar': Components.SuiToolbarAttributes;
     'sui-tooltip-arrow': Components.SuiTooltipArrowAttributes;
     'sui-tooltip-control': Components.SuiTooltipControlAttributes;
@@ -1300,6 +1409,12 @@ declare global {
   var HTMLSuiTooltipElement: {
     prototype: HTMLSuiTooltipElement;
     new (): HTMLSuiTooltipElement;
+  };
+
+  interface HTMLBatchAnnouncerElement extends Components.BatchAnnouncer, HTMLStencilElement {}
+  var HTMLBatchAnnouncerElement: {
+    prototype: HTMLBatchAnnouncerElement;
+    new (): HTMLBatchAnnouncerElement;
   };
 
   interface HTMLComboAutocompleteElement extends Components.ComboAutocomplete, HTMLStencilElement {}
@@ -1360,6 +1475,12 @@ declare global {
   var HTMLModalDisclosureElement: {
     prototype: HTMLModalDisclosureElement;
     new (): HTMLModalDisclosureElement;
+  };
+
+  interface HTMLFilterListElement extends Components.FilterList, HTMLStencilElement {}
+  var HTMLFilterListElement: {
+    prototype: HTMLFilterListElement;
+    new (): HTMLFilterListElement;
   };
 
   interface HTMLSuiGridElement extends Components.SuiGrid, HTMLStencilElement {}
@@ -1428,6 +1549,12 @@ declare global {
     new (): HTMLSplitButtonElement;
   };
 
+  interface HTMLTextareaCharcountElement extends Components.TextareaCharcount, HTMLStencilElement {}
+  var HTMLTextareaCharcountElement: {
+    prototype: HTMLTextareaCharcountElement;
+    new (): HTMLTextareaCharcountElement;
+  };
+
   interface HTMLSuiToolbarElement extends Components.SuiToolbar, HTMLStencilElement {}
   var HTMLSuiToolbarElement: {
     prototype: HTMLSuiToolbarElement;
@@ -1466,6 +1593,7 @@ declare global {
     'sui-select': HTMLSuiSelectElement
     'sui-tabs': HTMLSuiTabsElement
     'sui-tooltip': HTMLSuiTooltipElement
+    'batch-announcer': HTMLBatchAnnouncerElement
     'combo-autocomplete': HTMLComboAutocompleteElement
     'combo-autoselect': HTMLComboAutoselectElement
     'combo-eleven': HTMLComboElevenElement
@@ -1476,6 +1604,7 @@ declare global {
     'combo-readonly': HTMLComboReadonlyElement
     'combo-twelve': HTMLComboTwelveElement
     'modal-disclosure': HTMLModalDisclosureElement
+    'filter-list': HTMLFilterListElement
     'sui-grid': HTMLSuiGridElement
     'sui-grid-new': HTMLSuiGridNewElement
     'listbox-button': HTMLListboxButtonElement
@@ -1487,6 +1616,7 @@ declare global {
     'multiselect-listbox': HTMLMultiselectListboxElement
     'multiselect-native': HTMLMultiselectNativeElement
     'split-button': HTMLSplitButtonElement
+    'textarea-charcount': HTMLTextareaCharcountElement
     'sui-toolbar': HTMLSuiToolbarElement
     'sui-tooltip-arrow': HTMLSuiTooltipArrowElement
     'sui-tooltip-control': HTMLSuiTooltipControlElement
@@ -1502,6 +1632,7 @@ declare global {
     'sui-select': HTMLSuiSelectElement;
     'sui-tabs': HTMLSuiTabsElement;
     'sui-tooltip': HTMLSuiTooltipElement;
+    'batch-announcer': HTMLBatchAnnouncerElement;
     'combo-autocomplete': HTMLComboAutocompleteElement;
     'combo-autoselect': HTMLComboAutoselectElement;
     'combo-eleven': HTMLComboElevenElement;
@@ -1512,6 +1643,7 @@ declare global {
     'combo-readonly': HTMLComboReadonlyElement;
     'combo-twelve': HTMLComboTwelveElement;
     'modal-disclosure': HTMLModalDisclosureElement;
+    'filter-list': HTMLFilterListElement;
     'sui-grid': HTMLSuiGridElement;
     'sui-grid-new': HTMLSuiGridNewElement;
     'listbox-button': HTMLListboxButtonElement;
@@ -1523,6 +1655,7 @@ declare global {
     'multiselect-listbox': HTMLMultiselectListboxElement;
     'multiselect-native': HTMLMultiselectNativeElement;
     'split-button': HTMLSplitButtonElement;
+    'textarea-charcount': HTMLTextareaCharcountElement;
     'sui-toolbar': HTMLSuiToolbarElement;
     'sui-tooltip-arrow': HTMLSuiTooltipArrowElement;
     'sui-tooltip-control': HTMLSuiTooltipControlElement;

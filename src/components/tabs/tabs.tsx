@@ -120,6 +120,10 @@ export class SuiTabs {
   }
 
   private updateSelectedTab(index) {
+    if (index === this.currentIndex) {
+      return;
+    }
+
     this.currentIndex = index;
     this.contentIds.forEach((id, i) => {
       const panelEl = document.getElementById(id);
