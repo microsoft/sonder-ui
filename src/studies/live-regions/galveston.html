@@ -35,8 +35,8 @@
           <div data-loading-delay="2000" data-loading-verbosity="medium">
             <h1>Manage public alerts for New Orleans</h1>
 
-            <form>
-              <textarea-charcount label="New public alert message" max-length="100"></textarea-charcount>
+            <form id="text-alert">
+              <textarea-charcount label="New public alert message" max-length="100" verbosity="medium"></textarea-charcount>
               <div class="form-announcement" aria-live="assertive"></div>
               <button type="submit" class="button" >Send</button>
             </form>
@@ -48,6 +48,47 @@
             </ul>
           </div>
         </div>
+        <div id="settings" class="panel">
+          <h1>Settings and Preferences</h1>
+          <form id="settings-form" novalidate>
+            <fieldset style="margin-bottom:1em">
+              <legend>Water level update frequency</legend>
+              <div>
+                <input id="never" type="radio" value="0" name="water-freq">
+                <label for="never">Never</label>
+              </div>
+              <div>
+                <input id="min2" type="radio" value="120000" name="water-freq">
+                <label for="min2">2 minutes</label>
+              </div>
+              <div>
+                <input id="min1" type="radio" value="60000" name="water-freq">
+                <label for="min1">1 minute</label>
+              </div>
+              <div>
+                <input id="sec30" type="radio" value="30000" name="water-freq" checked>
+                <label for="sec30">30 seconds</label>
+              </div>
+              <div>
+                <input id="sec10" type="radio" value="10000" name="water-freq">
+                <label for="sec10">10 seconds</label>
+              </div>
+            </fieldset>
+
+            <div>
+              <input type="checkbox" id="filter-verbosity" name="filter-verbosity" checked>
+              <label for="filter-verbosity">Announce the number of filter results when typing</label>
+            </div>
+
+            <div>
+              <input type="checkbox" id="charcount-verbosity" name="charcount-verbosity" checked>
+              <label for="charcount-verbosity">Announce the number of characters left in public alert message textbox</label>
+            </div>
+
+            <button type="submit">Update Settings</button>
+
+          </form>
+        </div>
       </sui-tabs>
       
       <div role="region" aria-label="Current water level." class="water-level">
@@ -55,7 +96,7 @@
       </div>
 
       <div id="site-announcer" aria-live="polite" class="visuallyHidden"></div>
-      <batch-announcer batch-delay="20000"></batch-announcer>
+      <batch-announcer batch-delay="30000"></batch-announcer>
     </main>
   </div>
 
@@ -63,8 +104,8 @@
   <script type="text/javascript">
     // top-level tabs
     const tabEl = document.querySelector('sui-tabs');
-    const panelIds = ['news', 'alerts'];
-    tabEl.tabs = ['News', 'Public Alerts'];
+    const panelIds = ['news', 'alerts', 'settings'];
+    tabEl.tabs = ['News', 'Public Alerts', 'App Settings'];
     tabEl.contentIds = panelIds;
     tabEl.addEventListener('tabChange', (event) => {
       const targetEl = document.getElementById(panelIds[event.detail]);
@@ -77,6 +118,20 @@
 
     // function defined in js/site.js
     initNews('Galveston');
+
+    // settings
+    const settingsForm = document.getElementById('settings-form');
+    settingsForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(settingsForm);
+      const batchEl = document.querySelector('batch-announcer');
+      const filterEl = document.querySelector('filter-list');
+      const textareaEl = document.querySelector('textarea-charcount');
+
+      batchEl.batchDelay = Number(formData.get('water-freq'));
+      filterEl.verbosity = formData.get('filter-verbosity') ? 'medium' : 'low';
+      textareaEl.verbosity = formData.get('charcount-verbosity') ? 'medium' : 'low';
+    });
   </script>
 </body>
 </html>

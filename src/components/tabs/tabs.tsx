@@ -38,7 +38,7 @@ export class SuiTabs {
   @State() currentIndex: number;
 
   // save index of tab to focus
-  @State() focusIndex: number;
+  @State() focusIndex = 0;
 
   // Flag to set focus on next render completion
   private callFocus = false;
@@ -114,7 +114,7 @@ export class SuiTabs {
       || action === MenuActions.Last
     ) {
       event.preventDefault();
-      this.focusIndex = getUpdatedIndex(this.currentIndex, max, action);
+      this.focusIndex = getUpdatedIndex(this.focusIndex, max, action);
       this.callFocus = true;
     }
   }

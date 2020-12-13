@@ -57,12 +57,16 @@ export class SuiFilterList {
   // Unique ID that should really use a UUID library instead
   private htmlId = uniqueId();
 
+  // save reference to input element
+  private inputRef: HTMLInputElement;
+
   // Timeout after each input
   private liveTimeout: number | null;
 
   @Watch('items')
   watchOptions(newValue: string[]) {
-    this.filteredItems = newValue;
+    const filterString = this.inputRef.value;
+    this.filteredItems = this.filterItems(newValue, filterString);;
   }
 
   componentDidLoad() {
@@ -83,7 +87,13 @@ export class SuiFilterList {
       <div class="filter-container">
         <div class="filter-control">
           <label htmlFor={htmlId}>{label}</label>
-          <input id={htmlId} type="text" class="filter-input" onInput={this.onInput.bind(this)} />
+          <input
+            id={htmlId}
+            type="text"
+            class="filter-input"
+            ref={(el) => this.inputRef = el}
+            onInput={this.onInput.bind(this)}
+          />
           <div class="sr-announcer" aria-live="assertive" aria-atomic="true">{liveAnnouncement}</div>
         </div>
         {listTitle ?

@@ -34,10 +34,9 @@ function initiateLoading(parentEl) {
 // handle news stories and filter
 // news article filters
 function initNews(city) {
-  console.log('init news for', city);
   const filterEl = document.querySelector('filter-list');
   if (filterEl) {
-    let articles = [`Evacuation notice sent for greater ${city} area`, `Find your temporary safe shelter`, `Water levels increasing as hurricane approaches`, `10 suggestions for better hurricane names`, `What our previous hurricanes can teach us`, `National Guard on standby for relief efforts`, `${city} in peril`, `Searching for a place to sleep`, `Where to expect the worst floods`, `Warning: you need to evacuate`];
+    let articles = [`Warning: you need to evacuate`, `Evacuation notice sent for greater ${city} area`, `${city} in peril`, `Find your temporary safe shelter`, `Water levels increasing as hurricane approaches`, `10 suggestions for better hurricane names`, `What our previous hurricanes can teach us`, `National Guard on standby for relief efforts`, `Searching for a place to sleep`, `Where to expect the worst floods`, 'What to pack and what not to pack when evacuating', `List of evacuation shelters near ${city}`, 'How to take care of your pets during a disaster'];
 
     const newsInterval = window.setInterval(() => {
       if (articles.length === 0) {
@@ -103,14 +102,13 @@ window.setInterval(() => {
 
 // handle PSA submit
 const formEl = document.getElementById('text-alert');
+const alertList = document.querySelector('.alert-list');
 if (formEl) {
   const formResultEl = formEl.querySelector('.form-announcement');
 
   formEl.addEventListener('submit', (event) => {
     event.preventDefault();
     const textareaEl = formEl.querySelector('textarea');
-    console.log(textareaEl);
-    console.log('value length:', textareaEl.value.trim().length);
 
     if (textareaEl.value.trim().length === 0) {
       formResultEl.classList.add('error');
@@ -121,8 +119,12 @@ if (formEl) {
     else if (textareaEl.value.length <=100) {
       formResultEl.classList.add('success');
       formResultEl.classList.remove('error');
-      formResultEl.setAttribute('role', 'status');
       formResultEl.innerText = 'Success! Public text message sent.';
+
+      // add to alert list
+      const newAlert = document.createElement('li');
+      newAlert.innerText = textareaEl.value;
+      alertList.prepend(newAlert);
       textareaEl.value = '';
     }
     else {

@@ -64,12 +64,15 @@ export class SuiTextareaCharcount {
     return (
       <div class="textarea-container">
         <label htmlFor={htmlId}>{label}</label>
-        <textarea id={htmlId} class="textarea" aria-invalid={isInvalid} aria-describedby={`${htmlId}-desc`} rows={3} onInput={this.onInput.bind(this)}>
+        <textarea id={htmlId} class="textarea" aria-invalid={`${isInvalid}`} aria-describedby={`${htmlId}-desc`} rows={3} onInput={this.onInput.bind(this)}>
           <slot />
         </textarea>
         <span class="char-count">{curLength} {maxLength ? `/ ${maxLength}` : null}</span>
         <span id={`${htmlId}-desc`} class="visuallyHidden">Maximum {maxLength} characters</span>
         <div class="sr-announcer" aria-live="assertive" aria-atomic="true">{liveAnnouncement}</div>
+        {isInvalid ?
+          <div class="sr-announcer" role="alert">Over character limit.</div>
+        : null}
       </div>
     );
   }
@@ -102,7 +105,7 @@ export class SuiTextareaCharcount {
 
     // set timeout for updating live region, and save it so it can be cleared by typing
     this.liveTimeout = window.setTimeout(() => {
-      const message = curLength > maxLength ? 'Over character limit' : `${this.maxLength - this.curLength} characters remaining`;
+      const message = curLength > maxLength ? 'No characters remaining' : `${this.maxLength - this.curLength} characters remaining`;
       this.liveAnnouncement = message;
     }, timeoutLength);
   }
