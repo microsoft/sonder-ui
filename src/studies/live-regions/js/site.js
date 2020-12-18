@@ -38,32 +38,27 @@ function initNews(city) {
   if (filterEl) {
     let articles = [`Warning: you need to evacuate`, `Evacuation notice sent for greater ${city} area`, `${city} in peril`, `Find your temporary safe shelter`, `Water levels increasing as hurricane approaches`, `10 suggestions for better hurricane names`, `What our previous hurricanes can teach us`, `National Guard on standby for relief efforts`, `Searching for a place to sleep`, `Where to expect the worst floods`, 'What to pack and what not to pack when evacuating', `List of evacuation shelters near ${city}`, 'How to take care of your pets during a disaster'];
 
-    const newsInterval = window.setInterval(() => {
-      if (articles.length === 0) {
-        window.clearInterval(newsInterval);
-        return;
-      }
-
-      filterEl.items = [...articles.splice(0, 2), ...filterEl.items];
-    }, 2 * 60 * 1000);
-    
-    filterEl.items = articles.splice(0,5);
+    filterEl.items = articles;
   }
 }
 
 // handle water level updates
 const waterAnnouncerEl = document.querySelector('batch-announcer');
 const waterDisplay = document.getElementById('cur-water-level');
-const maxLevel = 180;
+const maxLevel = 240;
 let showUpdates = true;
-let currentLevel = 20;
+let currentLevel = 10;
 
 function getNewLevel(prevLevel) {
-  const randomFactor = Math.random();
-  const stepUp = Math.round(randomFactor * 3 + 2);
-  const stepDown = Math.round(randomFactor * 3 - 2);
+  const randomFactor = Math.random() - 0.3;
+  let stepUp = Math.round(randomFactor * 5 + 2);
+  let stepDown = Math.round(randomFactor * 3 - 2);
 
-  return prevLevel + (currentLevel > maxLevel ? stepDown : stepUp);
+  if (prevLevel < maxLevel && prevLevel > maxLevel * 0.75) {
+    stepUp = Math.round(randomFactor * 2 + 1);
+  }
+
+  return Math.max(10, prevLevel + (currentLevel > maxLevel ? stepDown : stepUp));
 }
 
 function displayLevel(level) {
