@@ -22,12 +22,12 @@
   border-bottom: 1px solid #c2c2c2;
   box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.15);
   flex: 0 0 auto;
-  overflow-y: scroll;
 }
 
 .grid-body {
   flex: 1 1 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .row {

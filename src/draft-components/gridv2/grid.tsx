@@ -154,10 +154,8 @@ export class SuiGridv2 {
 
   componentDidUpdate() {
     if (!this.focusRef) return;
-    this.callFocus && console.log('calling focus on', this.focusRef);
     
     // handle focus
-    console.log('calling focus on', this.focusRef);
     this.callFocus && this.focusRef.focus();
     this.callFocus = false;
 
@@ -180,6 +178,8 @@ export class SuiGridv2 {
       sortState
     } = this;
     const rowSelectionState = this.getSelectionState();
+    const activeCellId = this.activeCell.join('-');
+    const colOffset = rowSelection === RowSelectionPattern.Checkbox ? 1 : 0;
 
     return <table role={gridType} class="grid" aria-labelledby={this.labelledBy} aria-readonly={editable ? null : 'true'} onKeyDown={this.onCellKeydown.bind(this)}>
       {description ? <caption>{description}</caption> : null}
@@ -196,10 +196,13 @@ export class SuiGridv2 {
                 type="checkbox"
                 aria-label="select all rows"
                 checked={!!rowSelectionState}
-                tabIndex={this.gridType === 'grid' ? this.activeCell.join('-') === '0-0' ? 0 : -1 : null}
+                tabIndex={this.gridType === 'grid' ? activeCellId === '0-0' ? 0 : -1 : null}
                 ref={(el) => {
                   if (rowSelectionState === 'indeterminate') {
                     el.indeterminate = true;
+                  }
+                  if (activeCellId === '0-0') {
+                    this.focusRef = el;
                   }
                 }}
                 onChange={(event) => this.onSelectAll((event.target as HTMLInputElement).checked)} />
@@ -207,12 +210,13 @@ export class SuiGridv2 {
             </th>
           : null}
           {columns.map((column, index) => {
+            const headerIndex = index + colOffset;
             return renderHeaderCell({
               column,
-              colIndex: index,
+              colIndex: headerIndex,
               actionsMenu: headerActionsMenu,
-              isActiveCell: this.activeCell.join('-') === `${index}-0`,
-              isSortedColumn: sortedColumn === index,
+              isActiveCell: activeCellId === `${headerIndex}-0`,
+              isSortedColumn: sortedColumn === headerIndex,
               setFocusRef: (el) => this.focusRef = el,
               sortDirection: sortState,
               onSort: this.onSortColumn.bind(this),
@@ -247,6 +251,12 @@ export class SuiGridv2 {
         })}
       </tbody>
     </table>;
+  }
+
+  // dedicated function, because internal index can be off by one depending on whether there's a checkbox column
+  private getColumnData(colIndex) {
+    const cellColumn = this.rowSelection === RowSelectionPattern.Checkbox ? colIndex - 1 : colIndex;
+    return this.columns[cellColumn];
   }
 
   private getSelectionState(): boolean | 'indeterminate' {
@@ -290,10 +300,9 @@ export class SuiGridv2 {
   }
 
   private onCellDoubleClick(column) {
-    if (!this.columns[column].actionsColumn) {
+    if (!this.getColumnData(column).actionsColumn) {
       console.log('double click, editing')
       this.updateEditing(true, true);
-      event.preventDefault();
     }
   }
 
@@ -307,7 +316,7 @@ export class SuiGridv2 {
   }
 
   private onCellKeydown(event: KeyboardEvent) {
-    const { pageLength } = this;
+    const { isEditing, pageLength } = this;
     const maxCellIndex = this.rowSelection === RowSelectionPattern.Checkbox ? this.columns.length : this.columns.length - 1;
     let [colIndex, rowIndex] = this.activeCell;
     switch(event.key) {
@@ -331,11 +340,11 @@ export class SuiGridv2 {
         break;
       case ' ':
         // space never enters into actions column
-        if (this.columns[colIndex].actionsColumn) return;
+        if (this.getColumnData(colIndex).actionsColumn) return;
       case 'Enter':
         // enter also doesn't enter into actions column unless the keyboard modal variant is true
-        if (this.columns[colIndex].actionsColumn && !this.modalCell) return;
-        console.log('go into editing mode', this.modalCell);
+        if (this.getColumnData(colIndex).actionsColumn && !this.modalCell) return;
+        console.log('go into editing mode', this.modalCell, 'is action col?', this.getColumnData(colIndex));
         event.preventDefault();
         this.updateEditing(true, true);
         break;
@@ -354,7 +363,7 @@ export class SuiGridv2 {
         this.modalCell && this.isEditing && this.trapCellFocus(event);
     }
 
-    if (this.updateActiveCell(colIndex, rowIndex)) {
+    if (!isEditing && this.updateActiveCell(colIndex, rowIndex)) {
       event.preventDefault();
     }
   }
@@ -462,15 +471,14 @@ export class SuiGridv2 {
   private renderCell(rowIndex: number, cellIndex: number, content: string) {
     const activeCellId = this.activeCell.join('-');
     const currentCellKey = `${cellIndex}-${rowIndex}`;
-    const cellColumn = this.rowSelection === RowSelectionPattern.Checkbox ? this.columns[cellIndex - 1] : this.columns[cellIndex];
     const isActiveCell = activeCellId === currentCellKey;
-    const isActionsColumn = this.columns[cellIndex] && this.columns[cellIndex].actionsColumn;
+    const columnData = this.getColumnData(cellIndex);
     const isGrid = this.gridType === 'grid';
     return <td
       role={isGrid ? 'gridcell' : 'cell'}
       id={`cell-${rowIndex}-${cellIndex}`}
       class={{'cell': true, 'editing': this.isEditing && isActiveCell, 'hover-icon': this.modalCell }}
-      aria-readonly={!this.editable || cellColumn.actionsColumn ? 'true' : null}
+      aria-readonly={!this.editable || columnData.actionsColumn ? 'true' : null}
       aria-labelledby={!this.isEditing ? `cell-${rowIndex}-${cellIndex}-content` : null}
       tabIndex={isGrid && this.rowSelection !== RowSelectionPattern.Aria ? isActiveCell && (!this.isEditing || !this.modalCell) ? 0 : -1 : null}
       ref={isActiveCell ? (el) => {
@@ -482,11 +490,11 @@ export class SuiGridv2 {
       onDblClick={this.editable ? () => { this.onCellDoubleClick(cellIndex); } : null}
       onMouseDown={() => { this.mouseDown = true; }}
     >
-      {this.isEditing && isActiveCell && !isActionsColumn
+      {this.isEditing && isActiveCell && !columnData.actionsColumn
         ? <input type="text" value={content} class="cell-edit" onKeyDown={this.onInputKeyDown.bind(this)} ref={(el) => this.focusRef = el} />
         : <span class="cell-content" id={`cell-${rowIndex}-${cellIndex}-content`}>{this.renderCellContent(content, cellIndex, rowIndex)}</span>
       }
-      {!isActionsColumn ?
+      {!columnData.actionsColumn ?
         this.isEditing && isActiveCell ?
           [
             <button class="confirm-button" key={`${currentCellKey}-save`} type="button" onClick={(event) => { this.onEditButtonClick(event, rowIndex, cellIndex, false, true) }} onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ') && event.stopPropagation()}>
@@ -518,9 +526,9 @@ export class SuiGridv2 {
 
   private renderCellContent(content: string, colIndex: number, rowIndex: number) {
     const { renderCustomCell = (content) => content } = this;
-    const isActionsColumn = this.columns[colIndex] && this.columns[colIndex].actionsColumn;
+    const columnData = this.getColumnData(colIndex);
     // spoofing different types of custom content for testing
-    if (isActionsColumn) {
+    if (columnData && columnData.actionsColumn) {
       const actionsType = content.split(', ').shift();
       switch(actionsType) {
         case 'button':
@@ -612,7 +620,7 @@ export class SuiGridv2 {
         aria-labelledby={`cell-${rowIndex}-${this.titleColumn + 1}`}
         tabIndex={activeCellId === `0-${rowIndex}` ? 0 : -1}
         ref={activeCellId === `0-${rowIndex}` ? (el) => { this.focusRef = el; } : null}
-        onChange={(event) => this.onRowSelect(this.sortedCells[rowIndex], (event.target as HTMLInputElement).checked)}
+        onChange={(event) => this.onRowSelect(this.sortedCells[rowIndex - 1], (event.target as HTMLInputElement).checked)}
         onKeyDown={(event) => { (event.key === ' ' || event.key === 'Enter') && event.stopPropagation(); }}
       />
       <span class="selection-indicator"></span>
@@ -625,7 +633,7 @@ export class SuiGridv2 {
       return;
     }
 
-    if (this.columns[column].actionsColumn) {
+    if (this.getColumnData(column).actionsColumn) {
       return;
     }
 
