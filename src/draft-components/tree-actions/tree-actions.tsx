@@ -68,6 +68,12 @@ export class TreeWithActions {
    */
   @Prop() label: string;
 
+  /**
+   * Include secondary actions inside or outside the treeitem
+   * For support testing only
+   */
+  @Prop() secondaryActions: 'inside' | 'outside' | undefined;
+
   // Active item identifier
   // format is a string of indices of ancestors + current index
   @State() activeID = '0';
@@ -123,38 +129,64 @@ export class TreeWithActions {
     ]);
   }
 
+  renderSecondaryActions(item: TreeItem, currentItem: boolean) {
+    return [
+      <button class="tree-action" tabIndex={currentItem ? 0 : -1} onClick={() => this.onActionClick('edit', item.name)}>
+        <svg role="img" aria-label="Edit" width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+          <path d="M27 0c2.761 0 5 2.239 5 5 0 1.126-0.372 2.164-1 3l-2 2-7-7 2-2c0.836-0.628 1.874-1 3-1zM2 23l-2 9 9-2 18.5-18.5-7-7-18.5 18.5zM22.362 11.362l-14 14-1.724-1.724 14-14 1.724 1.724z"></path></svg>
+      </button>,
+      <button class="tree-action" tabIndex={currentItem ? 0 : -1} onClick={() => this.onActionClick('delete', item.name)}>
+        <svg role="img" aria-label="Delete" width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+        <path d="M8 21.5v-11c0-0.281-0.219-0.5-0.5-0.5h-1c-0.281 0-0.5 0.219-0.5 0.5v11c0 0.281 0.219 0.5 0.5 0.5h1c0.281 0 0.5-0.219 0.5-0.5zM12 21.5v-11c0-0.281-0.219-0.5-0.5-0.5h-1c-0.281 0-0.5 0.219-0.5 0.5v11c0 0.281 0.219 0.5 0.5 0.5h1c0.281 0 0.5-0.219 0.5-0.5zM16 21.5v-11c0-0.281-0.219-0.5-0.5-0.5h-1c-0.281 0-0.5 0.219-0.5 0.5v11c0 0.281 0.219 0.5 0.5 0.5h1c0.281 0 0.5-0.219 0.5-0.5zM7.5 6h7l-0.75-1.828c-0.047-0.063-0.187-0.156-0.266-0.172h-4.953c-0.094 0.016-0.219 0.109-0.266 0.172zM22 6.5v1c0 0.281-0.219 0.5-0.5 0.5h-1.5v14.812c0 1.719-1.125 3.187-2.5 3.187h-13c-1.375 0-2.5-1.406-2.5-3.125v-14.875h-1.5c-0.281 0-0.5-0.219-0.5-0.5v-1c0-0.281 0.219-0.5 0.5-0.5h4.828l1.094-2.609c0.313-0.766 1.25-1.391 2.078-1.391h5c0.828 0 1.766 0.625 2.078 1.391l1.094 2.609h4.828c0.281 0 0.5 0.219 0.5 0.5z"></path>
+        </svg>
+      </button>
+    ];
+  }
+
   renderTreeItem(item: TreeItem, index: number, parentID: string) {
     const itemID = `${parentID}${index}`;
     const active = itemID === this.activeID;
     const expanded = this.expandedItems.get(item);
     const {name, children } = item;
+    const isParentNode = !!(children && children.length);
 
     return (
-      <div
-        class={{
-          'item-current': active,
-          'tree-item': true,
-          'tree-parent': !!(children && children.length)
-        }}
-        id={`${this.htmlId}-${itemID}`}
-        ref={(el) => {if (active) this.activeItemRef = el; }}
-        role="treeitem"
-        aria-expanded={children && children.length ? `${!!expanded}` : null}
-        tabindex={active ? 0 : -1}
-        onClick={(event) => {
-          event.stopPropagation();
-          this.onItemClick(item, itemID);
-        }}
-        onKeyDown={(event) => {
-          this.onItemKeyDown(event, item, itemID);
-        }}
-      >
-        <span class="tree-item-name">{name}</span>
-        {children && children.length > 0 ?
-          <div role="group" class={{ 'open': !!expanded, 'tree-group': true }}>
-            {children.map((item, i) => this.renderTreeItem(item, i, itemID))}
+      <div class="tree-item-wrapper" role="presentation">
+        <div
+          class={{
+            'item-current': active,
+            'tree-item': true,
+            'tree-parent': isParentNode,
+            'open': expanded
+          }}
+          id={`${this.htmlId}-${itemID}`}
+          ref={(el) => {if (active) this.activeItemRef = el; }}
+          role="treeitem"
+          aria-expanded={isParentNode ? `${!!expanded}` : null}
+          tabindex={active ? 0 : -1}
+          onClick={(event) => {
+            event.stopPropagation();
+            this.onItemClick(item, itemID);
+          }}
+          onKeyDown={(event) => {
+            this.onItemKeyDown(event, item, itemID);
+          }}
+        >
+          <div class="tree-item-inner">
+            <span class="tree-item-name">{name}</span>
+            {!isParentNode && this.secondaryActions === 'inside'
+              ? this.renderSecondaryActions(item, active)
+              : null }
           </div>
-        : null}
+          {isParentNode ?
+            <div role="group" class={{ 'open': !!expanded, 'tree-group': true }}>
+              {children.map((item, i) => this.renderTreeItem(item, i, itemID))}
+            </div>
+          : null}
+        </div>
+        {!isParentNode && this.secondaryActions === 'outside'
+          ? this.renderSecondaryActions(item, active)
+          : null }
       </div>
     )
   }
@@ -224,6 +256,10 @@ export class TreeWithActions {
         }
         break;
     }
+  }
+
+  private onActionClick(action: string, itemName: string) {
+    alert(`${action} ${itemName} clicked`);
   }
 
   private onItemChange(itemID: string) {

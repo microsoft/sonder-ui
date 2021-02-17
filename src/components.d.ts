@@ -1079,6 +1079,47 @@ export namespace Components {
     'renderMenuItem'?: (menItem: any) => string;
   }
 
+  interface TabActions {
+    /**
+    * Prop for support testing only: whether the tabs should be closeable + location of close button
+    */
+    'closeButton': 'inside' | 'outside' | undefined;
+    /**
+    * Array of ids that point to tab content. These should correspond to the array of tabs.
+    */
+    'contentIds': string[];
+    /**
+    * Optionally control which tab should be displayed on load (defaults to the first tab)
+    */
+    'initialTab': number;
+    /**
+    * Array of tabs
+    */
+    'tabs': string[];
+  }
+  interface TabActionsAttributes extends StencilHTMLAttributes {
+    /**
+    * Prop for support testing only: whether the tabs should be closeable + location of close button
+    */
+    'closeButton'?: 'inside' | 'outside' | undefined;
+    /**
+    * Array of ids that point to tab content. These should correspond to the array of tabs.
+    */
+    'contentIds'?: string[];
+    /**
+    * Optionally control which tab should be displayed on load (defaults to the first tab)
+    */
+    'initialTab'?: number;
+    /**
+    * Emit a custom open event when the popup opens
+    */
+    'onTabChange'?: (event: CustomEvent) => void;
+    /**
+    * Array of tabs
+    */
+    'tabs'?: string[];
+  }
+
   interface TextareaCharcount {
     /**
     * Label for the textarea
@@ -1298,6 +1339,10 @@ export namespace Components {
     * Accessible name for tree
     */
     'label': string;
+    /**
+    * Include secondary actions inside or outside the treeitem For support testing only
+    */
+    'secondaryActions': 'inside' | 'outside' | undefined;
   }
   interface TreeActionsAttributes extends StencilHTMLAttributes {
     /**
@@ -1308,6 +1353,10 @@ export namespace Components {
     * Accessible name for tree
     */
     'label'?: string;
+    /**
+    * Include secondary actions inside or outside the treeitem For support testing only
+    */
+    'secondaryActions'?: 'inside' | 'outside' | undefined;
   }
 }
 
@@ -1343,6 +1392,7 @@ declare global {
     'MultiselectListbox': Components.MultiselectListbox;
     'MultiselectNative': Components.MultiselectNative;
     'SplitButton': Components.SplitButton;
+    'TabActions': Components.TabActions;
     'TextareaCharcount': Components.TextareaCharcount;
     'SuiToolbar': Components.SuiToolbar;
     'SuiTooltipArrow': Components.SuiTooltipArrow;
@@ -1383,6 +1433,7 @@ declare global {
     'multiselect-listbox': Components.MultiselectListboxAttributes;
     'multiselect-native': Components.MultiselectNativeAttributes;
     'split-button': Components.SplitButtonAttributes;
+    'tab-actions': Components.TabActionsAttributes;
     'textarea-charcount': Components.TextareaCharcountAttributes;
     'sui-toolbar': Components.SuiToolbarAttributes;
     'sui-tooltip-arrow': Components.SuiTooltipArrowAttributes;
@@ -1573,6 +1624,12 @@ declare global {
     new (): HTMLSplitButtonElement;
   };
 
+  interface HTMLTabActionsElement extends Components.TabActions, HTMLStencilElement {}
+  var HTMLTabActionsElement: {
+    prototype: HTMLTabActionsElement;
+    new (): HTMLTabActionsElement;
+  };
+
   interface HTMLTextareaCharcountElement extends Components.TextareaCharcount, HTMLStencilElement {}
   var HTMLTextareaCharcountElement: {
     prototype: HTMLTextareaCharcountElement;
@@ -1646,6 +1703,7 @@ declare global {
     'multiselect-listbox': HTMLMultiselectListboxElement
     'multiselect-native': HTMLMultiselectNativeElement
     'split-button': HTMLSplitButtonElement
+    'tab-actions': HTMLTabActionsElement
     'textarea-charcount': HTMLTextareaCharcountElement
     'sui-toolbar': HTMLSuiToolbarElement
     'sui-tooltip-arrow': HTMLSuiTooltipArrowElement
@@ -1686,6 +1744,7 @@ declare global {
     'multiselect-listbox': HTMLMultiselectListboxElement;
     'multiselect-native': HTMLMultiselectNativeElement;
     'split-button': HTMLSplitButtonElement;
+    'tab-actions': HTMLTabActionsElement;
     'textarea-charcount': HTMLTextareaCharcountElement;
     'sui-toolbar': HTMLSuiToolbarElement;
     'sui-tooltip-arrow': HTMLSuiTooltipArrowElement;

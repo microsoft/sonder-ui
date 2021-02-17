@@ -1,0 +1,39 @@
+.tabs {
+  background-color: #f4f6f7;
+  border-bottom: 2px solid #c2c2c2;
+  display: flex;
+  width: 100%;
+}
+
+.tab-wrapper {
+  display: flex;
+}
+
+.tab-button {
+  border: 0;
+  border-right: 1px solid #c2c2c2;
+  border-top: 1px solid #c2c2c2;
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 0.5em 1em;
+  position: relative;
+}
+
+.tab-button:first-child {
+  border-left: 1px solid #c2c2c2;
+}
+
+.tab-button[aria-selected=true] {
+  background-color: #0067b8;
+  color: #fff;
+}
+
+.tab-button:focus {
+  box-shadow: 0 0 3px 3px #005a9c;
+  outline: 2px solid transparent;
+  z-index: 1;
+}
+
+.tab-content {
+  border: 1px solid #c2c2c2;
+}

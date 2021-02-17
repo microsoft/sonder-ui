@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <title>Secondary actions test page</title>
+  <link rel="stylesheet" href="../../style.css"></style>
+  <script src="/build/caiacc.js"></script>
+
+</head>
+<body>
+  <main>
+    <h1>Basic secondary actions test page</h1>
+    <p>This example is not yet a usability study, it contains trees and tabs with secondary actions and basic support testing results.</p>
+
+    <h2>Tree with buttons inside treeitems</h2>
+    <tree-actions label="files" secondary-actions="inside"></tree-actions>
+
+    <h2>Tree with buttons adjacent to treeitems</h2>
+    <tree-actions label="files" secondary-actions="outside"></tree-actions>
+
+    <h2>Closeable tabs with nested buttons</h2>
+    <tab-actions close-button="inside">
+      <div id="tab-0-0" class="panel">
+        some example html content
+      </div>
+      <div id="tab-0-1" class="panel">
+        some example CSS content
+      </div>
+      <div id="tab-0-2" class="panel">
+        some example JSON content
+      </div>
+    </tab-actions>
+
+    <h2>Closeable tabs with adjacent buttons</h2>
+    <tab-actions close-button="outside">
+      <div id="tab-1-0" class="panel">
+        some example html content
+      </div>
+      <div id="tab-1-1" class="panel">
+        some example CSS content
+      </div>
+      <div id="tab-1-2" class="panel">
+        some example JSON content
+      </div>
+    </tab-actions>
+
+  </main>
+
+  <script type="text/javascript">
+    // tree logic
+    const trees = document.querySelectorAll('tree-actions');
+    trees.forEach((tree) => {
+      tree.items = [
+        {
+          name: 'repositories',
+          children: [
+            { name: 'fluentui' },
+            { name: 'sonder-ui' },
+            { name: 'aria-practices' }
+          ]
+        },
+        {
+          name: 'documents',
+          children: [
+            { name: 'test-page.html' },
+            {
+              name: 'sketches',
+              children: [ { name: 'project1-final-final-v3b.psd' } ]
+            }
+          ]
+        },
+        { name: 'notes.txt' },
+        { name: 'temp.txt' }
+      ];
+    });
+
+    // tab logic
+    // top-level tabs
+    const tabEls = document.querySelectorAll('tab-actions');
+    const tabNames = ['index.html', 'style.css', 'package.json'];
+
+    tabEls.forEach((el, index) => {
+      el.tabs = tabNames;
+      el.contentIds = tabNames.map((name, i) => `tab-${index}-${i}`);
+    });
+  </script>
+</body>
+</html>
