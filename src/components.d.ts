@@ -10,6 +10,7 @@ import '@stencil/core';
 
 import {
   SelectOption,
+  TreeItem,
 } from './shared/interfaces';
 import {
   SelectOption as SelectOption2,
@@ -1287,6 +1288,27 @@ export namespace Components {
     */
     'width'?: string;
   }
+
+  interface TreeActions {
+    /**
+    * Array of name/value options
+    */
+    'items': TreeItem[];
+    /**
+    * Accessible name for tree
+    */
+    'label': string;
+  }
+  interface TreeActionsAttributes extends StencilHTMLAttributes {
+    /**
+    * Array of name/value options
+    */
+    'items'?: TreeItem[];
+    /**
+    * Accessible name for tree
+    */
+    'label'?: string;
+  }
 }
 
 declare global {
@@ -1327,6 +1349,7 @@ declare global {
     'SuiTooltipControl': Components.SuiTooltipControl;
     'SuiTooltipCorner': Components.SuiTooltipCorner;
     'SuiTooltipEscape': Components.SuiTooltipEscape;
+    'TreeActions': Components.TreeActions;
   }
 
   interface StencilIntrinsicElements {
@@ -1366,6 +1389,7 @@ declare global {
     'sui-tooltip-control': Components.SuiTooltipControlAttributes;
     'sui-tooltip-corner': Components.SuiTooltipCornerAttributes;
     'sui-tooltip-escape': Components.SuiTooltipEscapeAttributes;
+    'tree-actions': Components.TreeActionsAttributes;
   }
 
 
@@ -1585,6 +1609,12 @@ declare global {
     new (): HTMLSuiTooltipEscapeElement;
   };
 
+  interface HTMLTreeActionsElement extends Components.TreeActions, HTMLStencilElement {}
+  var HTMLTreeActionsElement: {
+    prototype: HTMLTreeActionsElement;
+    new (): HTMLTreeActionsElement;
+  };
+
   interface HTMLElementTagNameMap {
     'sui-combobox': HTMLSuiComboboxElement
     'sui-disclosure': HTMLSuiDisclosureElement
@@ -1622,6 +1652,7 @@ declare global {
     'sui-tooltip-control': HTMLSuiTooltipControlElement
     'sui-tooltip-corner': HTMLSuiTooltipCornerElement
     'sui-tooltip-escape': HTMLSuiTooltipEscapeElement
+    'tree-actions': HTMLTreeActionsElement
   }
 
   interface ElementTagNameMap {
@@ -1661,6 +1692,7 @@ declare global {
     'sui-tooltip-control': HTMLSuiTooltipControlElement;
     'sui-tooltip-corner': HTMLSuiTooltipCornerElement;
     'sui-tooltip-escape': HTMLSuiTooltipEscapeElement;
+    'tree-actions': HTMLTreeActionsElement;
   }
 
 

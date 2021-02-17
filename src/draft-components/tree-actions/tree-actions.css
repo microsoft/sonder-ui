@@ -1,0 +1,28 @@
+/*---------------------------------------------------------------------------------------------
+*  Copyright (c) Microsoft Corporation. All rights reserved.
+*  Licensed under the MIT license. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
+.tree {
+  display: block;
+  margin-bottom: 2em;
+}
+
+.tree-item-name {
+  display: block;
+  padding: 0.25em 1em;
+}
+
+.tree-item:focus > .tree-item-name {
+  box-shadow: 0 0 4px 2px #0067b8;
+  outline: 5px solid transparent;
+}
+
+.tree-group {
+  display: none;
+  margin-left: 1em;
+  border-left: 2px solid rgba(0,0,0,.5);
+}
+
+.tree-group.open {
+  display: block;
+}

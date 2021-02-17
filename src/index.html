@@ -55,6 +55,9 @@
         <input type="text" class="form-input" aria-describedby="address-tooltip" id="tooltip2">
       </sui-tooltip>
     </p>
+
+    <h2>Tree</h2>
+    <tree-actions label="files"></tree-actions>
   </div>
 
   <sui-modal heading="Sonder UI Dialog" class="dialog">
@@ -110,6 +113,31 @@
         dialogTrigger.focus();
       }, 0);
     });
+
+    // tree logic
+    const tree = document.querySelector('tree-actions');
+    tree.items = [
+      {
+        name: 'repositories',
+        children: [
+          { name: 'fluentui' },
+          { name: 'sonder-ui' },
+          { name: 'aria-practices' }
+        ]
+      },
+      {
+        name: 'documents',
+        children: [
+          { name: 'test-page.html' },
+          {
+            name: 'sketches',
+            children: [ { name: 'project1-final-final-v3b.psd' } ]
+          }
+        ]
+      },
+      { name: 'notes.txt' },
+      { name: 'temp.txt' }
+    ];
   </script>
 
 </body>

@@ -37,6 +37,17 @@ export enum MenuActions {
   Type
 }
 
+export enum TreeActions {
+  Close,
+  First,
+  Last,
+  Next,
+  Open,
+  Previous,
+  Select,
+  UpLevel
+}
+
 // filter an array of options against an input string
 // returns an array of options that begin with the filter string, case-independent
 export function filterOptions(options: SelectOption[] = [], filter: string, exclude: SelectOption[] = []): SelectOption[] {
