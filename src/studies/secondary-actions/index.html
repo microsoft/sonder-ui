@@ -7,20 +7,150 @@
   <link rel="stylesheet" href="../../style.css"></style>
   <script src="/build/caiacc.js"></script>
 
+  <style type="text/css">
+    /* Styles just for the support tables */
+    td, th {
+      border: 1px solid grey;
+      padding: 0.5em;
+    }
+
+    .pass {
+      background-color: #caf4c6;
+    }
+
+    .fail {
+      background-color: #ffc3bf;
+    }
+
+    .neutral {
+      background-color: #d0cecd;
+    }
+
+    th {
+      background: #ccc;
+    }
+  </style>
+
 </head>
 <body>
   <main>
     <h1>Basic secondary actions test page</h1>
     <p>This example is not yet a usability study, it contains trees and tabs with secondary actions and basic support testing results.</p>
 
-    <h2>Tree with buttons inside treeitems</h2>
-    <tree-actions label="files" secondary-actions="inside"></tree-actions>
+    <h2>Trees</h2>
 
-    <h2>Tree with buttons adjacent to treeitems</h2>
-    <tree-actions label="files" secondary-actions="outside"></tree-actions>
+    <h3>Plain tree</h3>
+    <p>Just a normal tree to set a baseline of support</p>
+    <tree-actions label="files with no actions"></tree-actions>
 
-    <h2>Closeable tabs with nested buttons</h2>
-    <tab-actions close-button="inside">
+    <h3>Tree with buttons inside treeitems</h3>
+    <tree-actions label="files with nested actions" secondary-actions="inside"></tree-actions>
+
+    <h3>Tree with buttons adjacent to treeitems</h3>
+    <tree-actions label="files with sibling actions" secondary-actions="outside"></tree-actions>
+
+    <h3>Results</h3>
+    <table aria-label="Tree results">
+      <thead>
+        <tr>
+          <th>Screen reader/Browser</th>
+          <th>Baseline: virtual cursor</th>
+          <th>Baseline: app mode</th>
+          <th>Nested: virtual cursor</th>
+          <th>Nested: tabbing</th>
+          <th>Adjacent: virtual cursor</th>
+          <th>Adjacent: tabbing</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>JAWS/Chrome</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td>All tree interactions worked as expected, but secondary buttons did not announce name and role in either case. VPC didn't find them, and tab announced them as if they were one level down and had no name or role.</td>
+        </tr>
+        <tr>
+          <td>JAWS/Firefox</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td>Same as JAWS/Chrome</td>
+        </tr>
+        <tr>
+          <td>NVDA/Chrome</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td>Auto switches to browse mode  when tabbing to buttons in both examples. Both work OK otherwise. Browse mode only interacts with first item + descendants in all trees.</td>
+        </tr>
+        <tr>
+          <td>NVDA/Firefox</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td>Same as chrome/td>
+        </tr>
+        <tr>
+          <td>Narrator/Edge</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td>Auto-mode switching is buggy for unrelated reasons, so couldn't be tested. Tabbing works as expected in both examples.</td>
+        </tr>
+        <tr>
+          <td>VoiceOver/macOS Safari</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="neutral">N/A</td>
+          <td class="neutral">N/A</td>
+          <td class="neutral">N/A</td>
+          <td class="neutral">N/A</td>
+          <td>VoiceOver on macOS does not recognize or handle trees with cursor navigation or tabbing. Tabbing exposes names, but incorrect roles and no state info. All trees work equally well with tabbing (that is, it isn't the buttons that are the issue).</td>
+        </tr>
+        <tr>
+          <td>VoiceOver/iOS Safari</td>
+          <td class="pass">Partial</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td>Didn't test iPhone + keyboard; Base tree works OK, but doesn't include level/index info. Buttons in both examples work OK, though adjacent buttons include the expand/collapse information of their parent.</td>
+        </tr>
+        <tr>
+          <td>Talkback/Chrome</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td>Didn't test android + keyboard; baseline tree also doesn't include level/index info, focus does not follow cursor. Buttons were reachable and worked in both examples.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Tabs</h2>
+
+    <h3>Plain tabs</h3>
+    <tab-actions>
       <div id="tab-0-0" class="panel">
         some example html content
       </div>
@@ -32,8 +162,8 @@
       </div>
     </tab-actions>
 
-    <h2>Closeable tabs with adjacent buttons</h2>
-    <tab-actions close-button="outside">
+    <h3>Closeable tabs with nested buttons</h3>
+    <tab-actions close-button="inside">
       <div id="tab-1-0" class="panel">
         some example html content
       </div>
@@ -44,6 +174,226 @@
         some example JSON content
       </div>
     </tab-actions>
+
+    <h3>Closeable tabs with adjacent buttons</h3>
+    <tab-actions close-button="outside">
+      <div id="tab-2-0" class="panel">
+        some example html content
+      </div>
+      <div id="tab-2-1" class="panel">
+        some example CSS content
+      </div>
+      <div id="tab-2-2" class="panel">
+        some example JSON content
+      </div>
+    </tab-actions>
+
+    <h3>Results</h3>
+    <table aria-label="Tab results">
+      <thead>
+        <tr>
+          <th>Screen reader/Browser</th>
+          <th>Baseline: virtual cursor</th>
+          <th>Baseline: app mode</th>
+          <th>Nested: virtual cursor</th>
+          <th>Nested: tabbing</th>
+          <th>Adjacent: virtual cursor</th>
+          <th>Adjacent: tabbing</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>JAWS/Chrome</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td>Tabbing to a nested button reads it as the parent tab, and passes events to the parent tab (even though it works without JAWS). Tabbing to an adjacent button auto-switches to VPC (if enabled), but otherwise works.</td>
+        </tr>
+        <tr>
+          <td>JAWS/Firefox</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td>Same as JAWS/Chrome</td>
+        </tr>
+        <tr>
+          <td>NVDA/Chrome</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td>Mode auto-switches to browse for adjacent buttons, but not for nested buttons. Tabbing works for both.</td>
+        </tr>
+        <tr>
+          <td>NVDA/Firefox</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td>Same as Chrome</td>
+        </tr>
+        <tr>
+          <td>Narrator/Edge</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td>Auto-mode switching is buggy for unrelated reasons, so couldn't be tested. Tabbing works as expected in both examples.</td>
+        </tr>
+        <tr>
+          <td>VoiceOver/macOS Safari</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td>Neither tabbing nor cursor works for nested buttons, but both work for adjacent buttons.</td>
+        </tr>
+        <tr>
+          <td>VoiceOver/iOS Safari</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="fail">Fail</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td>Nested buttons interfered with basic tab functionality (they weren't separately reachable, and double tab triggered nested button instead of tab). Adjacent buttons worked OK.</td>
+        </tr>
+        <tr>
+          <td>Talkback/Chrome</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td>Both nested and adjacent buttons worked as expected.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Listboxes</h2>
+
+    <h3>Normal listbox</h3>
+    <listbox-actions label="Search Fruits"></listbox-actions>
+
+    <h3>Listbox with nested buttons</h3>
+    <listbox-actions label="Search Fruits" remove-button="inside"></listbox-actions>
+
+    <h3>Listbox with buttons adjacent to options</h3>
+    <listbox-actions label="Search Fruits" remove-button="outside"></listbox-actions>
+
+    <h3>Results</h3>
+    <table aria-label="Listbox results">
+      <thead>
+        <tr>
+          <th>Screen reader/Browser</th>
+          <th>Baseline: virtual cursor</th>
+          <th>Baseline: app mode</th>
+          <th>Nested: virtual cursor</th>
+          <th>Nested: tabbing</th>
+          <th>Adjacent: virtual cursor</th>
+          <th>Adjacent: tabbing</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>JAWS/Chrome</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td>Supports grouping, works surprisingly well tabbing both nested and adjacent buttons. No issues with mode switching or accname. VPC does not find close button in either example (not surprising since it surfaces the listbox as a whole).</td>
+        </tr>
+        <tr>
+          <td>JAWS/Firefox</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td>Same as Chrome</td>
+        </tr>
+        <tr>
+          <td>NVDA/Chrome</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td>Supports grouping, but browse mode only navigates first group for all examples. Mode auto-switches when tabbing to the button in both examples. Otherwise both work as expected.</td>
+        </tr>
+        <tr>
+          <td>NVDA/Firefox</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td>Same as Chrome.</td>
+        </tr>
+        <tr>
+          <td>Narrator/Edge</td>
+          <td class="pass">Partial</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td class="pass">Pass</td>
+          <td>Groups supported. Narrator doesn't navigate to listboxes with the form field shortcut. Otherwise scan mode reaches all buttons. Tabbing works as expected.</td>
+        </tr>
+        <tr>
+          <td>VoiceOver/macOS Safari</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="fail">Fail</td>
+          <td class="pass">Partial</td>
+          <td class="pass">Partial</td>
+          <td>Something about the markup of this listbox, or VoiceOver + listboxes in general didn't work. Listbox options were not read, independent of the buttons. Nested buttons were completely unreachable, though adjacent buttons were reachable and read correctly using both quicknav and tabbing.</td>
+        </tr>
+        <tr>
+          <td>VoiceOver/iOS Safari</td>
+          <td class="pass">Partial</td>
+          <td class="neutral">N/A</td>
+          <td class="fail">Fail</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td>VO on iOS doesn't recognize a basic listbox as a form control w/ quick nav, but otherwise works OK. Nested buttons are unreachable, but don't interfere with listbox functionality. Adjacent buttons work.</td>
+        </tr>
+        <tr>
+          <td>Talkback/Chrome</td>
+          <td>Pass-ish</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td class="pass">Pass</td>
+          <td class="neutral">N/A</td>
+          <td>Basic example reads incorrect index/total info (perhaps b/c of groups, which are not otherwise supported). Buttons in both examples are reachable and work as expected.</td>
+        </tr>
+      </tbody>
+    </table>
 
   </main>
 
@@ -76,13 +426,20 @@
     });
 
     // tab logic
-    // top-level tabs
     const tabEls = document.querySelectorAll('tab-actions');
     const tabNames = ['index.html', 'style.css', 'package.json'];
 
     tabEls.forEach((el, index) => {
       el.tabs = tabNames;
       el.contentIds = tabNames.map((name, i) => `tab-${index}-${i}`);
+    });
+
+    // listbox logic
+    const listboxEls = document.querySelectorAll('listbox-actions');
+    const fruits = [{name: "Apple", value: "apple"}, {name: "Blueberry", value: "blueberry"}, {name: "Cranberry", value: "cranberry"}, {name: "Durian", value: "durian"}, {name: "Fig", value: "fig"}, {name: "Guava", value: "guava"}, {name: "Huckleberry", value: "huckleberry"}];
+
+    listboxEls.forEach((listbox) => {
+      listbox.options = fruits;
     });
   </script>
 </body>

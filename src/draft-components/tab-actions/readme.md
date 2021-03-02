@@ -13,11 +13,12 @@ The `<sui-tabs>` web component supports the following properties and events:
 
 ## Properties
 
-| Property     | Attribute     | Description                                                                           | Type       | Default     |
-| ------------ | ------------- | ------------------------------------------------------------------------------------- | ---------- | ----------- |
-| `contentIds` | --            | Array of ids that point to tab content. These should correspond to the array of tabs. | `string[]` | `undefined` |
-| `initialTab` | `initial-tab` | Optionally control which tab should be displayed on load (defaults to the first tab)  | `number`   | `undefined` |
-| `tabs`       | --            | Array of tabs                                                                         | `string[]` | `undefined` |
+| Property      | Attribute      | Description                                                                                    | Type                    | Default     |
+| ------------- | -------------- | ---------------------------------------------------------------------------------------------- | ----------------------- | ----------- |
+| `closeButton` | `close-button` | Prop for support testing only: whether the tabs should be closeable + location of close button | `"inside" \| "outside"` | `undefined` |
+| `contentIds`  | --             | Array of ids that point to tab content. These should correspond to the array of tabs.          | `string[]`              | `undefined` |
+| `initialTab`  | `initial-tab`  | Optionally control which tab should be displayed on load (defaults to the first tab)           | `number`                | `undefined` |
+| `tabs`        | --             | Array of tabs                                                                                  | `string[]`              | `undefined` |
 
 
 ## Events

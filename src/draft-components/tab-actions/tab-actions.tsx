@@ -79,6 +79,7 @@ export class TabWithActions {
                 <div
                   aria-selected={`${currentIndex === i}`}
                   aria-controls={htmlId}
+                  aria-label={tab}
                   class={{"tab-button": true, 'closeable': !!closeButton }}
                   ref={(el) => {if (focusIndex === i) this.focusRef = el; }}
                   role="tab"
@@ -101,7 +102,8 @@ export class TabWithActions {
                   class="close-tab"
                   aria-label={`close ${tab}`}
                   tabIndex={focusIndex === i ? 0 : -1}
-                  onClick={() => this.onCloseClick(i)}
+                  onClick={(event) => this.onCloseClick(event, i)}
+                  onKeyDown={this.onButtonKeyDown.bind(this)}
                 >x</button>
                 : null}
               </div>
@@ -118,6 +120,15 @@ export class TabWithActions {
         </div>
       </div>
     );
+  }
+
+  private onButtonKeyDown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.stopPropagation();
+    }
+    else {
+      this.onTabKeyDown(event);
+    }
   }
 
   private onCloseClick(event, index) {

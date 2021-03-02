@@ -794,6 +794,39 @@ export namespace Components {
     'titleColumn'?: number;
   }
 
+  interface ListboxActions {
+    /**
+    * String label
+    */
+    'label': string;
+    /**
+    * Array of name/value options
+    */
+    'options': SelectOption[];
+    /**
+    * Testing prop: whether or not the "recent searches" items should have secondary actions
+    */
+    'removeButton': 'inside' | 'outside' | undefined;
+  }
+  interface ListboxActionsAttributes extends StencilHTMLAttributes {
+    /**
+    * String label
+    */
+    'label'?: string;
+    /**
+    * Emit a custom select event on value change
+    */
+    'onSelect'?: (event: CustomEvent) => void;
+    /**
+    * Array of name/value options
+    */
+    'options'?: SelectOption[];
+    /**
+    * Testing prop: whether or not the "recent searches" items should have secondary actions
+    */
+    'removeButton'?: 'inside' | 'outside' | undefined;
+  }
+
   interface ListboxButton {
     /**
     * String label
@@ -1383,6 +1416,7 @@ declare global {
     'FilterList': Components.FilterList;
     'SuiGrid': Components.SuiGrid;
     'SuiGridNew': Components.SuiGridNew;
+    'ListboxActions': Components.ListboxActions;
     'ListboxButton': Components.ListboxButton;
     'ListboxExpand': Components.ListboxExpand;
     'MultiselectButtons': Components.MultiselectButtons;
@@ -1424,6 +1458,7 @@ declare global {
     'filter-list': Components.FilterListAttributes;
     'sui-grid': Components.SuiGridAttributes;
     'sui-grid-new': Components.SuiGridNewAttributes;
+    'listbox-actions': Components.ListboxActionsAttributes;
     'listbox-button': Components.ListboxButtonAttributes;
     'listbox-expand': Components.ListboxExpandAttributes;
     'multiselect-buttons': Components.MultiselectButtonsAttributes;
@@ -1570,6 +1605,12 @@ declare global {
     new (): HTMLSuiGridNewElement;
   };
 
+  interface HTMLListboxActionsElement extends Components.ListboxActions, HTMLStencilElement {}
+  var HTMLListboxActionsElement: {
+    prototype: HTMLListboxActionsElement;
+    new (): HTMLListboxActionsElement;
+  };
+
   interface HTMLListboxButtonElement extends Components.ListboxButton, HTMLStencilElement {}
   var HTMLListboxButtonElement: {
     prototype: HTMLListboxButtonElement;
@@ -1694,6 +1735,7 @@ declare global {
     'filter-list': HTMLFilterListElement
     'sui-grid': HTMLSuiGridElement
     'sui-grid-new': HTMLSuiGridNewElement
+    'listbox-actions': HTMLListboxActionsElement
     'listbox-button': HTMLListboxButtonElement
     'listbox-expand': HTMLListboxExpandElement
     'multiselect-buttons': HTMLMultiselectButtonsElement
@@ -1735,6 +1777,7 @@ declare global {
     'filter-list': HTMLFilterListElement;
     'sui-grid': HTMLSuiGridElement;
     'sui-grid-new': HTMLSuiGridNewElement;
+    'listbox-actions': HTMLListboxActionsElement;
     'listbox-button': HTMLListboxButtonElement;
     'listbox-expand': HTMLListboxExpandElement;
     'multiselect-buttons': HTMLMultiselectButtonsElement;
